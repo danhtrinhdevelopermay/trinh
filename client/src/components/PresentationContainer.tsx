@@ -505,10 +505,10 @@ export default function PresentationContainer({
   // Loading state
   if (isLoading) {
     return (
-      <div className="relative w-full h-screen bg-gray-900 overflow-hidden flex items-center justify-center" data-testid="presentation-loading">
+      <div className="relative w-full h-screen bg-background overflow-hidden flex items-center justify-center" data-testid="presentation-loading">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-lg text-white">Đang tải bài thuyết trình...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-lg text-foreground">Đang tải bài thuyết trình...</p>
         </div>
       </div>
     );
@@ -517,16 +517,16 @@ export default function PresentationContainer({
   // Error state
   if (error) {
     return (
-      <div className="relative w-full h-screen bg-gray-900 overflow-hidden flex items-center justify-center" data-testid="presentation-error">
+      <div className="relative w-full h-screen bg-background overflow-hidden flex items-center justify-center" data-testid="presentation-error">
         <div className="text-center max-w-md">
-          <div className="text-red-500 text-6xl mb-4">⚠</div>
-          <h2 className="text-2xl font-bold mb-2 text-white">Không thể tải bài thuyết trình</h2>
-          <p className="text-gray-300 mb-4">
+          <div className="text-destructive text-6xl mb-4">⚠</div>
+          <h2 className="text-2xl font-bold mb-2 text-foreground">Không thể tải bài thuyết trình</h2>
+          <p className="text-muted-foreground mb-4">
             Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại sau.
           </p>
           <button 
             onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
           >
             Tải lại trang
           </button>
@@ -536,7 +536,7 @@ export default function PresentationContainer({
   }
 
   return (
-    <div className="relative w-full h-screen bg-gray-900 overflow-hidden" data-testid="presentation-container">
+    <div className="relative w-full h-screen bg-background overflow-hidden" data-testid="presentation-container">
       {/* Main slide area */}
       <div className="relative w-full h-full">
         <AnimatePresence mode="wait" custom={direction}>
