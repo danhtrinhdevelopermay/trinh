@@ -87,7 +87,7 @@ export default function PageTransition({
   
   return (
     <motion.div
-      className={`w-full h-full ${className}`}
+      className={`w-full h-full bg-gray-900 ${className}`}
       initial="initial"
       animate="in"
       exit="out"
