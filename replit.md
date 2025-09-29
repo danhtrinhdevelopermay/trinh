@@ -4,6 +4,18 @@
 
 This is a modern web application for creating and displaying educational presentations, specifically designed around the theme "Làm thế nào để con người vượt lên số phận của chính mình trong cuộc sống" (How can humans overcome their own destiny in life). The application provides a full-stack solution with presentation management, slide creation, and an interactive presentation viewer with audio controls and smooth animations.
 
+## Recent Changes
+
+### September 29, 2025 - Enhanced Presentation Content
+- **Expanded slide count**: Increased from 8 to 12 slides for more comprehensive coverage
+- **Added Nguyen Ngoc Ky slides**: Featured the inspiring Vietnamese teacher who writes with his feet
+  - Slide 5: "Tấm Gương Nguyễn Ngọc Ký" with detailed biographical information
+  - Slide 6: Quote slide featuring his famous words "Tôi viết bằng chân nhưng từ trái tim"
+- **Enhanced content structure**: Added emojis, improved phrasing, and better organization
+- **Additional role models**: Included Nick Vujicic, Stephen Hawking, Oprah Winfrey, and Michael Jordan
+- **New content types**: Implemented `story_with_image` component for biographical presentations
+- **Updated both storage systems**: Synchronized MemStorage and DBStorage with new content
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
