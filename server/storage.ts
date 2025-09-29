@@ -75,7 +75,7 @@ export class MemStorage implements IStorage {
     };
     this.presentations.set(samplePresentationId, samplePresentation);
     
-    // Create sample slides với nội dung đầy đủ từ bài thuyết trình
+    // Create sample slides với nội dung đầy đủ và cải thiện từ bài thuyết trình
     const sampleSlides = [
       {
         id: '1',
@@ -86,6 +86,7 @@ export class MemStorage implements IStorage {
         content: JSON.stringify({
           type: 'title_with_image',
           text: 'Làm thế nào để con người vượt lên số phận của chính mình trong cuộc sống',
+          subtitle: 'Hành trình từ khó khăn đến thành công',
           image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
         }),
         background: 'educational-gradient-1',
@@ -101,10 +102,11 @@ export class MemStorage implements IStorage {
         content: JSON.stringify({
           type: 'content_with_image',
           items: [
-            'Những điều kiện ban đầu ta được sinh ra',
-            'Hoàn cảnh gia đình và xã hội',
-            'Khả năng và hạn chế tự nhiên',
-            'Những sự kiện ngoài tầm kiểm soát'
+            '🏠 Những điều kiện ban đầu ta được sinh ra',
+            '👨‍👩‍👧‍👦 Hoàn cảnh gia đình và xã hội',
+            '🧬 Khả năng và hạn chế tự nhiên',
+            '🌪️ Những sự kiện ngoài tầm kiểm soát',
+            '💭 Nhưng số phận không phải là bản án cuối cùng!'
           ],
           image: '/stock_images/educational_success__583087f4.jpg'
         }),
@@ -116,11 +118,17 @@ export class MemStorage implements IStorage {
         id: '3',
         presentationId: samplePresentationId,
         order: 3,
-        type: 'quote',
-        title: 'Nelson Mandela',
+        type: 'content',
+        title: 'Những Yếu Tố Để Vượt Lên Số Phận',
         content: JSON.stringify({
-          type: 'quote_with_image',
-          text: 'Tôi là chủ nhân của số phận mình, tôi là thuyền trưởng của linh hồn mình',
+          type: 'content_with_image',
+          items: [
+            '💪 Ý chí và nghị lực kiên cường',
+            '📚 Tri thức và học tập không ngừng',
+            '🎯 Khát vọng và mục tiêu rõ ràng',
+            '🔄 Khả năng thích ứng và thay đổi',
+            '🤝 Sự hỗ trợ từ cộng đồng'
+          ],
           image: '/stock_images/educational_success__450426a4.jpg'
         }),
         background: 'educational-gradient-1',
@@ -131,16 +139,12 @@ export class MemStorage implements IStorage {
         id: '4',
         presentationId: samplePresentationId,
         order: 4,
-        type: 'content',
-        title: 'Tư Duy Quyết Định Mọi Thứ',
+        type: 'quote',
+        title: 'Nelson Mandela',
         content: JSON.stringify({
-          type: 'content_with_image',
-          items: [
-            'Thay đổi cách nhìn nhận về hoàn cảnh',
-            'Tập trung vào những gì có thể kiểm soát',
-            'Biến thử thách thành cơ hội',
-            'Học hỏi từ thất bại và khó khăn'
-          ],
+          type: 'quote_with_image',
+          text: 'Tôi là chủ nhân của số phận mình, tôi là thuyền trưởng của linh hồn mình',
+          author: 'Nelson Mandela - Cựu Tổng thống Nam Phi',
           image: '/stock_images/educational_success__450426a4.jpg'
         }),
         background: 'educational-gradient-1',
@@ -152,16 +156,18 @@ export class MemStorage implements IStorage {
         presentationId: samplePresentationId,
         order: 5,
         type: 'content',
-        title: 'Hành Động Tạo Nên Thay Đổi',
+        title: 'Tấm Gương Nguyễn Ngọc Ký',
         content: JSON.stringify({
-          type: 'content_with_image',
-          items: [
-            'Đặt mục tiêu cụ thể và rõ ràng',
-            'Lập kế hoạch và thực hiện kiên trì',
-            'Không ngừng học hỏi và phát triển',
-            'Xây dựng mối quan hệ tích cực'
+          type: 'story_with_image',
+          story: [
+            '✍️ Sinh năm 1947 tại Quảng Bình, bị liệt cả hai tay từ nhỏ',
+            '🎓 Tự học viết bằng chân, trở thành giáo viên',
+            '📖 Viết hơn 30 cuốn sách, truyện thiếu nhi nổi tiếng',
+            '🏆 Nhận nhiều giải thưởng văn học danh giá',
+            '💝 Câu nói nổi tiếng: "Tôi viết bằng chân nhưng từ trái tim"',
+            '🌟 Chứng minh rằng nghị lực có thể thắng mọi khó khăn'
           ],
-          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
+          image: '/stock_images/educational_success__4203c133.jpg'
         }),
         background: 'educational-gradient-1',
         createdAt: new Date(),
@@ -172,11 +178,12 @@ export class MemStorage implements IStorage {
         presentationId: samplePresentationId,
         order: 6,
         type: 'quote',
-        title: 'Viktor Frankl',
+        title: 'Nguyễn Ngọc Ký',
         content: JSON.stringify({
           type: 'quote_with_image',
-          text: 'Giữa kích thích và phản ứng có một khoảng trống. Trong khoảng trống đó là quyền tự do lựa chọn của chúng ta',
-          image: '/stock_images/educational_success__583087f4.jpg'
+          text: 'Tôi viết bằng chân nhưng từ trái tim. Khuyết tật không làm khuyết tâm hồn',
+          author: 'Thầy Nguyễn Ngọc Ký - Nhà văn, Nhà giáo',
+          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
         }),
         background: 'educational-gradient-1',
         createdAt: new Date(),
@@ -187,11 +194,17 @@ export class MemStorage implements IStorage {
         presentationId: samplePresentationId,
         order: 7,
         type: 'content',
-        title: 'Kết Luận',
+        title: 'Tư Duy Tích Cực - Chìa Khóa Thành Công',
         content: JSON.stringify({
-          type: 'conclusion_with_image',
-          text: 'Số phận không phải là điểm đến mà là điểm khởi đầu. Chúng ta có thể thay đổi và tạo ra cuộc sống mà mình mong muốn',
-          image: '/stock_images/educational_success__4203c133.jpg'
+          type: 'content_with_image',
+          items: [
+            '🔄 Thay đổi cách nhìn nhận về hoàn cảnh khó khăn',
+            '🎯 Tập trung vào những gì có thể kiểm soát được',
+            '⚡ Biến thử thách thành cơ hội học hỏi',
+            '📈 Học hỏi từ thất bại để trở nên mạnh mẽ hơn',
+            '🌟 Tin tưởng vào khả năng vô hạn của bản thân'
+          ],
+          image: '/stock_images/educational_success__450426a4.jpg'
         }),
         background: 'educational-gradient-1',
         createdAt: new Date(),
@@ -201,9 +214,88 @@ export class MemStorage implements IStorage {
         id: '8',
         presentationId: samplePresentationId,
         order: 8,
+        type: 'content',
+        title: 'Hành Động Cụ Thể Để Thay Đổi',
+        content: JSON.stringify({
+          type: 'content_with_image',
+          items: [
+            '🎯 Đặt mục tiêu SMART (cụ thể, đo lường được)',
+            '📝 Lập kế hoạch chi tiết và thực hiện kiên trì',
+            '📚 Không ngừng học hỏi và nâng cao kỹ năng',
+            '🤝 Xây dựng mạng lưới quan hệ tích cực',
+            '🏃‍♂️ Hành động ngay hôm nay, đừng trì hoãn'
+          ],
+          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
+        }),
+        background: 'educational-gradient-1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: '9',
+        presentationId: samplePresentationId,
+        order: 9,
+        type: 'content',
+        title: 'Những Tấm Gương Khác Trên Thế Giới',
+        content: JSON.stringify({
+          type: 'content_with_image',
+          items: [
+            '🎤 Nick Vujicic: Không tay chân, thành diễn giả nổi tiếng',
+            '🔬 Stephen Hawking: Bệnh ALS, vẫn là thiên tài vật lý',
+            '👑 Oprah Winfrey: Từ nghèo khó đến nữ hoàng truyền thông',
+            '🏀 Michael Jordan: Bị loại khỏi đội bóng, trở thành huyền thoại',
+            '🎭 Họ chứng minh: Không có giới hạn nào với ý chí con người'
+          ],
+          image: '/stock_images/educational_success__583087f4.jpg'
+        }),
+        background: 'educational-gradient-1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: '10',
+        presentationId: samplePresentationId,
+        order: 10,
+        type: 'quote',
+        title: 'Viktor Frankl',
+        content: JSON.stringify({
+          type: 'quote_with_image',
+          text: 'Giữa kích thích và phản ứng có một khoảng trống. Trong khoảng trống đó là quyền tự do lựa chọn của chúng ta',
+          author: 'Viktor Frankl - Nhà tâm lý học, người sống sót sau Holocaust',
+          image: '/stock_images/educational_success__583087f4.jpg'
+        }),
+        background: 'educational-gradient-1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: '11',
+        presentationId: samplePresentationId,
+        order: 11,
+        type: 'content',
+        title: 'Bài Học Rút Ra',
+        content: JSON.stringify({
+          type: 'conclusion_with_image',
+          items: [
+            '💪 Không bao giờ đầu hàng trước khó khăn',
+            '📖 Luôn học hỏi và rèn luyện bản thân mỗi ngày',
+            '🌟 Tin vào giá trị và khát vọng sống của chính mình',
+            '🔥 Biến số phận thành động lực để tỏa sáng',
+            '🎯 Mỗi người đều có thể viết nên câu chuyện thành công riêng'
+          ],
+          image: '/stock_images/educational_success__4203c133.jpg'
+        }),
+        background: 'educational-gradient-1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: '12',
+        presentationId: samplePresentationId,
+        order: 12,
         type: 'quote',
         title: 'Thông điệp cuối cùng',
-        content: 'Số phận không định đoạt tất cả, chính bản lĩnh con người mới quyết định cuộc đời mình.',
+        content: 'Số phận không định đoạt tất cả, chính bản lĩnh và nghị lực con người mới quyết định cuộc đời mình. Hãy tin rằng bạn có thể vượt lên mọi khó khăn!',
         background: 'bg-gradient-to-br from-primary via-primary/90 to-primary/80',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -476,103 +568,177 @@ export class DBStorage implements IStorage {
       userId: sampleUser[0].id
     }).returning();
 
-    // Create sample slides with specific IDs - nội dung đầy đủ từ bài thuyết trình
+    // Create sample slides với nội dung đầy đủ và cải thiện, bao gồm thầy Nguyễn Ngọc Ký
     const sampleSlidesData = [
       {
         id: '1',
         presentationId: samplePresentation[0].id,
         order: 1,
         type: 'title',
-        title: 'Làm thế nào để con người vượt lên số phận của chính mình trong cuộc sống',
-        content: 'Biểu tượng cho khát vọng và nghị lực vươn lên',
-        background: 'bg-gradient-to-br from-primary via-primary/90 to-primary/80'
+        title: 'Vượt Lên Số Phận',
+        content: JSON.stringify({
+          type: 'title_with_image',
+          text: 'Làm thế nào để con người vượt lên số phận của chính mình trong cuộc sống',
+          subtitle: 'Hành trình từ khó khăn đến thành công',
+          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
+        }),
+        background: 'educational-gradient-1'
       },
       {
         id: '2',
         presentationId: samplePresentation[0].id,
         order: 2,
         type: 'content',
-        title: 'Mở đầu - Số phận là gì?',
+        title: 'Số Phận Là Gì?',
         content: JSON.stringify([
-          'Số phận là những hoàn cảnh, thử thách, nghịch cảnh mà con người không thể lựa chọn khi sinh ra.',
-          'Vượt lên số phận là dám thay đổi, khẳng định bản thân.',
-          'Không để khó khăn ngăn cản ước mơ của chính mình.'
+          '🏠 Những điều kiện ban đầu ta được sinh ra',
+          '👨‍👩‍👧‍👦 Hoàn cảnh gia đình và xã hội',
+          '🧬 Khả năng và hạn chế tự nhiên',
+          '🌪️ Những sự kiện ngoài tầm kiểm soát',
+          '💭 Nhưng số phận không phải là bản án cuối cùng!'
         ]),
-        background: 'bg-gradient-to-br from-chart-1 via-chart-1/90 to-chart-1/80'
+        background: 'educational-gradient-1'
       },
       {
         id: '3',
         presentationId: samplePresentation[0].id,
         order: 3,
         type: 'content',
-        title: 'Ý chí và nghị lực - Chìa khóa vượt số phận',
+        title: 'Những Yếu Tố Để Vượt Lên Số Phận',
         content: JSON.stringify([
-          'Tinh thần kiên trì, không bỏ cuộc',
-          'Học cách đứng dậy sau thất bại',
-          'Rèn luyện ý chí qua từng thử thách nhỏ'
+          '💪 Ý chí và nghị lực kiên cường',
+          '📚 Tri thức và học tập không ngừng',
+          '🎯 Khát vọng và mục tiêu rõ ràng',
+          '🔄 Khả năng thích ứng và thay đổi',
+          '🤝 Sự hỗ trợ từ cộng đồng'
         ]),
-        background: 'bg-gradient-to-br from-chart-2 via-chart-2/90 to-chart-2/80'
+        background: 'educational-gradient-1'
       },
       {
         id: '4',
         presentationId: samplePresentation[0].id,
         order: 4,
-        type: 'content',
-        title: 'Tri thức và học tập',
-        content: JSON.stringify([
-          'Kiến thức giúp con người thay đổi tương lai',
-          'Học tập mở ra cơ hội vượt qua giới hạn hoàn cảnh',
-          '"Tri thức là sức mạnh để thay đổi số phận"'
-        ]),
-        background: 'bg-gradient-to-br from-chart-3 via-chart-3/90 to-chart-3/80'
+        type: 'quote',
+        title: 'Nelson Mandela',
+        content: JSON.stringify({
+          type: 'quote_with_image',
+          text: 'Tôi là chủ nhân của số phận mình, tôi là thuyền trưởng của linh hồn mình',
+          author: 'Nelson Mandela - Cựu Tổng thống Nam Phi',
+          image: '/stock_images/educational_success__450426a4.jpg'
+        }),
+        background: 'educational-gradient-1'
       },
       {
         id: '5',
         presentationId: samplePresentation[0].id,
         order: 5,
         type: 'content',
-        title: 'Niềm tin và khát vọng sống',
+        title: 'Tấm Gương Nguyễn Ngọc Ký',
         content: JSON.stringify([
-          'Tin vào giá trị của bản thân',
-          'Đặt mục tiêu, nuôi dưỡng ước mơ',
-          'Khát vọng chính là động lực mạnh mẽ nhất'
+          '✍️ Sinh năm 1947 tại Quảng Bình, bị liệt cả hai tay từ nhỏ',
+          '🎓 Tự học viết bằng chân, trở thành giáo viên',
+          '📖 Viết hơn 30 cuốn sách, truyện thiếu nhi nổi tiếng',
+          '🏆 Nhận nhiều giải thưởng văn học danh giá',
+          '💝 Câu nói nổi tiếng: "Tôi viết bằng chân nhưng từ trái tim"',
+          '🌟 Chứng minh rằng nghị lực có thể thắng mọi khó khăn'
         ]),
-        background: 'bg-gradient-to-br from-chart-4 via-chart-4/90 to-chart-4/80'
+        background: 'educational-gradient-1'
       },
       {
         id: '6',
         presentationId: samplePresentation[0].id,
         order: 6,
-        type: 'content',
-        title: 'Những tấm gương vượt số phận',
-        content: JSON.stringify([
-          'Nick Vujicic: Không tay, không chân nhưng trở thành diễn giả truyền cảm hứng',
-          'Nguyễn Ngọc Ký: Bị liệt hai tay nhưng vẫn viết nên ước mơ bằng đôi chân',
-          'Họ chứng minh: Nghị lực mạnh mẽ có thể chiến thắng số phận'
-        ]),
-        background: 'bg-gradient-to-br from-chart-5 via-chart-5/90 to-chart-5/80'
+        type: 'quote',
+        title: 'Nguyễn Ngọc Ký',
+        content: JSON.stringify({
+          type: 'quote_with_image',
+          text: 'Tôi viết bằng chân nhưng từ trái tim. Khuyết tật không làm khuyết tâm hồn',
+          author: 'Thầy Nguyễn Ngọc Ký - Nhà văn, Nhà giáo',
+          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
+        }),
+        background: 'educational-gradient-1'
       },
       {
         id: '7',
         presentationId: samplePresentation[0].id,
         order: 7,
         type: 'content',
-        title: 'Bài học rút ra',
+        title: 'Tư Duy Tích Cực - Chìa Khóa Thành Công',
         content: JSON.stringify([
-          'Không đầu hàng trước khó khăn',
-          'Luôn học hỏi, rèn luyện bản thân',
-          'Tin vào giá trị, khát vọng sống của chính mình',
-          'Biến số phận thành động lực để tỏa sáng'
+          '🔄 Thay đổi cách nhìn nhận về hoàn cảnh khó khăn',
+          '🎯 Tập trung vào những gì có thể kiểm soát được',
+          '⚡ Biến thử thách thành cơ hội học hỏi',
+          '📈 Học hỏi từ thất bại để trở nên mạnh mẽ hơn',
+          '🌟 Tin tưởng vào khả năng vô hạn của bản thân'
         ]),
-        background: 'bg-gradient-to-br from-accent via-accent/90 to-accent/80'
+        background: 'educational-gradient-1'
       },
       {
         id: '8',
         presentationId: samplePresentation[0].id,
         order: 8,
+        type: 'content',
+        title: 'Hành Động Cụ Thể Để Thay Đổi',
+        content: JSON.stringify([
+          '🎯 Đặt mục tiêu SMART (cụ thể, đo lường được)',
+          '📝 Lập kế hoạch chi tiết và thực hiện kiên trì',
+          '📚 Không ngừng học hỏi và nâng cao kỹ năng',
+          '🤝 Xây dựng mạng lưới quan hệ tích cực',
+          '🏃‍♂️ Hành động ngay hôm nay, đừng trì hoãn'
+        ]),
+        background: 'educational-gradient-1'
+      },
+      {
+        id: '9',
+        presentationId: samplePresentation[0].id,
+        order: 9,
+        type: 'content',
+        title: 'Những Tấm Gương Khác Trên Thế Giới',
+        content: JSON.stringify([
+          '🎤 Nick Vujicic: Không tay chân, thành diễn giả nổi tiếng',
+          '🔬 Stephen Hawking: Bệnh ALS, vẫn là thiên tài vật lý',
+          '👑 Oprah Winfrey: Từ nghèo khó đến nữ hoàng truyền thông',
+          '🏀 Michael Jordan: Bị loại khỏi đội bóng, trở thành huyền thoại',
+          '🎭 Họ chứng minh: Không có giới hạn nào với ý chí con người'
+        ]),
+        background: 'educational-gradient-1'
+      },
+      {
+        id: '10',
+        presentationId: samplePresentation[0].id,
+        order: 10,
+        type: 'quote',
+        title: 'Viktor Frankl',
+        content: JSON.stringify({
+          type: 'quote_with_image',
+          text: 'Giữa kích thích và phản ứng có một khoảng trống. Trong khoảng trống đó là quyền tự do lựa chọn của chúng ta',
+          author: 'Viktor Frankl - Nhà tâm lý học, người sống sót sau Holocaust',
+          image: '/stock_images/educational_success__583087f4.jpg'
+        }),
+        background: 'educational-gradient-1'
+      },
+      {
+        id: '11',
+        presentationId: samplePresentation[0].id,
+        order: 11,
+        type: 'content',
+        title: 'Bài Học Rút Ra',
+        content: JSON.stringify([
+          '💪 Không bao giờ đầu hàng trước khó khăn',
+          '📖 Luôn học hỏi và rèn luyện bản thân mỗi ngày',
+          '🌟 Tin vào giá trị và khát vọng sống của chính mình',
+          '🔥 Biến số phận thành động lực để tỏa sáng',
+          '🎯 Mỗi người đều có thể viết nên câu chuyện thành công riêng'
+        ]),
+        background: 'educational-gradient-1'
+      },
+      {
+        id: '12',
+        presentationId: samplePresentation[0].id,
+        order: 12,
         type: 'quote',
         title: 'Thông điệp cuối cùng',
-        content: 'Số phận không định đoạt tất cả, chính bản lĩnh con người mới quyết định cuộc đời mình.',
+        content: 'Số phận không định đoạt tất cả, chính bản lĩnh và nghị lực con người mới quyết định cuộc đời mình. Hãy tin rằng bạn có thể vượt lên mọi khó khăn!',
         background: 'bg-gradient-to-br from-primary via-primary/90 to-primary/80'
       }
     ];

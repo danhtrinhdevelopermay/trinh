@@ -314,6 +314,27 @@ export default function PresentationContainer({
                 </div>
               );
             }
+            else if (parsedContent.type === 'story_with_image') {
+              content = (
+                <div className="flex items-center justify-between gap-12 w-full max-w-6xl">
+                  <div className="space-y-6 text-left flex-1">
+                    {parsedContent.story.map((item: string, itemIndex: number) => (
+                      <div key={itemIndex} className="flex items-start space-x-4 group">
+                        <div className="w-4 h-4 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full mt-2 group-hover:scale-125 transition-transform shadow-lg"></div>
+                        <p className="text-xl font-medium leading-relaxed">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="w-80 h-64 rounded-2xl overflow-hidden shadow-2xl opacity-80 border-4 border-white/20">
+                    <img 
+                      src={parsedContent.image} 
+                      alt="Story illustration" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              );
+            }
             else if (parsedContent.type === 'conclusion_with_image') {
               content = (
                 <div className="space-y-8 text-center max-w-4xl">
