@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import Home from "@/pages/Home";
 import ManagePresentations from "@/pages/ManagePresentations";
 import ManageSlides from "@/pages/ManageSlides";
+import MorphDemo from "@/pages/MorphDemo";
 import NotFound from "@/pages/not-found";
 import LoginForm from "@/components/LoginForm";
 
@@ -19,6 +20,7 @@ function Router() {
     <AnimatedRoute routeKey={location}>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/morph-demo" component={MorphDemo} />
         <Route path="/manage" component={ManagePresentations} />
         <Route path="/manage/:id" component={ManageSlides} />
         <Route component={NotFound} />
@@ -28,6 +30,7 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,6 +61,18 @@ function App() {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
+
+  // Allow /morph-demo without authentication
+  if (location === '/morph-demo') {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <MorphDemo />
+        </TooltipProvider>
+      </QueryClientProvider>
+    );
+  }
 
   // Show loading while checking authentication
   if (isLoading) {
