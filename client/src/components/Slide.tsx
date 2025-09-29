@@ -209,11 +209,11 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
           rotateZ: { type: "spring", stiffness: 150, damping: 20 },
         }
       }
-      className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center p-8 md:p-16 ${backgroundStyle} ${textColorStyle} slide-pattern slide-decoration cute-border overflow-hidden`}
+      className={`absolute inset-0 w-full h-full min-h-screen min-h-dvh flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-16 ${backgroundStyle} ${textColorStyle} slide-pattern slide-decoration cute-border overflow-hidden`}
       data-testid={`slide-${slide.id}`}
     >
       {slide.type === 'title' ? (
-        <div className="text-center space-y-8 max-w-4xl relative">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full">
           <motion.div
             initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0, rotate: -180 }}
             animate={shouldReduceMotion ? { opacity: 0.4 } : { scale: 1, rotate: 0 }}
@@ -226,7 +226,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 50, opacity: 0, scale: 0.8 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1, scale: 1 }}
             transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.2, duration: 0.8, type: "spring", stiffness: 120 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold font-serif leading-tight bounce-in"
+            className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-serif leading-tight bounce-in"
           >
             {slide.title}
           </motion.h1>
@@ -234,13 +234,13 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
             transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { delay: 0.4, duration: 0.8, type: "spring" }}
-            className="text-lg md:text-xl lg:text-2xl opacity-90 pulse-glow"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 pulse-glow"
           >
             {slide.content}
           </motion.div>
         </div>
       ) : slide.type === 'quote' ? (
-        <div className="text-center space-y-8 max-w-4xl relative">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full">
           <motion.div
             variants={shouldReduceMotion ? undefined : floatingVariants}
             animate={shouldReduceMotion ? undefined : "animate"}
@@ -252,7 +252,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.8, opacity: 0, rotateX: 45 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1, rotateX: 0 }}
             transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.2, duration: 0.8, type: "spring" }}
-            className="text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative"
+            className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative"
           >
             <span className="text-6xl text-white/30 absolute -top-4 -left-4">"</span>
             {slide.content}
@@ -262,7 +262,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
             transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { delay: 0.4, duration: 0.8, type: "spring" }}
-            className="text-xl md:text-2xl font-medium opacity-80 bounce-in"
+            className="text-base sm:text-xl md:text-2xl font-medium opacity-80 bounce-in"
           >
             — {slide.title}
           </motion.h2>
@@ -275,7 +275,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
           </motion.div>
         </div>
       ) : (
-        <div className="text-center space-y-8 max-w-5xl relative">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative w-full">
           <motion.div
             variants={shouldReduceMotion ? undefined : decorativeIconVariants}
             initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
@@ -289,7 +289,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 50, opacity: 0, scale: 0.8 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1, scale: 1 }}
             transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.2, duration: 0.8, type: "spring", stiffness: 120 }}
-            className="text-3xl md:text-5xl lg:text-6xl font-bold font-serif mb-8 bounce-in"
+            className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold font-serif mb-4 sm:mb-6 md:mb-8 bounce-in"
           >
             {slide.title}
           </motion.h2>
@@ -297,7 +297,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
             transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { delay: 0.4, duration: 0.8, type: "spring" }}
-            className="text-lg md:text-xl lg:text-2xl leading-relaxed space-y-4"
+            className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4"
           >
             {slide.content}
           </motion.div>
