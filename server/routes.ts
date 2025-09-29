@@ -5,6 +5,8 @@ import { insertPresentationSchema, insertSlideSchema, slideDataSchema } from "@s
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Authentication is now handled globally in index.ts
+  
   // Presentation routes
   
   // GET /api/presentations - Get all presentations for a user

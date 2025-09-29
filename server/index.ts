@@ -2,10 +2,87 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { storage } from "./storage";
+import session from "express-session";
+import { z } from "zod";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Generate a secure session secret
+const sessionSecret = process.env.SESSION_SECRET || 'your-secure-session-secret-' + Math.random().toString(36);
+
+// Session configuration for password protection
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production', // HTTPS in production
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'strict'
+  }
+}));
+
+// Authentication middleware - applied globally to all API routes except auth
+const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+  // Skip authentication for auth routes (Express strips /api prefix, so check originalUrl or path)
+  if (req.originalUrl.startsWith('/api/auth/') || req.path.startsWith('/auth/')) {
+    return next();
+  }
+  
+  if ((req.session as any)?.authenticated) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Authentication required' });
+  }
+};
+
+// Apply authentication to all API routes
+app.use('/api', requireAuth);
+
+// Password authentication routes
+app.post('/api/auth/login', (req, res) => {
+  try {
+    const { password } = z.object({ password: z.string() }).parse(req.body);
+    const correctPassword = process.env.ACCESS_PASSWORD;
+    
+    if (password === correctPassword) {
+      // Regenerate session to prevent session fixation
+      req.session.regenerate((err) => {
+        if (err) {
+          return res.status(500).json({ error: 'Session error' });
+        }
+        (req.session as any).authenticated = true;
+        req.session.save((err) => {
+          if (err) {
+            return res.status(500).json({ error: 'Session save error' });
+          }
+          res.json({ success: true });
+        });
+      });
+    } else {
+      res.status(401).json({ error: 'Incorrect password' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: 'Invalid request' });
+  }
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  (req.session as any).authenticated = false;
+  req.session.destroy(() => {
+    res.json({ success: true });
+  });
+});
+
+app.get('/api/auth/status', (req, res) => {
+  const authenticated = (req.session as any)?.authenticated || false;
+  res.json({ authenticated });
+});
+
+// Remove the duplicate middleware definition as it's now moved above
 
 app.use((req, res, next) => {
   const start = Date.now();

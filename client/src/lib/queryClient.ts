@@ -1,7 +1,19 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// Global variable to handle auth state
+let onAuthFailure: (() => void) | null = null;
+
+export const setAuthFailureHandler = (handler: () => void) => {
+  onAuthFailure = handler;
+};
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
+    // Handle authentication failures
+    if (res.status === 401 && onAuthFailure) {
+      onAuthFailure();
+      return;
+    }
     const text = (await res.text()) || res.statusText;
     throw new Error(`${res.status}: ${text}`);
   }
@@ -19,6 +31,12 @@ export async function apiRequest(
     credentials: "include",
   });
 
+  // Handle authentication failures
+  if (res.status === 401 && onAuthFailure) {
+    onAuthFailure();
+    throw new Error('Authentication required');
+  }
+
   await throwIfResNotOk(res);
   return res;
 }
@@ -33,8 +51,14 @@ export const getQueryFn: <T>(options: {
       credentials: "include",
     });
 
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+    if (res.status === 401) {
+      if (onAuthFailure) {
+        onAuthFailure();
+      }
+      if (unauthorizedBehavior === "returnNull") {
+        return null;
+      }
+      throw new Error('Authentication required');
     }
 
     await throwIfResNotOk(res);
