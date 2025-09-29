@@ -1,0 +1,257 @@
+import { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from "react";
+
+interface AudioContextValue {
+  // States
+  isPlaying: boolean;
+  volume: number;
+  isMuted: boolean;
+  audioSupported: boolean;
+  currentTrack: number;
+  
+  // Controls
+  togglePlayback: () => void;
+  setVolume: (volume: number) => void;
+  toggleMute: () => void;
+  changeTrack: () => void;
+  playTransitionSound: () => void;
+}
+
+const AudioContextObj = createContext<AudioContextValue | null>(null);
+
+interface AudioProviderProps {
+  children: ReactNode;
+}
+
+// Simple audio data URIs for background music (different tones)
+const BACKGROUND_TRACKS = [
+  // Gentle ambient tone (C major)
+  generateToneDataURI(261.63, 2, 0.1), // C4
+  // Inspiring higher tone (G major) 
+  generateToneDataURI(392.00, 2, 0.1), // G4
+  // Calm lower tone (F major)
+  generateToneDataURI(349.23, 2, 0.1), // F4
+];
+
+function generateToneDataURI(frequency: number, duration: number, volume: number): string {
+  // Create a simple sine wave tone as WAV data URI
+  const sampleRate = 44100;
+  const samples = Math.floor(sampleRate * duration);
+  const buffer = new ArrayBuffer(44 + samples * 2);
+  const view = new DataView(buffer);
+  
+  // WAV header
+  const writeString = (offset: number, string: string) => {
+    for (let i = 0; i < string.length; i++) {
+      view.setUint8(offset + i, string.charCodeAt(i));
+    }
+  };
+  
+  writeString(0, 'RIFF');
+  view.setUint32(4, 36 + samples * 2, true);
+  writeString(8, 'WAVE');
+  writeString(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeString(36, 'data');
+  view.setUint32(40, samples * 2, true);
+  
+  // Generate sine wave samples
+  for (let i = 0; i < samples; i++) {
+    const sample = Math.sin((2 * Math.PI * frequency * i) / sampleRate) * volume * 32767;
+    view.setInt16(44 + i * 2, sample, true);
+  }
+  
+  // Convert to base64 data URI
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  const base64 = btoa(binary);
+  return `data:audio/wav;base64,${base64}`;
+}
+
+export function AudioProvider({ children }: AudioProviderProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolumeState] = useState(70);
+  const [isMuted, setIsMuted] = useState(false);
+  const [audioSupported, setAudioSupported] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(0);
+  const [audioContextReady, setAudioContextReady] = useState(false);
+  
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const masterGainRef = useRef<GainNode | null>(null);
+  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize AudioContext
+  useEffect(() => {
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextClass) {
+        audioContextRef.current = new AudioContextClass();
+        masterGainRef.current = audioContextRef.current.createGain();
+        masterGainRef.current.connect(audioContextRef.current.destination);
+        masterGainRef.current.gain.value = volume / 100;
+        setAudioSupported(true);
+      }
+    } catch (error) {
+      console.log('Web Audio API not supported');
+      setAudioSupported(false);
+    }
+
+    return () => {
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
+
+  // Resume AudioContext on first user interaction
+  const resumeAudioContext = useCallback(async () => {
+    if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+      try {
+        await audioContextRef.current.resume();
+        setAudioContextReady(true);
+      } catch (error) {
+        console.log('Failed to resume AudioContext');
+      }
+    } else if (audioContextRef.current?.state === 'running') {
+      setAudioContextReady(true);
+    }
+  }, []);
+
+  // Update master gain when volume changes
+  useEffect(() => {
+    if (masterGainRef.current) {
+      const gainValue = isMuted ? 0 : volume / 100;
+      masterGainRef.current.gain.setTargetAtTime(gainValue, audioContextRef.current?.currentTime || 0, 0.1);
+    }
+    
+    // Also update background audio volume
+    if (backgroundAudioRef.current) {
+      backgroundAudioRef.current.volume = isMuted ? 0 : (volume / 100) * 0.3;
+    }
+  }, [volume, isMuted]);
+
+  // Initialize background audio
+  useEffect(() => {
+    if (audioSupported && BACKGROUND_TRACKS[currentTrack]) {
+      const audio = new Audio(BACKGROUND_TRACKS[currentTrack]);
+      audio.loop = true;
+      audio.volume = isMuted ? 0 : (volume / 100) * 0.3;
+      backgroundAudioRef.current = audio;
+    }
+  }, [currentTrack, audioSupported]);
+
+  const togglePlayback = useCallback(async () => {
+    await resumeAudioContext();
+    
+    if (backgroundAudioRef.current) {
+      const newPlayState = !isPlaying;
+      setIsPlaying(newPlayState);
+      
+      if (newPlayState) {
+        try {
+          await backgroundAudioRef.current.play();
+        } catch (error) {
+          console.log('Background playback failed:', error);
+          setIsPlaying(false);
+        }
+      } else {
+        backgroundAudioRef.current.pause();
+      }
+    }
+  }, [isPlaying, resumeAudioContext]);
+
+  const setVolume = useCallback((newVolume: number) => {
+    setVolumeState(newVolume);
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => !prev);
+  }, []);
+
+  const changeTrack = useCallback(() => {
+    const nextTrack = (currentTrack + 1) % BACKGROUND_TRACKS.length;
+    setCurrentTrack(nextTrack);
+    
+    if (backgroundAudioRef.current) {
+      const wasPlaying = !backgroundAudioRef.current.paused;
+      backgroundAudioRef.current.pause();
+      
+      // Load new track
+      const newAudio = new Audio(BACKGROUND_TRACKS[nextTrack]);
+      newAudio.loop = true;
+      newAudio.volume = isMuted ? 0 : (volume / 100) * 0.3;
+      backgroundAudioRef.current = newAudio;
+      
+      if (wasPlaying) {
+        newAudio.play().catch(() => {
+          console.log('Track change playback failed');
+          setIsPlaying(false);
+        });
+      }
+    }
+  }, [currentTrack, volume, isMuted]);
+
+  const playTransitionSound = useCallback(async () => {
+    if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
+      return;
+    }
+
+    await resumeAudioContext();
+
+    try {
+      const oscillator = audioContextRef.current.createOscillator();
+      const gainNode = audioContextRef.current.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(masterGainRef.current);
+      
+      oscillator.frequency.value = 600;
+      oscillator.type = 'sine';
+      
+      const now = audioContextRef.current.currentTime;
+      gainNode.gain.setValueAtTime(0, now);
+      gainNode.gain.linearRampToValueAtTime(0.15, now + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      
+      oscillator.start(now);
+      oscillator.stop(now + 0.15);
+    } catch (error) {
+      console.log('Transition sound failed');
+    }
+  }, [audioContextReady, resumeAudioContext]);
+
+  const value: AudioContextValue = {
+    isPlaying,
+    volume,
+    isMuted,
+    audioSupported,
+    currentTrack,
+    togglePlayback,
+    setVolume,
+    toggleMute,
+    changeTrack,
+    playTransitionSound,
+  };
+
+  return (
+    <AudioContextObj.Provider value={value}>
+      {children}
+    </AudioContextObj.Provider>
+  );
+}
+
+export const useAudio = () => {
+  const context = useContext(AudioContextObj);
+  if (!context) {
+    throw new Error('useAudio must be used within an AudioProvider');
+  }
+  return context;
+};
