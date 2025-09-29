@@ -17,120 +17,23 @@ interface SlideProps {
   direction: 'prev' | 'next' | 'none';
 }
 
-// Nhiều loại hiệu ứng slide transitions khác nhau
-const slideTransitions = {
-  slide: {
-    enter: (direction: string) => ({
-      x: direction === 'next' ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.8,
-      rotateY: direction === 'next' ? 45 : -45,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-    },
-    exit: (direction: string) => ({
-      zIndex: 0,
-      x: direction === 'next' ? -1000 : 1000,
-      opacity: 0,
-      scale: 0.8,
-      rotateY: direction === 'next' ? -45 : 45,
-    }),
+// Hiệu ứng Morph giống PowerPoint - mượt mà và chuyên nghiệp
+const morphTransition = {
+  enter: {
+    opacity: 0.95,
+    scale: 0.98,
   },
-
-  fade: {
-    enter: { opacity: 0, scale: 0.9 },
-    center: { zIndex: 1, opacity: 1, scale: 1 },
-    exit: { zIndex: 0, opacity: 0, scale: 1.1 },
+  center: {
+    zIndex: 1,
+    opacity: 1,
+    scale: 1,
   },
-
-  zoom: {
-    enter: (direction: string) => ({ scale: 0.3, opacity: 0, rotateZ: direction === 'next' ? 180 : -180 }),
-    center: { zIndex: 1, scale: 1, opacity: 1, rotateZ: 0 },
-    exit: (direction: string) => ({ zIndex: 0, scale: 3, opacity: 0, rotateZ: direction === 'next' ? -180 : 180 }),
-  },
-
-  flip: {
-    enter: (direction: string) => ({
-      rotateY: direction === 'next' ? 90 : -90,
-      opacity: 0,
-      scale: 0.8,
-    }),
-    center: { zIndex: 1, rotateY: 0, opacity: 1, scale: 1 },
-    exit: (direction: string) => ({
-      zIndex: 0,
-      rotateY: direction === 'next' ? -90 : 90,
-      opacity: 0,
-      scale: 0.8,
-    }),
-  },
-
-  cube: {
-    enter: (direction: string) => ({
-      x: direction === 'next' ? 1000 : -1000,
-      rotateY: direction === 'next' ? 90 : -90,
-      opacity: 0,
-    }),
-    center: { zIndex: 1, x: 0, rotateY: 0, opacity: 1 },
-    exit: (direction: string) => ({
-      zIndex: 0,
-      x: direction === 'next' ? -1000 : 1000,
-      rotateY: direction === 'next' ? -90 : 90,
-      opacity: 0,
-    }),
-  },
-
-  bounce: {
-    enter: (direction: string) => ({
-      y: direction === 'next' ? 200 : -200,
-      opacity: 0,
-      scale: 0.5,
-      rotateX: direction === 'next' ? 45 : -45,
-    }),
-    center: { zIndex: 1, y: 0, opacity: 1, scale: 1, rotateX: 0 },
-    exit: (direction: string) => ({
-      zIndex: 0,
-      y: direction === 'next' ? -200 : 200,
-      opacity: 0,
-      scale: 0.5,
-      rotateX: direction === 'next' ? -45 : 45,
-    }),
-  },
-
-  spiral: {
-    enter: (direction: string) => ({
-      scale: 0.2,
-      rotateZ: direction === 'next' ? 360 : -360,
-      x: direction === 'next' ? 500 : -500,
-      y: 300,
-      opacity: 0,
-    }),
-    center: { zIndex: 1, scale: 1, rotateZ: 0, x: 0, y: 0, opacity: 1 },
-    exit: (direction: string) => ({
-      zIndex: 0,
-      scale: 0.2,
-      rotateZ: direction === 'next' ? -360 : 360,
-      x: direction === 'next' ? -500 : 500,
-      y: -300,
-      opacity: 0,
-    }),
+  exit: {
+    zIndex: 0,
+    opacity: 0.95,
+    scale: 1.02,
   },
 };
-
-// Danh sách các loại transition để random
-const transitionTypes = ['slide', 'fade', 'zoom', 'flip', 'cube', 'bounce', 'spiral'];
-
-// Hàm chọn transition ngẫu nhiên
-const getRandomSlideTransition = () => {
-  return transitionTypes[Math.floor(Math.random() * transitionTypes.length)];
-};
-
-// Legacy slideVariants để backwards compatibility
-const slideVariants = slideTransitions.slide;
 
 const decorativeIconVariants = {
   initial: { scale: 0, rotate: -180, opacity: 0 },
@@ -185,9 +88,8 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
     exit: { opacity: 0 }
   };
   
-  // Chọn transition ngẫu nhiên cho mỗi slide
-  const currentTransition = getRandomSlideTransition();
-  const getSlideVariants = () => shouldReduceMotion ? reducedSlideVariants : slideTransitions[currentTransition as keyof typeof slideTransitions];
+  // Sử dụng hiệu ứng Morph cho tất cả slide
+  const getSlideVariants = () => shouldReduceMotion ? reducedSlideVariants : morphTransition;
 
   return (
     <motion.div
@@ -200,13 +102,10 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
       transition={shouldReduceMotion ? 
         { duration: 0.1 } : 
         {
-          x: { type: "spring", stiffness: 200, damping: 25 },
-          y: { type: "spring", stiffness: 200, damping: 25 },
-          opacity: { duration: 0.4 },
-          scale: { duration: 0.4 },
-          rotateY: { type: "spring", stiffness: 100, damping: 15 },
-          rotateX: { type: "spring", stiffness: 100, damping: 15 },
-          rotateZ: { type: "spring", stiffness: 150, damping: 20 },
+          duration: 0.6,
+          ease: [0.4, 0, 0.2, 1],
+          opacity: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
+          scale: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
         }
       }
       className={`absolute inset-0 w-full h-full min-h-screen min-h-dvh flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-16 ${backgroundStyle} ${textColorStyle} slide-pattern slide-decoration cute-border overflow-hidden`}

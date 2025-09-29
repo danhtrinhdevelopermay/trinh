@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AudioProvider } from "@/contexts/AudioContext";
-import { AnimatedRoute, getRandomTransition } from "@/components/PageTransition";
+import { AnimatedRoute } from "@/components/PageTransition";
 import { useState, useEffect } from "react";
 import Home from "@/pages/Home";
 import ManagePresentations from "@/pages/ManagePresentations";
@@ -14,15 +14,9 @@ import LoginForm from "@/components/LoginForm";
 
 function Router() {
   const [location] = useLocation();
-  const [currentTransition, setCurrentTransition] = useState(() => getRandomTransition());
-  
-  // Chọn hiệu ứng ngẫu nhiên mỗi khi route thay đổi
-  useEffect(() => {
-    setCurrentTransition(getRandomTransition());
-  }, [location]);
 
   return (
-    <AnimatedRoute routeKey={location} transitionType={currentTransition as any}>
+    <AnimatedRoute routeKey={location}>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/manage" component={ManagePresentations} />
