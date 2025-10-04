@@ -99,6 +99,7 @@ function TextElementRenderer({ element, index }: { element: TextElement; index: 
       data-testid={`text-element-${element.id}`}
     >
       <motion.span
+        className="kawaii-text-3d"
         animate={{ 
           color: element.color,
         }}
@@ -324,6 +325,7 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
     <motion.div
       layoutId={element.id}
       layout
+      className="kawaii-sparkle"
       initial={{ 
         opacity: 0, 
         scale: 0,
