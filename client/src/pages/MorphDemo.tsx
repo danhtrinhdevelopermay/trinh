@@ -2,8 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
-import { ArrowLeft, ArrowRight, Home } from "lucide-react";
-import { Link } from "wouter";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function MorphDemo() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -40,16 +39,6 @@ export default function MorphDemo() {
         <h2 className="text-sm font-semibold">PowerPoint Morph Effect Demo</h2>
         <p className="text-xs opacity-75">Slide {currentSlide + 1} / {totalSlides}</p>
       </div>
-
-      {/* Home button */}
-      <Link href="/" className="absolute top-4 right-4 z-50" data-testid="link-home">
-        <button 
-          className="bg-black/50 backdrop-blur-sm hover:bg-black/70 text-white p-3 rounded-full transition-colors"
-          data-testid="button-home"
-        >
-          <Home size={24} />
-        </button>
-      </Link>
 
       {/* Slide Container - persistent to enable element morphing */}
       <div

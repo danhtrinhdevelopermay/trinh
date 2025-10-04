@@ -19,8 +19,8 @@ function Router() {
   return (
     <AnimatedRoute routeKey={location}>
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/morph-demo" component={MorphDemo} />
+        <Route path="/" component={MorphDemo} />
+        <Route path="/presentation" component={Home} />
         <Route path="/manage" component={ManagePresentations} />
         <Route path="/manage/:id" component={ManageSlides} />
         <Route component={NotFound} />
@@ -62,14 +62,14 @@ function App() {
     setIsAuthenticated(true);
   };
 
-  // Allow /morph-demo and /demo without authentication
-  if (location === '/morph-demo' || location === '/demo') {
+  // Allow root path without authentication
+  if (location === '/' || location === '/demo') {
     return (
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <AudioProvider>
             <Toaster />
-            {location === '/morph-demo' ? <MorphDemo /> : <Home />}
+            {location === '/' ? <MorphDemo /> : <Home />}
           </AudioProvider>
         </TooltipProvider>
       </QueryClientProvider>
