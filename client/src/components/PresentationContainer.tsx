@@ -523,8 +523,8 @@ export default function PresentationContainer({
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [goToNext, goToPrevious, resetPresentation, toggleFullscreen, isFullscreen]);
 
-  // Loading state
-  if (isLoading) {
+  // Loading state - only show if no fallback slides available
+  if (isLoading && !fallbackSlides.length) {
     return (
       <div className="relative w-full h-screen bg-background overflow-hidden flex items-center justify-center" data-testid="presentation-loading">
         <div className="text-center">
@@ -535,8 +535,8 @@ export default function PresentationContainer({
     );
   }
 
-  // Error state
-  if (error) {
+  // Error state - but use fallback slides if available (e.g., for demo mode)
+  if (error && !fallbackSlides.length) {
     return (
       <div className="relative w-full h-screen bg-background overflow-hidden flex items-center justify-center" data-testid="presentation-error">
         <div className="text-center max-w-md">

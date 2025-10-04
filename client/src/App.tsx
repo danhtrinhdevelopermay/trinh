@@ -62,13 +62,15 @@ function App() {
     setIsAuthenticated(true);
   };
 
-  // Allow /morph-demo without authentication
-  if (location === '/morph-demo') {
+  // Allow /morph-demo and /demo without authentication
+  if (location === '/morph-demo' || location === '/demo') {
     return (
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Toaster />
-          <MorphDemo />
+          <AudioProvider>
+            <Toaster />
+            {location === '/morph-demo' ? <MorphDemo /> : <Home />}
+          </AudioProvider>
         </TooltipProvider>
       </QueryClientProvider>
     );

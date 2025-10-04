@@ -7,6 +7,13 @@ export function usePresentationSlides(presentationId: string) {
   return useQuery<SlideData[]>({
     queryKey: ['/api/presentations', presentationId, 'slides'],
     enabled: !!presentationId,
+    retry: (failureCount, error: any) => {
+      // Don't retry on 401 or 403 errors
+      if (error?.status === 401 || error?.status === 403) {
+        return false;
+      }
+      return failureCount < 2;
+    },
   });
 }
 

@@ -17,24 +17,28 @@ interface SlideProps {
   direction: 'prev' | 'next' | 'none';
 }
 
-// Hiệu ứng Morph giống PowerPoint - mượt mà và chuyên nghiệp
-const morphTransition = {
+// Hiệu ứng Morph hiện đại với staggered entrance
+const slideTransition = {
   enter: {
-    opacity: 0.95,
-    scale: 0.98,
+    opacity: 0,
+    scale: 0.95,
+    y: 20,
   },
   center: {
     zIndex: 1,
     opacity: 1,
     scale: 1,
+    y: 0,
   },
   exit: {
     zIndex: 0,
-    opacity: 0.95,
+    opacity: 0,
     scale: 1.02,
+    y: -10,
   },
 };
 
+// Hiệu ứng icons trang trí với spring bounce
 const decorativeIconVariants = {
   initial: { scale: 0, rotate: -180, opacity: 0 },
   animate: { 
@@ -42,14 +46,45 @@ const decorativeIconVariants = {
     rotate: 0, 
     opacity: 0.6,
     transition: {
-      delay: 0.8,
+      delay: 0.5,
       duration: 0.8,
       type: "spring",
-      stiffness: 200
+      stiffness: 300,
+      damping: 25
     }
   }
 };
 
+// Hiệu ứng xuất hiện cho tiêu đề với stagger
+const titleVariants = {
+  initial: { y: 50, opacity: 0, scale: 0.9 },
+  animate: { 
+    y: 0, 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      delay: 0.15,
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  }
+};
+
+// Hiệu ứng xuất hiện cho nội dung với stagger
+const contentVariants = {
+  initial: { y: 30, opacity: 0 },
+  animate: { 
+    y: 0, 
+    opacity: 1,
+    transition: {
+      delay: 0.35,
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  }
+};
+
+// Hiệu ứng sparkles nổi
 const floatingVariants = {
   animate: {
     y: [-10, 10, -10],
@@ -88,8 +123,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
     exit: { opacity: 0 }
   };
   
-  // Sử dụng hiệu ứng Morph cho tất cả slide
-  const getSlideVariants = () => shouldReduceMotion ? reducedSlideVariants : morphTransition;
+  const getSlideVariants = () => shouldReduceMotion ? reducedSlideVariants : slideTransition;
 
   return (
     <motion.div
@@ -106,6 +140,7 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
           ease: [0.4, 0, 0.2, 1],
           opacity: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
           scale: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
+          y: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
         }
       }
       className={`absolute inset-0 w-full h-full min-h-screen min-h-dvh flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-16 ${backgroundStyle} ${textColorStyle} slide-pattern slide-decoration cute-border overflow-hidden`}
@@ -114,25 +149,25 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
       {slide.type === 'title' ? (
         <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full">
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0, rotate: -180 }}
-            animate={shouldReduceMotion ? { opacity: 0.4 } : { scale: 1, rotate: 0 }}
-            transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.1, duration: 0.8, type: "spring" }}
+            variants={shouldReduceMotion ? undefined : decorativeIconVariants}
+            initial={shouldReduceMotion ? { opacity: 0.4 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 0.4 } : "animate"}
             className="absolute -top-16 left-1/2 transform -translate-x-1/2"
           >
             <DecorativeIcon className="w-16 h-16 text-white/40" />
           </motion.div>
           <motion.h1 
-            initial={shouldReduceMotion ? { opacity: 0 } : { y: 50, opacity: 0, scale: 0.8 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1, scale: 1 }}
-            transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.2, duration: 0.8, type: "spring", stiffness: 120 }}
+            variants={shouldReduceMotion ? undefined : titleVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
             className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-serif leading-tight bounce-in"
           >
             {slide.title}
           </motion.h1>
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
-            transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { delay: 0.4, duration: 0.8, type: "spring" }}
+            variants={shouldReduceMotion ? undefined : contentVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
             className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 pulse-glow"
           >
             {slide.content}
@@ -148,9 +183,17 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             <DecorativeIcon className="w-24 h-24 text-white/20" />
           </motion.div>
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.8, opacity: 0, rotateX: 45 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1, rotateX: 0 }}
-            transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.2, duration: 0.8, type: "spring" }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.85, opacity: 0, y: 30 }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { 
+              scale: 1, 
+              opacity: 1, 
+              y: 0,
+              transition: {
+                delay: 0.2,
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }
+            }}
             className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative"
           >
             <span className="text-6xl text-white/30 absolute -top-4 -left-4">"</span>
@@ -159,8 +202,15 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
           </motion.div>
           <motion.h2
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
-            transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { delay: 0.4, duration: 0.8, type: "spring" }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { 
+              y: 0, 
+              opacity: 1,
+              transition: {
+                delay: 0.4,
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }
+            }}
             className="text-base sm:text-xl md:text-2xl font-medium opacity-80 bounce-in"
           >
             — {slide.title}
@@ -179,23 +229,22 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
             variants={shouldReduceMotion ? undefined : decorativeIconVariants}
             initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
             animate={shouldReduceMotion ? { opacity: 0.3 } : "animate"}
-            transition={shouldReduceMotion ? { duration: 0 } : undefined}
             className="absolute -top-16 right-0"
           >
             <DecorativeIcon className="w-20 h-20 text-white/30" />
           </motion.div>
           <motion.h2
-            initial={shouldReduceMotion ? { opacity: 0 } : { y: 50, opacity: 0, scale: 0.8 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1, scale: 1 }}
-            transition={shouldReduceMotion ? { duration: 0.2 } : { delay: 0.2, duration: 0.8, type: "spring", stiffness: 120 }}
+            variants={shouldReduceMotion ? undefined : titleVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
             className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold font-serif mb-4 sm:mb-6 md:mb-8 bounce-in"
           >
             {slide.title}
           </motion.h2>
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
-            transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { delay: 0.4, duration: 0.8, type: "spring" }}
+            variants={shouldReduceMotion ? undefined : contentVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
             className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4"
           >
             {slide.content}
@@ -222,27 +271,51 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
       {!shouldReduceMotion && (
         <>
           <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1, duration: 1, repeat: Infinity, repeatType: "reverse" }}
+            initial={{ opacity: 0, scale: 0, rotate: -180 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ 
+              delay: 0.8, 
+              duration: 0.8,
+              type: "spring",
+              stiffness: 300,
+              repeat: Infinity, 
+              repeatType: "reverse",
+              repeatDelay: 2
+            }}
             className="absolute top-20 left-20 pointer-events-none"
           >
             <Sparkles className="w-6 h-6 text-white/20" />
           </motion.div>
           
           <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.5, duration: 1, repeat: Infinity, repeatType: "reverse" }}
+            initial={{ opacity: 0, scale: 0, rotate: 180 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ 
+              delay: 1.0, 
+              duration: 0.8,
+              type: "spring",
+              stiffness: 350,
+              repeat: Infinity, 
+              repeatType: "reverse",
+              repeatDelay: 2.5
+            }}
             className="absolute top-32 right-32 pointer-events-none"
           >
             <Star className="w-4 h-4 text-white/15" />
           </motion.div>
           
           <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 2, duration: 1, repeat: Infinity, repeatType: "reverse" }}
+            initial={{ opacity: 0, scale: 0, rotate: -90 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ 
+              delay: 1.2, 
+              duration: 0.8,
+              type: "spring",
+              stiffness: 320,
+              repeat: Infinity, 
+              repeatType: "reverse",
+              repeatDelay: 3
+            }}
             className="absolute bottom-40 left-40 pointer-events-none"
           >
             <Heart className="w-5 h-5 text-white/10" />

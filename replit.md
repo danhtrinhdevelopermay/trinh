@@ -7,18 +7,21 @@ This is a modern web application for creating and displaying educational present
 ## Recent Changes
 
 ### October 4, 2025 - Enhanced Animation System with Staggered Entrances
-- **Staggered entrance animations**: Each element appears sequentially with type-specific delays for a polished, professional look
-  - Text elements: Slide from bottom with scale effect (0.1s stagger)
-  - Icons: Rotate in from -180° with spring animation (0.12s stagger)
-  - Shapes: Scale up from 0.3 with bouncy spring motion (0.08s stagger)
-  - Images: Fade in with blur effect for smooth reveal (0.15s stagger)
+- **Staggered entrance animations**: Each slide element appears sequentially with precise timing for professional flow
+  - Slide container: Y-axis movement (20px → 0) with scale (0.95 → 1) on entrance
+  - Title elements: Slide from bottom (y: 50 → 0) with scale effect, 0.15s delay
+  - Content elements: Slide from bottom (y: 30 → 0) with opacity fade, 0.35s delay  
+  - Decorative icons: Rotate in from -180° with spring physics (stiffness 300, damping 25), 0.5s delay
+  - Floating sparkles: Scale and rotate entrance with spring motion
 - **Spring-based physics**: Natural, bouncy motion using Framer Motion spring configurations
-  - Icons and shapes use spring stiffness 300-400 for energetic entrance
-  - Text and images use eased transitions for smoother, controlled motion
-- **Opacity preservation**: All elements correctly animate to their configured opacity values (e.g., semi-transparent decorative icons)
-- **Modern exit animations**: Elements exit with coordinated fade, scale, and rotation effects
-- **Accessibility maintained**: Full support for reduced motion preferences with simplified opacity-only transitions
-- **Updated Vietnamese content**: All 12 slides now feature complete Vietnamese presentation content about overcoming destiny
+  - Decorative icons use spring animations for lively, controlled entrance
+  - Floating elements have infinite spring-based animations with repeat
+- **Modern exit animations**: Slides exit with upward movement (y: -10) and slight scale increase (1.02)
+- **Accessibility maintained**: Full support for reduced motion preferences - complex animations simplified to opacity-only transitions
+- **Demo mode added**: Created `/demo` route for unauthenticated presentation viewing
+  - Uses fallback mock slides when API authentication fails
+  - Smart retry logic: no retry on 401/403 errors
+  - Allows testing animations without login requirement
 
 ### September 29, 2025 - PowerPoint-Style Morph Transitions
 - **Implemented true Morph transitions**: Element-based morphing system matching PowerPoint's Morph behavior
