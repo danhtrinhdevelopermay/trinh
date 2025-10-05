@@ -6,6 +6,25 @@ This is a modern web application for creating and displaying educational present
 
 ## Recent Changes
 
+### October 5, 2025 - Three.js 3D Models Integration
+- **Real 3D models added**: Integrated actual Three.js 3D models to enhance slide presentation impact
+  - Mountain model: Represents overcoming challenges (3 peaks with dynamic rotation and lighting)
+  - Brain model: Symbolizes knowledge and learning (sphere with orbital nodes, floating animation)
+  - Lightbulb model: Represents ideas and innovation (glowing bulb with pulsing light)
+  - Stairs model: Shows step-by-step progress (5 colorful steps with rotation animation)
+  - Globe model: Illustrates world perspective (wireframe globe with latitude/longitude lines)
+  - Path model: Depicts life journey (perspective path tiles fading into distance)
+- **Strategic placement**: Added 6 3D models to thematically appropriate slides:
+  - Slide 4: Mountain (Why overcome destiny?)
+  - Slide 6: Brain (Factors helping overcome destiny)
+  - Slide 7: Stairs (Specific methods)
+  - Slide 8: Lightbulb (Role of education)
+  - Slide 10: Globe (World role models)
+  - Slide 14: Path (Advice for ourselves)
+- **Performance optimized**: Each slide hosts maximum one Three.js canvas to maintain smooth performance
+- **Smooth animations**: All models feature continuous rotation, floating, scaling, or lighting effects using Framer Motion integration
+- **Libraries**: Three.js v0.160+, React Three Fiber v8.17.10, React Three Drei v9.114.3
+
 ### October 4, 2025 - Enhanced Animation System with Staggered Entrances
 - **Staggered entrance animations**: Each slide element appears sequentially with precise timing for professional flow
   - Slide container: Y-axis movement (20px → 0) with scale (0.95 → 1) on entrance
