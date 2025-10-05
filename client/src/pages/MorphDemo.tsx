@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
-import ThreeJSWorld from "@/components/ThreeJSWorld";
+import CSS3DWorld from "@/components/CSS3DWorld";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -53,7 +53,7 @@ export default function MorphDemo() {
       data-testid="morph-demo-container"
     >
       {/* 3D World Background */}
-      <ThreeJSWorld slideIndex={currentSlide} totalSlides={totalSlides} />
+      <CSS3DWorld slideIndex={currentSlide} totalSlides={totalSlides} />
 
       {/* Header - Demo info - moved to bottom left */}
       <div className="absolute bottom-4 left-4 z-50 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white">
