@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
+import ThreeJSWorld from "@/components/ThreeJSWorld";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -51,6 +52,9 @@ export default function MorphDemo() {
       onKeyDown={handleKeyPress}
       data-testid="morph-demo-container"
     >
+      {/* 3D World Background */}
+      <ThreeJSWorld slideIndex={currentSlide} totalSlides={totalSlides} />
+
       {/* Header - Demo info - moved to bottom left */}
       <div className="absolute bottom-4 left-4 z-50 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white">
         <p className="text-xs opacity-90">Slide {currentSlide + 1} / {totalSlides}</p>
@@ -58,7 +62,8 @@ export default function MorphDemo() {
 
       {/* Slide Container - persistent to enable element morphing */}
       <div
-        className={`absolute inset-0 w-full h-full ${slide.background} ${slide.textColor} flex items-center justify-center overflow-hidden`}
+        className={`absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden`}
+        style={{ background: 'transparent' }}
         data-testid={`slide-${currentSlide}`}
       >
         {/* Fixed size canvas scaled to fit viewport */}
@@ -71,6 +76,15 @@ export default function MorphDemo() {
             transformOrigin: 'center center'
           }}
         >
+          {/* Semi-transparent background for better text readability */}
+          <div 
+            className="absolute inset-0 rounded-2xl"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
+              backdropFilter: 'blur(10px)',
+            }}
+          />
+          
           <SlideCanvas elements={slide.elements} />
         </div>
       </div>
