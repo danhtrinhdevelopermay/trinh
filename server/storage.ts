@@ -139,22 +139,6 @@ export class MemStorage implements IStorage {
         id: '4',
         presentationId: samplePresentationId,
         order: 4,
-        type: 'quote',
-        title: 'Nelson Mandela',
-        content: JSON.stringify({
-          type: 'quote_with_image',
-          text: 'Tôi là chủ nhân của số phận mình, tôi là thuyền trưởng của linh hồn mình',
-          author: 'Nelson Mandela - Cựu Tổng thống Nam Phi',
-          image: '/stock_images/educational_success__450426a4.jpg'
-        }),
-        background: 'educational-gradient-1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: '5',
-        presentationId: samplePresentationId,
-        order: 5,
         type: 'content',
         title: 'Tấm Gương Nguyễn Ngọc Ký',
         content: JSON.stringify({
@@ -174,9 +158,9 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       },
       {
-        id: '6',
+        id: '5',
         presentationId: samplePresentationId,
-        order: 6,
+        order: 5,
         type: 'quote',
         title: 'Nguyễn Ngọc Ký',
         content: JSON.stringify({
@@ -190,9 +174,9 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       },
       {
-        id: '7',
+        id: '6',
         presentationId: samplePresentationId,
-        order: 7,
+        order: 6,
         type: 'content',
         title: 'Tư Duy Tích Cực - Chìa Khóa Thành Công',
         content: JSON.stringify({
@@ -211,9 +195,9 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       },
       {
-        id: '8',
+        id: '7',
         presentationId: samplePresentationId,
-        order: 8,
+        order: 7,
         type: 'content',
         title: 'Hành Động Cụ Thể Để Thay Đổi',
         content: JSON.stringify({
@@ -232,46 +216,9 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       },
       {
-        id: '9',
+        id: '8',
         presentationId: samplePresentationId,
-        order: 9,
-        type: 'content',
-        title: 'Những Tấm Gương Khác Trên Thế Giới',
-        content: JSON.stringify({
-          type: 'content_with_image',
-          items: [
-            '🎤 Nick Vujicic: Không tay chân, thành diễn giả nổi tiếng',
-            '🔬 Stephen Hawking: Bệnh ALS, vẫn là thiên tài vật lý',
-            '👑 Oprah Winfrey: Từ nghèo khó đến nữ hoàng truyền thông',
-            '🏀 Michael Jordan: Bị loại khỏi đội bóng, trở thành huyền thoại',
-            '🎭 Họ chứng minh: Không có giới hạn nào với ý chí con người'
-          ],
-          image: '/stock_images/educational_success__583087f4.jpg'
-        }),
-        background: 'educational-gradient-1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: '10',
-        presentationId: samplePresentationId,
-        order: 10,
-        type: 'quote',
-        title: 'Viktor Frankl',
-        content: JSON.stringify({
-          type: 'quote_with_image',
-          text: 'Giữa kích thích và phản ứng có một khoảng trống. Trong khoảng trống đó là quyền tự do lựa chọn của chúng ta',
-          author: 'Viktor Frankl - Nhà tâm lý học, người sống sót sau Holocaust',
-          image: '/stock_images/educational_success__583087f4.jpg'
-        }),
-        background: 'educational-gradient-1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: '11',
-        presentationId: samplePresentationId,
-        order: 11,
+        order: 8,
         type: 'content',
         title: 'Bài Học Rút Ra',
         content: JSON.stringify({
@@ -290,9 +237,9 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       },
       {
-        id: '12',
+        id: '9',
         presentationId: samplePresentationId,
-        order: 12,
+        order: 9,
         type: 'quote',
         title: 'Thông điệp cuối cùng',
         content: 'Số phận không định đoạt tất cả, chính bản lĩnh và nghị lực con người mới quyết định cuộc đời mình. Hãy tin rằng bạn có thể vượt lên mọi khó khăn!',
