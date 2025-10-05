@@ -749,5 +749,5 @@ export class DBStorage implements IStorage {
   }
 }
 
-// Use DBStorage for persistent database storage
-export const storage = new DBStorage();
+// Use MemStorage for in-memory storage (no database required)
+export const storage = new MemStorage();
