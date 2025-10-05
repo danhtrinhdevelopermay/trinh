@@ -227,10 +227,11 @@ export default function PresentationContainer({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [direction, setDirection] = useState<'prev' | 'next' | 'none'>('none');
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [transitionType, setTransitionType] = useState<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'>('morph');
   
-  const { playTransitionSound } = useAudio();
+  const { playTransitionSound, playSpecialEffect } = useAudio();
   
   // Fetch slides from API
   const { data: apiSlides, isLoading, error } = usePresentationSlides(presentationId);
@@ -379,12 +380,35 @@ export default function PresentationContainer({
       setCurrentSlide(prev => prev + 1);
       console.log('Next slide:', currentSlide + 1);
       
-      // Play transition sound effect
+      // Random transition type for variety
+      const transitions: Array<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'> = ['morph', 'slide', 'zoom', 'flip', 'rotate', 'cube', 'fade'];
+      const randomTransition = transitions[Math.floor(Math.random() * transitions.length)];
+      setTransitionType(randomTransition);
+      
+      // Play transition sound effect based on transition type
       if (soundEnabled) {
-        playTransitionSound();
+        switch (randomTransition) {
+          case 'zoom':
+            playTransitionSound('whoosh');
+            break;
+          case 'flip':
+          case 'cube':
+            playTransitionSound('swoosh');
+            break;
+          case 'slide':
+            playTransitionSound('pop');
+            break;
+          default:
+            playTransitionSound('chime');
+        }
+        
+        // Play special effect after a short delay
+        setTimeout(() => {
+          playSpecialEffect('sparkle');
+        }, 300);
       }
     }
-  }, [currentSlide, slides.length, soundEnabled, playTransitionSound]);
+  }, [currentSlide, slides.length, soundEnabled, playTransitionSound, playSpecialEffect]);
 
   const goToPrevious = useCallback(() => {
     if (currentSlide > 0) {
@@ -392,11 +416,19 @@ export default function PresentationContainer({
       setCurrentSlide(prev => prev - 1);
       console.log('Previous slide:', currentSlide - 1);
       
+      // Random transition type
+      const transitions: Array<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'> = ['morph', 'slide', 'zoom', 'flip', 'rotate', 'cube', 'fade'];
+      const randomTransition = transitions[Math.floor(Math.random() * transitions.length)];
+      setTransitionType(randomTransition);
+      
       if (soundEnabled) {
-        playTransitionSound();
+        playTransitionSound('pop');
+        setTimeout(() => {
+          playSpecialEffect('ding');
+        }, 200);
       }
     }
-  }, [currentSlide, soundEnabled, playTransitionSound]);
+  }, [currentSlide, soundEnabled, playTransitionSound, playSpecialEffect]);
 
   const resetPresentation = useCallback(() => {
     setDirection('prev');
@@ -572,6 +604,7 @@ export default function PresentationContainer({
                 slide={slide}
                 isActive={index === currentSlide}
                 direction={direction}
+                transitionType={transitionType}
               />
             )
           ))}
