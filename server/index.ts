@@ -145,6 +145,15 @@ app.use((req, res, next) => {
     throw err;
   });
 
+  // Health check endpoint for monitoring and anti-spindown
+  app.get('/health', (_req, res) => {
+    res.status(200).json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime()
+    });
+  });
+
   // Serve attached assets (images uploaded by user)
   app.use('/attached_assets', express.static('attached_assets'));
 
@@ -168,5 +177,33 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    
+    // Anti-spindown: Self-ping in production to prevent Render from sleeping
+    if (process.env.NODE_ENV === 'production') {
+      const appUrl = process.env.RENDER_EXTERNAL_URL || process.env.APP_URL;
+      
+      if (appUrl) {
+        // Check if fetch is available (Node 18+ has built-in fetch)
+        if (typeof fetch === 'undefined') {
+          log('Anti-spindown disabled: fetch not available (requires Node.js 18+)');
+        } else {
+          const interval = 14 * 60 * 1000; // 14 minutes (Render sleeps after 15 min)
+          
+          setInterval(async () => {
+            try {
+              const response = await fetch(`${appUrl}/health`);
+              const data = await response.json();
+              log(`Anti-spindown ping: ${response.status} - ${data.status} at ${data.timestamp}`);
+            } catch (error) {
+              log(`Anti-spindown ping failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+          }, interval);
+          
+          log(`Anti-spindown enabled: pinging ${appUrl}/health every 14 minutes`);
+        }
+      } else {
+        log('Anti-spindown disabled: RENDER_EXTERNAL_URL or APP_URL not set');
+      }
+    }
   });
 })();

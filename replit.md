@@ -6,7 +6,7 @@ This is a modern web application for creating and displaying educational present
 
 ## Recent Changes
 
-### October 5, 2025 - Production Deployment Fixes (Render Support)
+### October 5, 2025 - Production Deployment Fixes & Anti-Spindown (Render Support)
 - **Fixed 503 error on Render deployment**: Resolved database connection issues causing service unavailability
   - **Dual database driver support**: Application now auto-detects and uses appropriate database driver
     - Neon databases (URLs containing `.neon.tech`): Uses `neon-http` driver optimized for serverless
@@ -16,6 +16,12 @@ This is a modern web application for creating and displaying educational present
   - Development: In-memory session store for quick testing
   - Production: PostgreSQL session store (`connect-pg-simple`) for persistent sessions across server restarts
   - Multi-instance compatible: Sessions work correctly with Render's autoscaling
+- **Anti-spindown feature**: Prevents Render free tier from sleeping after 15 minutes of inactivity
+  - **Health check endpoint**: `/health` endpoint for monitoring and self-ping
+  - **Automatic self-ping**: Server pings itself every 14 minutes in production
+  - **Smart activation**: Only runs in production when `RENDER_EXTERNAL_URL` or `APP_URL` is available
+  - **Fetch compatibility check**: Validates Node.js 18+ with built-in fetch API
+  - **Zero configuration**: Automatically works on Render without manual setup
 - **Build-time improvements**:
   - Drizzle config no longer throws errors when DATABASE_URL is missing during build
   - Graceful fallback to placeholder connection string for build process
@@ -23,6 +29,7 @@ This is a modern web application for creating and displaying educational present
   - Created `RENDER_DEPLOY.md` with step-by-step Vietnamese instructions
   - Created `render.yaml` for automated Render deployment
   - Support for both Render PostgreSQL and Neon databases
+  - Detailed anti-spindown setup and monitoring instructions
 - **Storage flexibility**: Application seamlessly switches between MemStorage (development) and DBStorage (production) based on environment
 
 ### October 5, 2025 - Vietnamese Village 3D World Background (v2 - Dual Rendering)

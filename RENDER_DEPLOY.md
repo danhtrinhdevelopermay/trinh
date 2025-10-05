@@ -59,6 +59,7 @@ PORT=5000
 - `DATABASE_URL`: Paste URL từ database bạn tạo ở bước 1
 - `ACCESS_PASSWORD`: Đặt mật khẩu để bảo vệ ứng dụng (ví dụ: `MySecurePassword123!`)
 - `SESSION_SECRET`: Chuỗi bí mật ngẫu nhiên dài (ví dụ: `abc123xyz789-very-long-secret-key-minimum-32-chars`)
+- `RENDER_EXTERNAL_URL`: **Tự động được Render cung cấp** - không cần cấu hình thủ công
 
 ### 4. Deploy
 
@@ -105,11 +106,41 @@ Khi bạn push code mới lên GitHub:
 2. Tự động build và deploy lại
 3. Không cần làm gì thêm!
 
+## Tính Năng Chống Spindown (Anti-Spindown)
+
+Ứng dụng đã được tích hợp sẵn tính năng **tự động chống spindown**:
+
+- **Cách hoạt động**: Server tự động ping chính nó mỗi 14 phút để giữ cho service luôn hoạt động
+- **Health check endpoint**: `/health` - endpoint để kiểm tra tình trạng server
+- **Tự động kích hoạt**: 
+  - Tự động bật trong production trên Render (sử dụng biến `RENDER_EXTERNAL_URL` được Render tự động cung cấp)
+  - Có thể dùng biến `APP_URL` nếu deploy trên nền tảng khác
+- **Logs**: Bạn có thể xem logs để theo dõi các lần ping tự động
+
+**Yêu cầu:**
+- Node.js 18+ (Render mặc định sử dụng Node 20, đáp ứng yêu cầu)
+- Tính năng sử dụng `fetch` API có sẵn trong Node.js 18+
+
+**Cách hoạt động:**
+1. Deploy app lên Render theo hướng dẫn trên
+2. Render tự động cung cấp biến `RENDER_EXTERNAL_URL` (ví dụ: `https://your-app.onrender.com`)
+3. Tính năng chống spindown tự động kích hoạt khi app khởi động trong production
+4. Kiểm tra logs để xác nhận tính năng đã hoạt động - sẽ thấy dòng:
+   ```
+   Anti-spindown enabled: pinging https://your-app.onrender.com/health every 14 minutes
+   ```
+5. Mỗi 14 phút sẽ thấy log ping:
+   ```
+   Anti-spindown ping: 200 - ok at 2025-10-05T05:23:49.921Z
+   ```
+
 ## Lưu Ý
 
 - **Free plan** của Render sẽ tự động sleep sau 15 phút không hoạt động
-- Lần đầu truy cập sau khi sleep sẽ mất ~30 giây để wake up
-- Để tránh sleep, nên upgrade lên plan trả phí
+- Với tính năng chống spindown, app sẽ luôn hoạt động và không bị sleep
+- Lần đầu truy cập sẽ nhanh chóng mà không cần đợi wake up (~0.5s thay vì ~30s)
+- **Không thể tắt tính năng này trên Render** vì `RENDER_EXTERNAL_URL` là biến tự động
+- Nếu muốn tắt, deploy trên nền tảng khác hoặc sửa code (xóa logic anti-spindown)
 
 ## Chi Tiết Kỹ Thuật
 
