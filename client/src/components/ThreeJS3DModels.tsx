@@ -1,8 +1,9 @@
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
-import { useRef } from 'react';
+import { useRef, Suspense } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { ErrorBoundary } from './ErrorBoundary';
 
 function Mountain3DGeometry() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -488,26 +489,30 @@ export function ThreeJSModel({ modelType, x, y, width, height, rotation = 0 }: T
   };
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        width,
-        height,
-        transform: `rotate(${rotation}deg)`,
-      }}
-      data-testid={`threejs-model-${modelType}`}
-    >
-      <Canvas
-        shadows
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent' }}
+    <ErrorBoundary fallback={<div style={{ width: '100%', height: '100%', background: 'transparent' }} />}>
+      <div
+        style={{
+          position: 'absolute',
+          left: x,
+          top: y,
+          width,
+          height,
+          transform: `rotate(${rotation}deg)`,
+        }}
+        data-testid={`threejs-model-${modelType}`}
       >
-        <PerspectiveCamera makeDefault position={[0, 0, 4]} />
-        {getModelComponent()}
-      </Canvas>
-    </div>
+        <Suspense fallback={<div style={{ width: '100%', height: '100%', background: 'transparent' }} />}>
+          <Canvas
+            shadows
+            gl={{ antialias: true, alpha: true }}
+            style={{ background: 'transparent' }}
+          >
+            <PerspectiveCamera makeDefault position={[0, 0, 4]} />
+            {getModelComponent()}
+          </Canvas>
+        </Suspense>
+      </div>
+    </ErrorBoundary>
   );
 }
 
