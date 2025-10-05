@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from "react";
+import backgroundMusicFile from "@assets/soft-background-music-401914_1759657535406.mp3";
 
 interface AudioContextValue {
   // States
@@ -24,59 +25,10 @@ interface AudioProviderProps {
   children: ReactNode;
 }
 
-// Simple audio data URIs for background music (different tones)
+// Background music track
 const BACKGROUND_TRACKS = [
-  // Gentle ambient tone (C major)
-  generateToneDataURI(261.63, 2, 0.1), // C4
-  // Inspiring higher tone (G major) 
-  generateToneDataURI(392.00, 2, 0.1), // G4
-  // Calm lower tone (F major)
-  generateToneDataURI(349.23, 2, 0.1), // F4
+  backgroundMusicFile,
 ];
-
-function generateToneDataURI(frequency: number, duration: number, volume: number): string {
-  // Create a simple sine wave tone as WAV data URI
-  const sampleRate = 44100;
-  const samples = Math.floor(sampleRate * duration);
-  const buffer = new ArrayBuffer(44 + samples * 2);
-  const view = new DataView(buffer);
-  
-  // WAV header
-  const writeString = (offset: number, string: string) => {
-    for (let i = 0; i < string.length; i++) {
-      view.setUint8(offset + i, string.charCodeAt(i));
-    }
-  };
-  
-  writeString(0, 'RIFF');
-  view.setUint32(4, 36 + samples * 2, true);
-  writeString(8, 'WAVE');
-  writeString(12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, 1, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * 2, true);
-  view.setUint16(32, 2, true);
-  view.setUint16(34, 16, true);
-  writeString(36, 'data');
-  view.setUint32(40, samples * 2, true);
-  
-  // Generate sine wave samples
-  for (let i = 0; i < samples; i++) {
-    const sample = Math.sin((2 * Math.PI * frequency * i) / sampleRate) * volume * 32767;
-    view.setInt16(44 + i * 2, sample, true);
-  }
-  
-  // Convert to base64 data URI
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < bytes.length; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  const base64 = btoa(binary);
-  return `data:audio/wav;base64,${base64}`;
-}
 
 export function AudioProvider({ children }: AudioProviderProps) {
   const [isPlaying, setIsPlaying] = useState(false);
