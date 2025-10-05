@@ -12,6 +12,7 @@ import ManageSlides from "@/pages/ManageSlides";
 import MorphDemo from "@/pages/MorphDemo";
 import NotFound from "@/pages/not-found";
 import LoginForm from "@/components/LoginForm";
+import GeminiChat from "@/components/GeminiChat";
 
 function Router() {
   const [location] = useLocation();
@@ -33,6 +34,32 @@ function App() {
   const [location] = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGeminiChatOpen, setIsGeminiChatOpen] = useState(false);
+
+  // Keyboard listener for Ctrl+C+B to open Gemini Chat
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'c') {
+        const handleNextKey = (nextEvent: KeyboardEvent) => {
+          if (nextEvent.key === 'b') {
+            e.preventDefault();
+            nextEvent.preventDefault();
+            setIsGeminiChatOpen(true);
+          }
+          document.removeEventListener('keydown', handleNextKey);
+        };
+        
+        setTimeout(() => {
+          document.addEventListener('keydown', handleNextKey, { once: true });
+        }, 0);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   // Check authentication status on app start
   useEffect(() => {
@@ -72,6 +99,7 @@ function App() {
             <AnimatedRoute routeKey={location}>
               {location === '/' ? <MorphDemo /> : <Home />}
             </AnimatedRoute>
+            <GeminiChat isOpen={isGeminiChatOpen} onClose={() => setIsGeminiChatOpen(false)} />
           </AudioProvider>
         </TooltipProvider>
       </QueryClientProvider>
@@ -94,6 +122,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <LoginForm onLogin={handleLogin} />
+          <GeminiChat isOpen={isGeminiChatOpen} onClose={() => setIsGeminiChatOpen(false)} />
         </TooltipProvider>
       </QueryClientProvider>
     );
@@ -106,6 +135,7 @@ function App() {
         <AudioProvider>
           <Toaster />
           <Router />
+          <GeminiChat isOpen={isGeminiChatOpen} onClose={() => setIsGeminiChatOpen(false)} />
         </AudioProvider>
       </TooltipProvider>
     </QueryClientProvider>
