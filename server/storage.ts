@@ -151,7 +151,7 @@ export class MemStorage implements IStorage {
             '💝 Câu nói nổi tiếng: "Tôi viết bằng chân nhưng từ trái tim"',
             '🌟 Chứng minh rằng nghị lực có thể thắng mọi khó khăn'
           ],
-          image: '/stock_images/educational_success__4203c133.jpg'
+          image: '/attached_assets/photo-1664414672918-16644146732841701402327_1759638546232.jpg'
         }),
         background: 'educational-gradient-1',
         createdAt: new Date(),
@@ -167,7 +167,7 @@ export class MemStorage implements IStorage {
           type: 'quote_with_image',
           text: 'Tôi viết bằng chân nhưng từ trái tim. Khuyết tật không làm khuyết tâm hồn',
           author: 'Thầy Nguyễn Ngọc Ký - Nhà văn, Nhà giáo',
-          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
+          image: '/attached_assets/images_1759638546339.webp'
         }),
         background: 'educational-gradient-1',
         createdAt: new Date(),
@@ -585,7 +585,7 @@ export class DBStorage implements IStorage {
             '💝 Câu nói nổi tiếng: "Tôi viết bằng chân nhưng từ trái tim"',
             '🌟 Chứng minh rằng nghị lực có thể thắng mọi khó khăn'
           ],
-          image: '/stock_images/educational_success__4203c133.jpg'
+          image: '/attached_assets/photo-1664414672918-16644146732841701402327_1759638546232.jpg'
         }),
         background: 'educational-gradient-1'
       },
@@ -599,7 +599,7 @@ export class DBStorage implements IStorage {
           type: 'quote_with_image',
           text: 'Tôi viết bằng chân nhưng từ trái tim. Khuyết tật không làm khuyết tâm hồn',
           author: 'Thầy Nguyễn Ngọc Ký - Nhà văn, Nhà giáo',
-          image: '/stock_images/gentle_inspiring_ins_dc4fa5e2.jpg'
+          image: '/attached_assets/images_1759638546339.webp'
         }),
         background: 'educational-gradient-1'
       },
