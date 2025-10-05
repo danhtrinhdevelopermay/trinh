@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
-import type { SlideElement, TextElement, ImageElement, ShapeElement, IconElement } from "@shared/schema";
+import type { SlideElement, TextElement, ImageElement, ShapeElement, IconElement, VideoElement } from "@shared/schema";
 import * as Icons from "lucide-react";
 import { Rocket3D, Star3D, Book3D, Trophy3D, Heart3D, Target3D } from "./3DElements";
 import { ThreeJSModel } from "./ThreeJS3DModels";
@@ -401,6 +401,104 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
   );
 }
 
+function VideoElementRenderer({ element, index }: { element: VideoElement; index: number }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return (
+      <motion.div
+        layoutId={element.id}
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: element.opacity,
+          x: element.x,
+          y: element.y,
+          width: element.width,
+          height: element.height,
+          rotate: element.rotation,
+        }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        style={{
+          position: 'absolute',
+          zIndex: element.zIndex,
+        }}
+        data-testid={`video-element-${element.id}`}
+      >
+        <video
+          src={element.src}
+          poster={element.poster}
+          autoPlay={element.autoplay}
+          loop={element.loop}
+          muted={element.muted}
+          controls={element.controls}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: element.objectFit,
+          }}
+        />
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      layoutId={element.id}
+      layout
+      initial={{ 
+        opacity: 0, 
+        scale: 0.88,
+        filter: "blur(12px)",
+        rotateY: -8,
+      }}
+      animate={{ 
+        opacity: element.opacity,
+        scale: 1,
+        filter: "blur(0px)",
+        rotateY: 0,
+        x: element.x,
+        y: element.y,
+        width: element.width,
+        height: element.height,
+        rotate: element.rotation,
+      }}
+      exit={{ 
+        opacity: 0,
+        scale: 0.92,
+        filter: "blur(6px)",
+        rotateY: 6,
+      }}
+      transition={{
+        layout: { duration: 0.7, ease: MORPH_EASE },
+        opacity: { delay: index * 0.12, duration: 0.8, ease: SMOOTH_EASE },
+        scale: { delay: index * 0.12, duration: 0.8, ease: SMOOTH_EASE },
+        filter: { delay: index * 0.12, duration: 0.8, ease: SMOOTH_EASE },
+        rotateY: { delay: index * 0.12, duration: 0.8, ease: ENTRANCE_EASE },
+      }}
+      style={{
+        position: 'absolute',
+        zIndex: element.zIndex,
+      }}
+      data-testid={`video-element-${element.id}`}
+    >
+      <video
+        src={element.src}
+        poster={element.poster}
+        autoPlay={element.autoplay}
+        loop={element.loop}
+        muted={element.muted}
+        controls={element.controls}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: element.objectFit,
+        }}
+      />
+    </motion.div>
+  );
+}
+
 // 3D Model element renderer
 function Model3DRenderer({ element }: { element: any }) {
   const modelType = element.modelType || 'star';
@@ -452,6 +550,8 @@ export default function SlideCanvas({ elements }: SlideCanvasProps) {
             return <ShapeElementRenderer key={element.id} element={element} index={index} />;
           case 'icon':
             return <IconElementRenderer key={element.id} element={element} index={index} />;
+          case 'video':
+            return <VideoElementRenderer key={element.id} element={element} index={index} />;
           case 'model3d' as any:
             return <Model3DRenderer key={element.id} element={element} />;
           default:
