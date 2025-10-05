@@ -330,19 +330,6 @@ export default function MorphDemo() {
               backfaceVisibility: 'hidden',
             }}
           >
-            {/* Semi-transparent background for better text readability */}
-            <motion.div 
-              className="absolute inset-0 rounded-2xl"
-              style={{
-                background: 'radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
-                backdropFilter: 'blur(10px)',
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            
             <SlideCanvas elements={slide.elements} />
           </motion.div>
         </motion.div>
