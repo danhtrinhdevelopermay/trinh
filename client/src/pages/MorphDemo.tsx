@@ -257,6 +257,10 @@ export default function MorphDemo() {
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'ArrowRight') nextSlide();
     if (event.key === 'ArrowLeft') prevSlide();
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      event.preventDefault();
+      nextSlide();
+    }
     if (event.key === 'f' || event.key === 'F') toggleFullscreen();
     if (event.key === 'Escape' && isFullscreen) toggleFullscreen();
   };
