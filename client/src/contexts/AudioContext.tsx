@@ -13,7 +13,9 @@ interface AudioContextValue {
   setVolume: (volume: number) => void;
   toggleMute: () => void;
   changeTrack: () => void;
-  playTransitionSound: () => void;
+  playTransitionSound: (type?: 'whoosh' | 'swoosh' | 'pop' | 'chime') => void;
+  playElementSound: () => void;
+  playSpecialEffect: (effect: 'magic' | 'sparkle' | 'ding') => void;
 }
 
 const AudioContextObj = createContext<AudioContextValue | null>(null);
@@ -199,7 +201,7 @@ export function AudioProvider({ children }: AudioProviderProps) {
     }
   }, [currentTrack, volume, isMuted]);
 
-  const playTransitionSound = useCallback(async () => {
+  const playTransitionSound = useCallback(async (type: 'whoosh' | 'swoosh' | 'pop' | 'chime' = 'whoosh') => {
     if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
       return;
     }
@@ -213,18 +215,153 @@ export function AudioProvider({ children }: AudioProviderProps) {
       oscillator.connect(gainNode);
       gainNode.connect(masterGainRef.current);
       
-      oscillator.frequency.value = 600;
+      const now = audioContextRef.current.currentTime;
+      
+      // Different sound effects for different transitions
+      switch (type) {
+        case 'whoosh':
+          oscillator.frequency.setValueAtTime(800, now);
+          oscillator.frequency.exponentialRampToValueAtTime(200, now + 0.2);
+          oscillator.type = 'sawtooth';
+          gainNode.gain.setValueAtTime(0, now);
+          gainNode.gain.linearRampToValueAtTime(0.2, now + 0.01);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          oscillator.stop(now + 0.2);
+          break;
+          
+        case 'swoosh':
+          oscillator.frequency.setValueAtTime(1200, now);
+          oscillator.frequency.exponentialRampToValueAtTime(300, now + 0.15);
+          oscillator.type = 'triangle';
+          gainNode.gain.setValueAtTime(0, now);
+          gainNode.gain.linearRampToValueAtTime(0.15, now + 0.01);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          oscillator.stop(now + 0.15);
+          break;
+          
+        case 'pop':
+          oscillator.frequency.setValueAtTime(400, now);
+          oscillator.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+          oscillator.type = 'square';
+          gainNode.gain.setValueAtTime(0.25, now);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+          oscillator.stop(now + 0.1);
+          break;
+          
+        case 'chime':
+          oscillator.frequency.setValueAtTime(1000, now);
+          oscillator.type = 'sine';
+          gainNode.gain.setValueAtTime(0, now);
+          gainNode.gain.linearRampToValueAtTime(0.2, now + 0.02);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          oscillator.stop(now + 0.3);
+          break;
+      }
+      
+      oscillator.start(now);
+    } catch (error) {
+      console.log('Transition sound failed');
+    }
+  }, [audioContextReady, resumeAudioContext]);
+
+  const playElementSound = useCallback(async () => {
+    if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
+      return;
+    }
+
+    await resumeAudioContext();
+
+    try {
+      const oscillator = audioContextRef.current.createOscillator();
+      const gainNode = audioContextRef.current.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(masterGainRef.current);
+      
+      oscillator.frequency.value = 800;
       oscillator.type = 'sine';
       
       const now = audioContextRef.current.currentTime;
       gainNode.gain.setValueAtTime(0, now);
-      gainNode.gain.linearRampToValueAtTime(0.15, now + 0.01);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      gainNode.gain.linearRampToValueAtTime(0.1, now + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
       
       oscillator.start(now);
-      oscillator.stop(now + 0.15);
+      oscillator.stop(now + 0.08);
     } catch (error) {
-      console.log('Transition sound failed');
+      console.log('Element sound failed');
+    }
+  }, [audioContextReady, resumeAudioContext]);
+
+  const playSpecialEffect = useCallback(async (effect: 'magic' | 'sparkle' | 'ding') => {
+    if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
+      return;
+    }
+
+    await resumeAudioContext();
+
+    try {
+      const now = audioContextRef.current.currentTime;
+      
+      switch (effect) {
+        case 'magic':
+          // Ascending magical sparkle
+          for (let i = 0; i < 3; i++) {
+            const osc = audioContextRef.current.createOscillator();
+            const gain = audioContextRef.current.createGain();
+            osc.connect(gain);
+            gain.connect(masterGainRef.current);
+            
+            osc.frequency.value = 800 + (i * 400);
+            osc.type = 'sine';
+            
+            const startTime = now + (i * 0.05);
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.1, startTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.1);
+            
+            osc.start(startTime);
+            osc.stop(startTime + 0.1);
+          }
+          break;
+          
+        case 'sparkle':
+          // Quick high-pitched twinkle
+          const sparkleOsc = audioContextRef.current.createOscillator();
+          const sparkleGain = audioContextRef.current.createGain();
+          sparkleOsc.connect(sparkleGain);
+          sparkleGain.connect(masterGainRef.current);
+          
+          sparkleOsc.frequency.value = 1500;
+          sparkleOsc.type = 'sine';
+          
+          sparkleGain.gain.setValueAtTime(0.12, now);
+          sparkleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          
+          sparkleOsc.start(now);
+          sparkleOsc.stop(now + 0.15);
+          break;
+          
+        case 'ding':
+          // Pleasant notification ding
+          const dingOsc = audioContextRef.current.createOscillator();
+          const dingGain = audioContextRef.current.createGain();
+          dingOsc.connect(dingGain);
+          dingGain.connect(masterGainRef.current);
+          
+          dingOsc.frequency.value = 1200;
+          dingOsc.type = 'sine';
+          
+          dingGain.gain.setValueAtTime(0, now);
+          dingGain.gain.linearRampToValueAtTime(0.15, now + 0.02);
+          dingGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          
+          dingOsc.start(now);
+          dingOsc.stop(now + 0.25);
+          break;
+      }
+    } catch (error) {
+      console.log('Special effect sound failed');
     }
   }, [audioContextReady, resumeAudioContext]);
 
@@ -239,6 +376,8 @@ export function AudioProvider({ children }: AudioProviderProps) {
     toggleMute,
     changeTrack,
     playTransitionSound,
+    playElementSound,
+    playSpecialEffect,
   };
 
   return (
