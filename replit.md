@@ -13,7 +13,7 @@ Preferred communication style: Simple, everyday language.
 - **Styling**: Tailwind CSS with a custom design system tailored for educational presentations.
 - **State Management**: TanStack Query for server state; React hooks for local state.
 - **Routing**: Wouter for lightweight client-side routing.
-- **Animations**: Framer Motion for complex slide transitions, element animations, and 3D model interactions, including morphing between elements with matching IDs.
+- **Animations**: Framer Motion for complex slide transitions, element animations, and 3D model interactions, including morphing between elements with matching IDs. Features 8 diverse transition effects (fade, zoom, slide, flip, rotate, blurSlide, scaleFade, perspectiveSlide) with professional easing curves and direction-aware animations.
 - **3D Graphics**: Three.js, React Three Fiber, and React Three Drei for immersive 3D backgrounds (Vietnamese village scene) and interactive 3D models. Features a dual rendering system (WebGL vs. CSS 3D Transforms) with automatic detection for universal compatibility.
 
 ### Backend Architecture
