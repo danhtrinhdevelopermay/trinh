@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
@@ -6,7 +6,24 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function MorphDemo() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [viewportScale, setViewportScale] = useState(0.5);
   const totalSlides = demoMorphSlides.length;
+
+  // Calculate scale to fit viewport
+  useEffect(() => {
+    const calculateScale = () => {
+      const slideWidth = 1200;
+      const slideHeight = 675;
+      const scaleX = window.innerWidth / slideWidth;
+      const scaleY = (window.innerHeight - 200) / slideHeight; // Reserve 200px for controls
+      const scale = Math.min(scaleX, scaleY) * 0.75; // 75% to ensure it fits
+      setViewportScale(scale);
+    };
+
+    calculateScale();
+    window.addEventListener('resize', calculateScale);
+    return () => window.removeEventListener('resize', calculateScale);
+  }, []);
 
   const nextSlide = () => {
     if (currentSlide < totalSlides - 1) {
@@ -41,11 +58,21 @@ export default function MorphDemo() {
 
       {/* Slide Container - persistent to enable element morphing */}
       <div
-        className={`absolute inset-0 w-full h-full ${slide.background} ${slide.textColor}`}
+        className={`absolute inset-0 w-full h-full ${slide.background} ${slide.textColor} flex items-center justify-center overflow-hidden`}
         data-testid={`slide-${currentSlide}`}
       >
-        {/* Render elements with morph effect - AnimatePresence inside SlideCanvas */}
-        <SlideCanvas elements={slide.elements} />
+        {/* Fixed size canvas scaled to fit viewport */}
+        <div 
+          className="relative"
+          style={{
+            width: '1200px',
+            height: '675px',
+            transform: `scale(${viewportScale}) translateY(20px)`,
+            transformOrigin: 'center center'
+          }}
+        >
+          <SlideCanvas elements={slide.elements} />
+        </div>
       </div>
 
       {/* Navigation Controls */}
