@@ -4,6 +4,179 @@ import SlideCanvas from "@/components/SlideCanvas";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+// Định nghĩa các kiểu transition effects
+const transitionVariants = {
+  // 1. Fade: Mờ dần đơn giản
+  fade: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { duration: 0.6, ease: [0.32, 0.72, 0, 1] }
+  },
+  
+  // 2. Slide: Trượt ngang cơ bản
+  slide: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      x: direction === 'next' ? 100 : -100,
+      scale: 0.95 
+    },
+    animate: { 
+      opacity: 1, 
+      x: 0,
+      scale: 1 
+    },
+    exit: { 
+      opacity: 0, 
+      x: direction === 'next' ? -50 : 50,
+      scale: 0.98 
+    },
+    transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+  }),
+  
+  // 3. Zoom: Phóng to/thu nhỏ
+  zoom: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      scale: direction === 'next' ? 0.6 : 1.4,
+    },
+    animate: { 
+      opacity: 1, 
+      scale: 1,
+    },
+    exit: { 
+      opacity: 0, 
+      scale: direction === 'next' ? 1.4 : 0.6,
+    },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }),
+  
+  // 4. Flip: Lật 3D theo trục Y
+  flip: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      rotateY: direction === 'next' ? 90 : -90,
+      scale: 0.9
+    },
+    animate: { 
+      opacity: 1, 
+      rotateY: 0,
+      scale: 1
+    },
+    exit: { 
+      opacity: 0, 
+      rotateY: direction === 'next' ? -45 : 45,
+      scale: 0.95
+    },
+    transition: { duration: 0.7, ease: [0.32, 0.72, 0, 1] }
+  }),
+  
+  // 5. Rotate: Xoay tròn
+  rotate: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      rotate: direction === 'next' ? 20 : -20,
+      scale: 0.8
+    },
+    animate: { 
+      opacity: 1, 
+      rotate: 0,
+      scale: 1
+    },
+    exit: { 
+      opacity: 0, 
+      rotate: direction === 'next' ? -10 : 10,
+      scale: 0.9
+    },
+    transition: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }
+  }),
+  
+  // 6. Blur Slide: Trượt với blur
+  blurSlide: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      x: direction === 'next' ? 150 : -150,
+      filter: 'blur(10px)'
+    },
+    animate: { 
+      opacity: 1, 
+      x: 0,
+      filter: 'blur(0px)'
+    },
+    exit: { 
+      opacity: 0, 
+      x: direction === 'next' ? -150 : 150,
+      filter: 'blur(10px)'
+    },
+    transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+  }),
+  
+  // 7. Scale Fade: Phóng to với fade
+  scaleFade: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      scale: 0.85,
+      y: direction === 'next' ? 50 : -50
+    },
+    animate: { 
+      opacity: 1, 
+      scale: 1,
+      y: 0
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 1.05,
+      y: direction === 'next' ? -30 : 30
+    },
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+  }),
+  
+  // 8. Perspective Slide: Trượt với perspective 3D
+  perspectiveSlide: (direction: 'next' | 'prev') => ({
+    initial: { 
+      opacity: 0, 
+      x: direction === 'next' ? 200 : -200,
+      rotateY: direction === 'next' ? 25 : -25,
+      scale: 0.9
+    },
+    animate: { 
+      opacity: 1, 
+      x: 0,
+      rotateY: 0,
+      scale: 1
+    },
+    exit: { 
+      opacity: 0, 
+      x: direction === 'next' ? -100 : 100,
+      rotateY: direction === 'next' ? -15 : 15,
+      scale: 0.95
+    },
+    transition: { duration: 0.7, ease: [0.32, 0.72, 0, 1] }
+  }),
+};
+
+// Gán transition cho từng slide (có thể customize theo nhu cầu)
+const slideTransitions = [
+  'fade',           // Slide 1: Tiêu đề - fade nhẹ nhàng
+  'zoom',           // Slide 2: Dẫn nhập - zoom ấn tượng
+  'slide',          // Slide 3: Số phận là gì - slide cơ bản
+  'flip',           // Slide 4: Vì sao cần vượt - flip động
+  'rotate',         // Slide 5: Biểu hiện - rotate sáng tạo
+  'perspectiveSlide', // Slide 6: Yếu tố - perspective 3D
+  'blurSlide',      // Slide 7: Cách thức - blur slide
+  'scaleFade',      // Slide 8: Giáo dục - scale fade
+  'zoom',           // Slide 9: Tự tin - zoom
+  'flip',           // Slide 10: Nguyễn Ngọc Ký - flip trang trọng
+  'fade',           // Slide 11: Trung Thu - fade nhẹ nhàng
+  'slide',          // Slide 12: Liên hệ thực tế - slide
+  'rotate',         // Slide 13: Lời khuyên - rotate
+  'perspectiveSlide', // Slide 14: Bài học - perspective
+  'blurSlide',      // Slide 15: Câu hỏi - blur slide
+  'scaleFade',      // Slide 16: Kết luận - scale fade
+  'zoom',           // Slide 17: Cảm ơn - zoom out ấn tượng
+  'fade',           // Slide 18: Dự phòng
+];
+
 export default function MorphDemo() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
@@ -46,6 +219,13 @@ export default function MorphDemo() {
   };
 
   const slide = demoMorphSlides[currentSlide];
+  
+  // Lấy transition variant cho slide hiện tại
+  const currentTransition = slideTransitions[currentSlide] || 'slide';
+  const variant = transitionVariants[currentTransition as keyof typeof transitionVariants];
+  
+  // Tính toán animation values
+  const animationValues = typeof variant === 'function' ? variant(direction) : variant;
 
   return (
     <div 
@@ -118,7 +298,10 @@ export default function MorphDemo() {
       
       {/* Header - Demo info - moved to bottom left */}
       <div className="absolute bottom-4 left-4 z-50 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white">
-        <p className="text-xs opacity-90">Slide {currentSlide + 1} / {totalSlides}</p>
+        <p className="text-xs opacity-90">
+          Slide {currentSlide + 1} / {totalSlides}
+          <span className="ml-2 text-purple-300">• {currentTransition}</span>
+        </p>
       </div>
 
       {/* Slide Container with AnimatePresence for smooth transitions */}
@@ -126,28 +309,15 @@ export default function MorphDemo() {
         <motion.div
           key={currentSlide}
           className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden"
-          style={{ background: 'transparent' }}
+          style={{ 
+            background: 'transparent',
+            perspective: '2000px',
+          }}
           data-testid={`slide-${currentSlide}`}
-          initial={{
-            opacity: 0,
-            scale: 0.95,
-            x: direction === 'next' ? 100 : -100,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            x: 0,
-          }}
-          exit={{
-            opacity: 0,
-            scale: 0.98,
-            x: direction === 'next' ? -50 : 50,
-          }}
-          transition={{
-            duration: 0.5,
-            ease: [0.32, 0.72, 0, 1],
-            opacity: { duration: 0.4 },
-          }}
+          initial={animationValues.initial}
+          animate={animationValues.animate}
+          exit={animationValues.exit}
+          transition={animationValues.transition}
         >
           {/* Fixed size canvas scaled to fit viewport */}
           <motion.div 
@@ -156,14 +326,8 @@ export default function MorphDemo() {
               width: '1200px',
               height: '675px',
               transform: `scale(${viewportScale}) translateY(20px)`,
-              transformOrigin: 'center center'
-            }}
-            initial={{ rotateY: direction === 'next' ? 5 : -5 }}
-            animate={{ rotateY: 0 }}
-            exit={{ rotateY: direction === 'next' ? -3 : 3 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.32, 0.72, 0, 1],
+              transformOrigin: 'center center',
+              backfaceVisibility: 'hidden',
             }}
           >
             {/* Semi-transparent background for better text readability */}
@@ -236,11 +400,6 @@ export default function MorphDemo() {
         >
           <ArrowRight size={24} />
         </motion.button>
-      </div>
-
-      {/* Instructions */}
-      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-lg text-white text-sm z-40">
-        <p>Use arrow keys or buttons to navigate • Watch elements morph smoothly between slides</p>
       </div>
     </div>
   );
