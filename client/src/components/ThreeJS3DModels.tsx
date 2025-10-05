@@ -220,8 +220,234 @@ function Path3DGeometry() {
   );
 }
 
+function Compass3DGeometry() {
+  const compassRef = useRef<THREE.Group>(null);
+  const needleRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (compassRef.current) {
+      compassRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+    }
+    if (needleRef.current) {
+      needleRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 2) * 0.3;
+    }
+  });
+
+  return (
+    <group ref={compassRef}>
+      <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[1, 1, 0.2, 32]} />
+        <meshStandardMaterial 
+          color="#4D96A9" 
+          roughness={0.3}
+          metalness={0.8}
+        />
+      </mesh>
+      <mesh position={[0, 0.15, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.9, 0.9, 0.05, 32]} />
+        <meshStandardMaterial color="#FFD93D" roughness={0.2} />
+      </mesh>
+      <mesh ref={needleRef} position={[0, 0.2, 0]} rotation={[0, 0, Math.PI / 4]}>
+        <coneGeometry args={[0.1, 0.7, 4]} />
+        <meshStandardMaterial color="#FF6B9D" emissive="#FF6B9D" emissiveIntensity={0.5} />
+      </mesh>
+      <pointLight position={[0, 2, 0]} intensity={1} color="#FFD93D" />
+      <ambientLight intensity={0.6} />
+    </group>
+  );
+}
+
+function Shield3DGeometry() {
+  const shieldRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (shieldRef.current) {
+      shieldRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+      shieldRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.1;
+    }
+  });
+
+  return (
+    <group>
+      <mesh ref={shieldRef} position={[0, 0, 0]}>
+        <boxGeometry args={[1.2, 1.5, 0.2]} />
+        <meshStandardMaterial 
+          color="#6BCB77" 
+          roughness={0.4}
+          metalness={0.7}
+        />
+      </mesh>
+      <mesh position={[0, 0.3, 0.12]}>
+        <sphereGeometry args={[0.3, 16, 16]} />
+        <meshStandardMaterial color="#FFD93D" roughness={0.3} metalness={0.9} />
+      </mesh>
+      <mesh position={[0, -0.3, 0.12]}>
+        <torusGeometry args={[0.25, 0.08, 8, 16]} />
+        <meshStandardMaterial color="#C239B3" roughness={0.4} />
+      </mesh>
+      <pointLight position={[2, 2, 2]} intensity={1.2} color="#FFD93D" />
+      <ambientLight intensity={0.6} />
+    </group>
+  );
+}
+
+function Flag3DGeometry() {
+  const flagRef = useRef<THREE.Mesh>(null);
+  const poleRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (flagRef.current) {
+      const time = state.clock.elapsedTime;
+      flagRef.current.rotation.y = Math.sin(time * 2) * 0.1;
+      flagRef.current.position.x = Math.sin(time * 3) * 0.05;
+    }
+    if (poleRef.current) {
+      poleRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+    }
+  });
+
+  return (
+    <group>
+      <mesh ref={poleRef} position={[-0.6, 0, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 2, 16]} />
+        <meshStandardMaterial color="#888888" metalness={0.9} roughness={0.2} />
+      </mesh>
+      <mesh ref={flagRef} position={[0, 0.5, 0]}>
+        <planeGeometry args={[1, 0.7]} />
+        <meshStandardMaterial 
+          color="#FF0000" 
+          roughness={0.5}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh position={[0, 0.5, 0.02]}>
+        <sphereGeometry args={[0.15, 16, 16]} />
+        <meshStandardMaterial color="#FFD93D" emissive="#FFD93D" emissiveIntensity={0.6} />
+      </mesh>
+      <pointLight position={[2, 2, 2]} intensity={1} color="#FFD93D" />
+      <ambientLight intensity={0.7} />
+    </group>
+  );
+}
+
+function Sun3DGeometry() {
+  const sunRef = useRef<THREE.Mesh>(null);
+  const raysRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (sunRef.current) {
+      sunRef.current.rotation.y = state.clock.elapsedTime * 0.5;
+    }
+    if (raysRef.current) {
+      raysRef.current.rotation.z = state.clock.elapsedTime * 0.3;
+    }
+  });
+
+  return (
+    <group>
+      <mesh ref={sunRef} position={[0, 0, 0]}>
+        <sphereGeometry args={[0.7, 32, 32]} />
+        <meshStandardMaterial 
+          color="#FFD93D" 
+          emissive="#FFA500"
+          emissiveIntensity={0.9}
+          roughness={0.2}
+        />
+      </mesh>
+      <group ref={raysRef}>
+        {[...Array(8)].map((_, i) => {
+          const angle = (i / 8) * Math.PI * 2;
+          const x = Math.cos(angle) * 1;
+          const y = Math.sin(angle) * 1;
+          return (
+            <mesh key={i} position={[x, y, 0]} rotation={[0, 0, angle]}>
+              <coneGeometry args={[0.15, 0.4, 4]} />
+              <meshStandardMaterial 
+                color="#FFD93D" 
+                emissive="#FFA500"
+                emissiveIntensity={0.7}
+              />
+            </mesh>
+          );
+        })}
+      </group>
+      <pointLight position={[0, 0, 0]} intensity={2} color="#FFD93D" distance={5} />
+      <ambientLight intensity={0.5} />
+    </group>
+  );
+}
+
+function Key3DGeometry() {
+  const keyRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (keyRef.current) {
+      keyRef.current.rotation.y = state.clock.elapsedTime * 0.4;
+      keyRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.15;
+    }
+  });
+
+  return (
+    <group ref={keyRef}>
+      <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.15, 0.15, 1.2, 16]} />
+        <meshStandardMaterial 
+          color="#C239B3" 
+          roughness={0.3}
+          metalness={0.9}
+        />
+      </mesh>
+      <mesh position={[-0.6, 0, 0]}>
+        <torusGeometry args={[0.3, 0.1, 16, 32]} />
+        <meshStandardMaterial color="#C239B3" roughness={0.3} metalness={0.9} />
+      </mesh>
+      <mesh position={[0.5, 0.2, 0]}>
+        <boxGeometry args={[0.25, 0.08, 0.08]} />
+        <meshStandardMaterial color="#C239B3" roughness={0.3} metalness={0.9} />
+      </mesh>
+      <mesh position={[0.5, -0.2, 0]}>
+        <boxGeometry args={[0.25, 0.08, 0.08]} />
+        <meshStandardMaterial color="#C239B3" roughness={0.3} metalness={0.9} />
+      </mesh>
+      <pointLight position={[2, 2, 2]} intensity={1} color="#FFD93D" />
+      <ambientLight intensity={0.6} />
+    </group>
+  );
+}
+
+function Chain3DGeometry() {
+  const chainRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (chainRef.current) {
+      chainRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+    }
+  });
+
+  return (
+    <group ref={chainRef}>
+      {[...Array(5)].map((_, i) => {
+        const y = (i - 2) * 0.35;
+        const rotation = i % 2 === 0 ? 0 : Math.PI / 2;
+        return (
+          <mesh key={i} position={[0, y, 0]} rotation={[0, 0, rotation]}>
+            <torusGeometry args={[0.25, 0.08, 8, 16]} />
+            <meshStandardMaterial 
+              color="#888888" 
+              roughness={0.4}
+              metalness={0.8}
+            />
+          </mesh>
+        );
+      })}
+      <pointLight position={[2, 2, 2]} intensity={1} color="#FFD93D" />
+      <ambientLight intensity={0.6} />
+    </group>
+  );
+}
+
 interface ThreeJSModelProps {
-  modelType: 'mountain' | 'brain' | 'lightbulb' | 'stairs' | 'globe' | 'path';
+  modelType: 'mountain' | 'brain' | 'lightbulb' | 'stairs' | 'globe' | 'path' | 'compass' | 'shield' | 'flag' | 'sun' | 'key' | 'chain';
   x: number;
   y: number;
   width: number;
@@ -244,6 +470,18 @@ export function ThreeJSModel({ modelType, x, y, width, height, rotation = 0 }: T
         return <Globe3DGeometry />;
       case 'path':
         return <Path3DGeometry />;
+      case 'compass':
+        return <Compass3DGeometry />;
+      case 'shield':
+        return <Shield3DGeometry />;
+      case 'flag':
+        return <Flag3DGeometry />;
+      case 'sun':
+        return <Sun3DGeometry />;
+      case 'key':
+        return <Key3DGeometry />;
+      case 'chain':
+        return <Chain3DGeometry />;
       default:
         return <Mountain3DGeometry />;
     }
@@ -273,4 +511,4 @@ export function ThreeJSModel({ modelType, x, y, width, height, rotation = 0 }: T
   );
 }
 
-export { Mountain3DGeometry, Brain3DGeometry, Lightbulb3DGeometry, Stairs3DGeometry, Globe3DGeometry, Path3DGeometry };
+export { Mountain3DGeometry, Brain3DGeometry, Lightbulb3DGeometry, Stairs3DGeometry, Globe3DGeometry, Path3DGeometry, Compass3DGeometry, Shield3DGeometry, Flag3DGeometry, Sun3DGeometry, Key3DGeometry, Chain3DGeometry };
