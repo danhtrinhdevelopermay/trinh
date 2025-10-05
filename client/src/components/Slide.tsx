@@ -172,7 +172,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
   const renderCenteredLayout = () => (
     <>
       {slide.type === 'title' ? (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 shadow-2xl">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full p-8 md:p-12 lg:p-16">
           <motion.div
             variants={shouldReduceMotion ? undefined : decorativeIconVariants}
             initial={shouldReduceMotion ? { opacity: 0.4 } : "initial"}
@@ -199,7 +199,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
           </motion.div>
         </div>
       ) : slide.type === 'quote' ? (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 shadow-2xl">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative w-full p-8 md:p-12 lg:p-16">
           <motion.div
             variants={shouldReduceMotion ? undefined : floatingVariants}
             animate={shouldReduceMotion ? undefined : "animate"}
@@ -249,7 +249,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
           </motion.div>
         </div>
       ) : (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl lg:max-w-6xl relative w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 shadow-2xl">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl lg:max-w-6xl relative w-full p-8 md:p-12 lg:p-16">
           <motion.div
             variants={shouldReduceMotion ? undefined : decorativeIconVariants}
             initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
