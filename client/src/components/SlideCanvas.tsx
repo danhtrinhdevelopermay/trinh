@@ -9,10 +9,17 @@ interface SlideCanvasProps {
 }
 
 const MORPH_EASE = [0.4, 0, 0.2, 1] as const;
+const SMOOTH_EASE = [0.25, 0.46, 0.45, 0.94] as const;
+const ENTRANCE_EASE = [0.34, 1.56, 0.64, 1] as const;
 const SPRING_CONFIG = {
   type: "spring" as const,
-  stiffness: 300,
-  damping: 30,
+  stiffness: 260,
+  damping: 26,
+};
+const SMOOTH_SPRING = {
+  type: "spring" as const,
+  stiffness: 200,
+  damping: 22,
 };
 
 function TextElementRenderer({ element, index }: { element: TextElement; index: number }) {
@@ -59,7 +66,7 @@ function TextElementRenderer({ element, index }: { element: TextElement; index: 
       layout
       initial={{ 
         opacity: 0,
-        scale: 0.95,
+        scale: 0.92,
       }}
       animate={{ 
         opacity: element.opacity,
@@ -72,18 +79,18 @@ function TextElementRenderer({ element, index }: { element: TextElement; index: 
       }}
       exit={{ 
         opacity: 0,
-        scale: 0.98,
+        scale: 0.96,
       }}
       transition={{
-        layout: { duration: 0.6, ease: MORPH_EASE },
-        opacity: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-        scale: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-        x: { duration: 0.6, ease: MORPH_EASE },
-        y: { duration: 0.6, ease: MORPH_EASE },
-        width: { duration: 0.6, ease: MORPH_EASE },
-        height: { duration: 0.6, ease: MORPH_EASE },
-        color: { duration: 0.6, ease: MORPH_EASE },
-        fontSize: { duration: 0.6, ease: MORPH_EASE },
+        layout: { duration: 0.7, ease: MORPH_EASE },
+        opacity: { delay: index * 0.08, duration: 0.7, ease: SMOOTH_EASE },
+        scale: { delay: index * 0.08, duration: 0.7, ease: SMOOTH_EASE },
+        x: { duration: 0.7, ease: MORPH_EASE },
+        y: { duration: 0.7, ease: MORPH_EASE },
+        width: { duration: 0.7, ease: MORPH_EASE },
+        height: { duration: 0.7, ease: MORPH_EASE },
+        color: { duration: 0.7, ease: MORPH_EASE },
+        fontSize: { duration: 0.7, ease: MORPH_EASE },
       }}
       style={{
         position: 'absolute',
@@ -105,7 +112,7 @@ function TextElementRenderer({ element, index }: { element: TextElement; index: 
         animate={{ 
           color: element.color,
         }}
-        transition={{ duration: 0.5, ease: MORPH_EASE }}
+        transition={{ duration: 0.6, ease: MORPH_EASE }}
       >
         {element.text}
       </motion.span>
@@ -153,13 +160,15 @@ function ImageElementRenderer({ element, index }: { element: ImageElement; index
       alt={element.alt}
       initial={{ 
         opacity: 0, 
-        scale: 0.85,
-        filter: "blur(10px)",
+        scale: 0.88,
+        filter: "blur(12px)",
+        rotateY: -8,
       }}
       animate={{ 
         opacity: element.opacity,
         scale: 1,
         filter: "blur(0px)",
+        rotateY: 0,
         x: element.x,
         y: element.y,
         width: element.width,
@@ -168,14 +177,16 @@ function ImageElementRenderer({ element, index }: { element: ImageElement; index
       }}
       exit={{ 
         opacity: 0,
-        scale: 0.9,
-        filter: "blur(8px)",
+        scale: 0.92,
+        filter: "blur(6px)",
+        rotateY: 6,
       }}
       transition={{
-        layout: { duration: 0.6, ease: MORPH_EASE },
-        opacity: { delay: index * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
-        scale: { delay: index * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
-        filter: { delay: index * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+        layout: { duration: 0.7, ease: MORPH_EASE },
+        opacity: { delay: index * 0.12, duration: 0.8, ease: SMOOTH_EASE },
+        scale: { delay: index * 0.12, duration: 0.8, ease: SMOOTH_EASE },
+        filter: { delay: index * 0.12, duration: 0.8, ease: SMOOTH_EASE },
+        rotateY: { delay: index * 0.12, duration: 0.8, ease: ENTRANCE_EASE },
       }}
       style={{
         position: 'absolute',
@@ -232,25 +243,28 @@ function ShapeElementRenderer({ element, index }: { element: ShapeElement; index
       layout
       initial={{ 
         opacity: 0, 
-        scale: 0.3,
+        scale: 0.2,
+        rotate: -15,
       }}
       animate={{ 
         opacity: element.opacity,
         scale: 1,
+        rotate: 0,
         x: element.x,
         y: element.y,
         width: element.width,
         height: element.height,
-        rotate: element.rotation,
       }}
       exit={{ 
         opacity: 0,
-        scale: 0.5,
+        scale: 0.4,
+        rotate: 10,
       }}
       transition={{
-        layout: { duration: 0.6, ease: MORPH_EASE },
-        opacity: { delay: index * 0.08, ...SPRING_CONFIG, stiffness: 250 },
-        scale: { delay: index * 0.08, ...SPRING_CONFIG, stiffness: 250 },
+        layout: { duration: 0.7, ease: MORPH_EASE },
+        opacity: { delay: index * 0.06, ...SMOOTH_SPRING },
+        scale: { delay: index * 0.06, ...SMOOTH_SPRING },
+        rotate: { delay: index * 0.06, duration: 0.7, ease: ENTRANCE_EASE },
       }}
       style={{
         position: 'absolute',
@@ -333,25 +347,33 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
       initial={{ 
         opacity: 0, 
         scale: 0,
-        rotate: -180,
+        rotate: -240,
+        y: -30,
       }}
       animate={{ 
         opacity: element.opacity,
-        scale: 1,
+        scale: [0, 1.15, 1],
         rotate: element.rotation,
+        y: 0,
         x: element.x,
-        y: element.y,
       }}
       exit={{ 
         opacity: 0,
         scale: 0,
-        rotate: 90,
+        rotate: 120,
+        y: 20,
       }}
       transition={{
-        layout: { duration: 0.6, ease: MORPH_EASE },
-        opacity: { delay: index * 0.12, ...SPRING_CONFIG, stiffness: 400 },
-        scale: { delay: index * 0.12, ...SPRING_CONFIG, stiffness: 400 },
-        rotate: { delay: index * 0.12, ...SPRING_CONFIG, stiffness: 400 },
+        layout: { duration: 0.7, ease: MORPH_EASE },
+        opacity: { delay: index * 0.1, duration: 0.6, ease: SMOOTH_EASE },
+        scale: { 
+          delay: index * 0.1, 
+          duration: 0.8, 
+          ease: ENTRANCE_EASE,
+          times: [0, 0.7, 1]
+        },
+        rotate: { delay: index * 0.1, duration: 0.75, ease: ENTRANCE_EASE },
+        y: { delay: index * 0.1, duration: 0.75, ease: ENTRANCE_EASE },
       }}
       style={{
         position: 'absolute',
