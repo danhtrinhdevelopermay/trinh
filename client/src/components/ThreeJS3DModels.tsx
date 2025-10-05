@@ -447,8 +447,338 @@ function Chain3DGeometry() {
   );
 }
 
+function WalkingPerson3DGeometry() {
+  const personRef = useRef<THREE.Group>(null);
+  const leftLegRef = useRef<THREE.Mesh>(null);
+  const rightLegRef = useRef<THREE.Mesh>(null);
+  const leftArmRef = useRef<THREE.Mesh>(null);
+  const rightArmRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (personRef.current) {
+      personRef.current.position.x = Math.sin(time * 0.5) * 0.3;
+      personRef.current.rotation.y = Math.sin(time * 0.3) * 0.2;
+    }
+    
+    if (leftLegRef.current) {
+      leftLegRef.current.rotation.x = Math.sin(time * 3) * 0.5;
+    }
+    if (rightLegRef.current) {
+      rightLegRef.current.rotation.x = Math.sin(time * 3 + Math.PI) * 0.5;
+    }
+    if (leftArmRef.current) {
+      leftArmRef.current.rotation.x = Math.sin(time * 3 + Math.PI) * 0.4;
+    }
+    if (rightArmRef.current) {
+      rightArmRef.current.rotation.x = Math.sin(time * 3) * 0.4;
+    }
+  });
+
+  return (
+    <group ref={personRef}>
+      <mesh position={[0, 0.6, 0]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.15, 0.18, 0.6, 16]} />
+        <meshStandardMaterial color="#4D96A9" />
+      </mesh>
+      
+      <mesh ref={leftArmRef} position={[-0.25, 0.15, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      <mesh ref={rightArmRef} position={[0.25, 0.15, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh ref={leftLegRef} position={[-0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#6BCB77" />
+      </mesh>
+      <mesh ref={rightLegRef} position={[0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#6BCB77" />
+      </mesh>
+      
+      <pointLight position={[2, 2, 2]} intensity={1} color="#FFD93D" />
+      <ambientLight intensity={0.7} />
+    </group>
+  );
+}
+
+function ClimbingPerson3DGeometry() {
+  const personRef = useRef<THREE.Group>(null);
+  const leftArmRef = useRef<THREE.Mesh>(null);
+  const rightArmRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (personRef.current) {
+      personRef.current.position.y = Math.sin(time * 0.8) * 0.3;
+      personRef.current.rotation.z = Math.sin(time * 0.5) * 0.1;
+    }
+    
+    if (leftArmRef.current) {
+      leftArmRef.current.rotation.z = Math.sin(time * 2) * 0.3 + 0.5;
+    }
+    if (rightArmRef.current) {
+      rightArmRef.current.rotation.z = Math.sin(time * 2 + Math.PI) * 0.3 - 0.5;
+    }
+  });
+
+  return (
+    <group ref={personRef}>
+      <mesh position={[0, 0.6, 0]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.15, 0.18, 0.6, 16]} />
+        <meshStandardMaterial color="#FF6B9D" />
+      </mesh>
+      
+      <mesh ref={leftArmRef} position={[-0.2, 0.3, 0]} rotation={[0, 0, 0.5]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      <mesh ref={rightArmRef} position={[0.2, 0.3, 0]} rotation={[0, 0, -0.5]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[-0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#C239B3" />
+      </mesh>
+      <mesh position={[0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#C239B3" />
+      </mesh>
+      
+      <mesh position={[0, 1.2, 0]}>
+        <boxGeometry args={[0.8, 2, 0.1]} />
+        <meshStandardMaterial color="#8B4513" opacity={0.3} transparent />
+      </mesh>
+      
+      <pointLight position={[2, 2, 2]} intensity={1.2} color="#FFD93D" />
+      <ambientLight intensity={0.7} />
+    </group>
+  );
+}
+
+function StudyingPerson3DGeometry() {
+  const personRef = useRef<THREE.Group>(null);
+  const bookRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (personRef.current) {
+      personRef.current.position.y = Math.sin(time * 1.5) * 0.05;
+    }
+    
+    if (bookRef.current) {
+      bookRef.current.rotation.y = Math.sin(time * 0.5) * 0.2;
+    }
+  });
+
+  return (
+    <group ref={personRef}>
+      <mesh position={[0, 0.6, 0]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.15, 0.18, 0.6, 16]} />
+        <meshStandardMaterial color="#6BCB77" />
+      </mesh>
+      
+      <mesh position={[-0.15, 0.05, 0.25]} rotation={[-0.3, 0, 0.3]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.4, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      <mesh position={[0.15, 0.05, 0.25]} rotation={[-0.3, 0, -0.3]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.4, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh ref={bookRef} position={[0, 0.2, 0.35]} rotation={[-0.5, 0, 0]}>
+        <boxGeometry args={[0.3, 0.4, 0.05]} />
+        <meshStandardMaterial color="#FFD93D" />
+      </mesh>
+      
+      <mesh position={[-0.1, -0.5, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.3, 8]} />
+        <meshStandardMaterial color="#4D96A9" />
+      </mesh>
+      <mesh position={[0.1, -0.5, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.3, 8]} />
+        <meshStandardMaterial color="#4D96A9" />
+      </mesh>
+      
+      <pointLight position={[1, 2, 1]} intensity={1.2} color="#FFD93D" />
+      <ambientLight intensity={0.8} />
+    </group>
+  );
+}
+
+function CelebratingPerson3DGeometry() {
+  const personRef = useRef<THREE.Group>(null);
+  const leftArmRef = useRef<THREE.Mesh>(null);
+  const rightArmRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (personRef.current) {
+      personRef.current.position.y = Math.sin(time * 2) * 0.2;
+      personRef.current.rotation.y = Math.sin(time * 1.5) * 0.3;
+    }
+    
+    if (leftArmRef.current) {
+      leftArmRef.current.rotation.z = Math.sin(time * 3) * 0.3 + 1;
+    }
+    if (rightArmRef.current) {
+      rightArmRef.current.rotation.z = Math.sin(time * 3 + Math.PI) * 0.3 - 1;
+    }
+  });
+
+  return (
+    <group ref={personRef}>
+      <mesh position={[0, 0.6, 0]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[0, 0.55, 0.15]}>
+        <torusGeometry args={[0.15, 0.03, 8, 16]} />
+        <meshStandardMaterial color="#FF6B9D" />
+      </mesh>
+      
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.15, 0.18, 0.6, 16]} />
+        <meshStandardMaterial color="#FFD93D" />
+      </mesh>
+      
+      <mesh ref={leftArmRef} position={[-0.2, 0.2, 0]} rotation={[0, 0, 1]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      <mesh ref={rightArmRef} position={[0.2, 0.2, 0]} rotation={[0, 0, -1]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[-0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#FF6B9D" />
+      </mesh>
+      <mesh position={[0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#FF6B9D" />
+      </mesh>
+      
+      {[...Array(5)].map((_, i) => {
+        const angle = (i / 5) * Math.PI * 2;
+        const radius = 0.5;
+        return (
+          <mesh 
+            key={i} 
+            position={[Math.cos(angle) * radius, 1.2 + Math.sin(angle) * 0.2, Math.sin(angle) * radius]}
+          >
+            <sphereGeometry args={[0.05, 8, 8]} />
+            <meshStandardMaterial 
+              color={i % 2 === 0 ? '#FFD93D' : '#FF6B9D'} 
+              emissive={i % 2 === 0 ? '#FFA500' : '#FF6B9D'}
+              emissiveIntensity={0.5}
+            />
+          </mesh>
+        );
+      })}
+      
+      <pointLight position={[0, 2, 0]} intensity={1.5} color="#FFD93D" />
+      <ambientLight intensity={0.8} />
+    </group>
+  );
+}
+
+function RunningPerson3DGeometry() {
+  const personRef = useRef<THREE.Group>(null);
+  const leftLegRef = useRef<THREE.Mesh>(null);
+  const rightLegRef = useRef<THREE.Mesh>(null);
+  const leftArmRef = useRef<THREE.Mesh>(null);
+  const rightArmRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (personRef.current) {
+      personRef.current.position.x = Math.sin(time * 1.2) * 0.5;
+      personRef.current.rotation.y = Math.sin(time * 0.8) * 0.3;
+      personRef.current.rotation.z = Math.sin(time * 1.2) * 0.1;
+    }
+    
+    if (leftLegRef.current) {
+      leftLegRef.current.rotation.x = Math.sin(time * 5) * 0.8;
+    }
+    if (rightLegRef.current) {
+      rightLegRef.current.rotation.x = Math.sin(time * 5 + Math.PI) * 0.8;
+    }
+    if (leftArmRef.current) {
+      leftArmRef.current.rotation.x = Math.sin(time * 5 + Math.PI) * 0.7;
+    }
+    if (rightArmRef.current) {
+      rightArmRef.current.rotation.x = Math.sin(time * 5) * 0.7;
+    }
+  });
+
+  return (
+    <group ref={personRef}>
+      <mesh position={[0, 0.6, 0]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh position={[0, 0, 0]} rotation={[0.2, 0, 0]}>
+        <cylinderGeometry args={[0.15, 0.18, 0.6, 16]} />
+        <meshStandardMaterial color="#C239B3" />
+      </mesh>
+      
+      <mesh ref={leftArmRef} position={[-0.25, 0.15, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      <mesh ref={rightArmRef} position={[0.25, 0.15, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
+        <meshStandardMaterial color="#FFE0B2" />
+      </mesh>
+      
+      <mesh ref={leftLegRef} position={[-0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#FFD93D" />
+      </mesh>
+      <mesh ref={rightLegRef} position={[0.1, -0.45, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.6, 8]} />
+        <meshStandardMaterial color="#FFD93D" />
+      </mesh>
+      
+      <pointLight position={[2, 2, 2]} intensity={1.2} color="#FFD93D" />
+      <ambientLight intensity={0.7} />
+    </group>
+  );
+}
+
 interface ThreeJSModelProps {
-  modelType: 'mountain' | 'brain' | 'lightbulb' | 'stairs' | 'globe' | 'path' | 'compass' | 'shield' | 'flag' | 'sun' | 'key' | 'chain';
+  modelType: 'mountain' | 'brain' | 'lightbulb' | 'stairs' | 'globe' | 'path' | 'compass' | 'shield' | 'flag' | 'sun' | 'key' | 'chain' | 'walking-person' | 'climbing-person' | 'studying-person' | 'celebrating-person' | 'running-person';
   x: number;
   y: number;
   width: number;
@@ -483,6 +813,16 @@ export function ThreeJSModel({ modelType, x, y, width, height, rotation = 0 }: T
         return <Key3DGeometry />;
       case 'chain':
         return <Chain3DGeometry />;
+      case 'walking-person':
+        return <WalkingPerson3DGeometry />;
+      case 'climbing-person':
+        return <ClimbingPerson3DGeometry />;
+      case 'studying-person':
+        return <StudyingPerson3DGeometry />;
+      case 'celebrating-person':
+        return <CelebratingPerson3DGeometry />;
+      case 'running-person':
+        return <RunningPerson3DGeometry />;
       default:
         return <Mountain3DGeometry />;
     }
@@ -516,4 +856,4 @@ export function ThreeJSModel({ modelType, x, y, width, height, rotation = 0 }: T
   );
 }
 
-export { Mountain3DGeometry, Brain3DGeometry, Lightbulb3DGeometry, Stairs3DGeometry, Globe3DGeometry, Path3DGeometry, Compass3DGeometry, Shield3DGeometry, Flag3DGeometry, Sun3DGeometry, Key3DGeometry, Chain3DGeometry };
+export { Mountain3DGeometry, Brain3DGeometry, Lightbulb3DGeometry, Stairs3DGeometry, Globe3DGeometry, Path3DGeometry, Compass3DGeometry, Shield3DGeometry, Flag3DGeometry, Sun3DGeometry, Key3DGeometry, Chain3DGeometry, WalkingPerson3DGeometry, ClimbingPerson3DGeometry, StudyingPerson3DGeometry, CelebratingPerson3DGeometry, RunningPerson3DGeometry };
