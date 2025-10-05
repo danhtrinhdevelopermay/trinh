@@ -301,7 +301,7 @@ export default function MorphDemo() {
 
   return (
     <div 
-      className="relative w-full h-screen overflow-hidden focus:outline-none"
+      className="relative w-full min-h-screen overflow-hidden focus:outline-none flex items-center justify-center"
       tabIndex={0}
       onKeyDown={handleKeyPress}
       data-testid="morph-demo-container"
@@ -386,36 +386,49 @@ export default function MorphDemo() {
       )}
 
       {/* Slide Container with AnimatePresence for smooth transitions */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={currentSlide}
-          className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden"
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+        {/* Static centering frame that never moves */}
+        <div 
+          className="relative flex items-center justify-center"
           style={{ 
-            background: 'transparent',
             perspective: '2000px',
           }}
-          data-testid={`slide-${currentSlide}`}
-          initial={animationValues.initial}
-          animate={animationValues.animate}
-          exit={animationValues.exit}
-          transition={animationValues.transition}
         >
-          {/* Fixed size canvas scaled to fit viewport */}
-          <motion.div 
-            className="relative"
-            style={{
-              width: '1200px',
-              height: '675px',
-              transform: `scale(${viewportScale})`,
-              transformOrigin: 'center center',
-              backfaceVisibility: 'hidden',
-            }}
-          >
-            <SlideCanvas elements={slide.elements} />
-            {slide.hasFireworks && <FireworksEffect />}
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={currentSlide}
+              className="absolute"
+              style={{ 
+                background: 'transparent',
+                left: '50%',
+                top: '50%',
+                marginLeft: '-600px',
+                marginTop: '-337.5px',
+              }}
+              data-testid={`slide-${currentSlide}`}
+              initial={animationValues.initial}
+              animate={animationValues.animate}
+              exit={animationValues.exit}
+              transition={animationValues.transition}
+            >
+              {/* Fixed size canvas scaled to fit viewport */}
+              <div 
+                className="relative"
+                style={{
+                  width: '1200px',
+                  height: '675px',
+                  transform: `scale(${viewportScale})`,
+                  transformOrigin: 'center center',
+                  backfaceVisibility: 'hidden',
+                }}
+              >
+                <SlideCanvas elements={slide.elements} />
+                {slide.hasFireworks && <FireworksEffect />}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
 
       {/* Navigation Controls - Hidden in fullscreen */}
       {!isFullscreen && (
