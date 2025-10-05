@@ -630,61 +630,81 @@ export default function PresentationContainer({
         </AnimatePresence>
       </div>
 
-      {/* Top progress bar */}
-      <div className="absolute top-0 left-0 right-0 z-10">
-        <ProgressBar
-          currentSlide={currentSlide}
-          totalSlides={slides.length}
-          onSlideClick={goToSlide}
-          className="m-4"
-        />
-      </div>
-
-      {/* Bottom controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-        <div className="flex items-center justify-between max-w-6xl mx-auto gap-4">
-          <AudioControls
-            onSoundToggle={setSoundEnabled}
-            className="opacity-90"
-          />
-
-          <PresentationControls
+      {/* Top progress bar - Hidden in fullscreen */}
+      {!isFullscreen && (
+        <div className="absolute top-0 left-0 right-0 z-10">
+          <ProgressBar
             currentSlide={currentSlide}
             totalSlides={slides.length}
-            isAutoPlaying={isAutoPlaying}
-            isFullscreen={isFullscreen}
-            onPrevious={goToPrevious}
-            onNext={goToNext}
-            onToggleAutoPlay={toggleAutoPlay}
-            onReset={resetPresentation}
-            onToggleFullscreen={toggleFullscreen}
-            className="opacity-90"
+            onSlideClick={goToSlide}
+            className="m-4"
           />
+        </div>
+      )}
 
+      {/* Bottom controls - Hidden in fullscreen */}
+      {!isFullscreen && (
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
+          <div className="flex items-center justify-between max-w-6xl mx-auto gap-4">
+            <AudioControls
+              onSoundToggle={setSoundEnabled}
+              className="opacity-90"
+            />
+
+            <PresentationControls
+              currentSlide={currentSlide}
+              totalSlides={slides.length}
+              isAutoPlaying={isAutoPlaying}
+              isFullscreen={isFullscreen}
+              onPrevious={goToPrevious}
+              onNext={goToNext}
+              onToggleAutoPlay={toggleAutoPlay}
+              onReset={resetPresentation}
+              onToggleFullscreen={toggleFullscreen}
+              className="opacity-90"
+            />
+
+            <Button
+              size="lg"
+              onClick={toggleFullscreen}
+              data-testid="button-fullscreen-standalone"
+              className="shadow-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 font-semibold opacity-90 hover:opacity-100"
+              title={isFullscreen ? "Thoát toàn màn hình (Esc)" : "Toàn màn hình (F)"}
+            >
+              {isFullscreen ? (
+                <>
+                  <Minimize className="w-5 h-5 mr-2" />
+                  <span>Thu nhỏ</span>
+                </>
+              ) : (
+                <>
+                  <Expand className="w-5 h-5 mr-2" />
+                  <span>Toàn màn hình</span>
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen mode - Show minimal exit button on hover */}
+      {isFullscreen && (
+        <div className="absolute bottom-4 right-4 z-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
           <Button
             size="lg"
             onClick={toggleFullscreen}
-            data-testid="button-fullscreen-standalone"
-            className="shadow-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 font-semibold opacity-90 hover:opacity-100"
-            title={isFullscreen ? "Thoát toàn màn hình (Esc)" : "Toàn màn hình (F)"}
+            data-testid="button-fullscreen-exit"
+            className="shadow-xl bg-primary/90 text-primary-foreground hover:bg-primary px-4 py-2 font-semibold"
+            title="Thoát toàn màn hình (Esc)"
           >
-            {isFullscreen ? (
-              <>
-                <Minimize className="w-5 h-5 mr-2" />
-                <span>Thu nhỏ</span>
-              </>
-            ) : (
-              <>
-                <Expand className="w-5 h-5 mr-2" />
-                <span>Toàn màn hình</span>
-              </>
-            )}
+            <Minimize className="w-5 h-5 mr-2" />
+            <span>Thoát</span>
           </Button>
         </div>
-      </div>
+      )}
 
-      {/* Instructions overlay (shows briefly) */}
-      {currentSlide === 0 && (
+      {/* Instructions overlay (shows briefly) - Hidden in fullscreen */}
+      {currentSlide === 0 && !isFullscreen && (
         <div className="absolute top-1/2 right-8 transform -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm p-4 rounded-lg border text-sm text-muted-foreground max-w-xs">
           <p className="mb-2 font-medium">Điều khiển:</p>
           <p>• Phím mũi tên ← →: Chuyển slide</p>

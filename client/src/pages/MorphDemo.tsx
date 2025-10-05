@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Expand, Minimize } from "lucide-react";
 import AudioControls from "@/components/AudioControls";
+import { Button } from "@/components/ui/button";
 
 // Định nghĩa các kiểu transition effects
 const transitionVariants = {
@@ -182,6 +183,7 @@ export default function MorphDemo() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [viewportScale, setViewportScale] = useState(0.5);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const totalSlides = demoMorphSlides.length;
 
   // Calculate scale to fit viewport
@@ -214,9 +216,49 @@ export default function MorphDemo() {
     }
   };
 
+  // Fullscreen toggle function
+  const toggleFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      try {
+        await document.documentElement.requestFullscreen();
+        setIsFullscreen(true);
+      } catch (err) {
+        console.error('Error attempting to enable fullscreen:', err);
+      }
+    } else {
+      try {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      } catch (err) {
+        console.error('Error attempting to exit fullscreen:', err);
+      }
+    }
+  };
+
+  // Fullscreen change detection
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'ArrowRight') nextSlide();
     if (event.key === 'ArrowLeft') prevSlide();
+    if (event.key === 'f' || event.key === 'F') toggleFullscreen();
+    if (event.key === 'Escape' && isFullscreen) toggleFullscreen();
   };
 
   const slide = demoMorphSlides[currentSlide];
@@ -297,18 +339,22 @@ export default function MorphDemo() {
         }}
       />
       
-      {/* Audio Controls - top right */}
-      <div className="absolute top-4 right-4 z-50">
-        <AudioControls />
-      </div>
+      {/* Audio Controls - top right - Hidden in fullscreen */}
+      {!isFullscreen && (
+        <div className="absolute top-4 right-4 z-50">
+          <AudioControls />
+        </div>
+      )}
       
-      {/* Header - Demo info - moved to bottom left */}
-      <div className="absolute bottom-4 left-4 z-50 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-lg text-gray-800">
-        <p className="text-xs opacity-90">
-          Slide {currentSlide + 1} / {totalSlides}
-          <span className="ml-2 text-purple-600">• {currentTransition}</span>
-        </p>
-      </div>
+      {/* Header - Demo info - moved to bottom left - Hidden in fullscreen */}
+      {!isFullscreen && (
+        <div className="absolute bottom-4 left-4 z-50 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-lg text-gray-800">
+          <p className="text-xs opacity-90">
+            Slide {currentSlide + 1} / {totalSlides}
+            <span className="ml-2 text-purple-600">• {currentTransition}</span>
+          </p>
+        </div>
+      )}
 
       {/* Slide Container with AnimatePresence for smooth transitions */}
       <AnimatePresence mode="wait" initial={false}>
@@ -341,59 +387,93 @@ export default function MorphDemo() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Controls */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-50">
-        <motion.button
-          onClick={prevSlide}
-          disabled={currentSlide === 0}
-          className="bg-white/70 backdrop-blur-sm hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed text-gray-800 p-4 rounded-full transition-all"
-          data-testid="button-prev"
-          whileHover={{ scale: currentSlide === 0 ? 1 : 1.1, x: -3 }}
-          whileTap={{ scale: currentSlide === 0 ? 1 : 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        >
-          <ArrowLeft size={24} />
-        </motion.button>
+      {/* Navigation Controls - Hidden in fullscreen */}
+      {!isFullscreen && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-50">
+          <motion.button
+            onClick={prevSlide}
+            disabled={currentSlide === 0}
+            className="bg-white/70 backdrop-blur-sm hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed text-gray-800 p-4 rounded-full transition-all"
+            data-testid="button-prev"
+            whileHover={{ scale: currentSlide === 0 ? 1 : 1.1, x: -3 }}
+            whileTap={{ scale: currentSlide === 0 ? 1 : 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <ArrowLeft size={24} />
+          </motion.button>
 
-        {/* Slide indicators */}
-        <div className="flex gap-2">
-          {Array.from({ length: totalSlides }).map((_, index) => (
-            <motion.button
-              key={index}
-              onClick={() => {
-                setDirection(index > currentSlide ? 'next' : 'prev');
-                setCurrentSlide(index);
-              }}
-              className={`h-3 rounded-full transition-all ${
-                index === currentSlide 
-                  ? 'bg-gray-800' 
-                  : 'bg-gray-400/50 hover:bg-gray-500/75'
-              }`}
-              style={{ width: index === currentSlide ? '32px' : '12px' }}
-              data-testid={`indicator-${index}`}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              animate={{
-                width: index === currentSlide ? '32px' : '12px',
-                backgroundColor: index === currentSlide ? 'rgba(31,41,55,1)' : 'rgba(156,163,175,0.5)'
-              }}
-            />
-          ))}
+          {/* Slide indicators */}
+          <div className="flex gap-2">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => {
+                  setDirection(index > currentSlide ? 'next' : 'prev');
+                  setCurrentSlide(index);
+                }}
+                className={`h-3 rounded-full transition-all ${
+                  index === currentSlide 
+                    ? 'bg-gray-800' 
+                    : 'bg-gray-400/50 hover:bg-gray-500/75'
+                }`}
+                style={{ width: index === currentSlide ? '32px' : '12px' }}
+                data-testid={`indicator-${index}`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                animate={{
+                  width: index === currentSlide ? '32px' : '12px',
+                  backgroundColor: index === currentSlide ? 'rgba(31,41,55,1)' : 'rgba(156,163,175,0.5)'
+                }}
+              />
+            ))}
+          </div>
+
+          <motion.button
+            onClick={nextSlide}
+            disabled={currentSlide === totalSlides - 1}
+            className="bg-white/70 backdrop-blur-sm hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed text-gray-800 p-4 rounded-full transition-all"
+            data-testid="button-next"
+            whileHover={{ scale: currentSlide === totalSlides - 1 ? 1 : 1.1, x: 3 }}
+            whileTap={{ scale: currentSlide === totalSlides - 1 ? 1 : 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <ArrowRight size={24} />
+          </motion.button>
         </div>
+      )}
 
-        <motion.button
-          onClick={nextSlide}
-          disabled={currentSlide === totalSlides - 1}
-          className="bg-white/70 backdrop-blur-sm hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed text-gray-800 p-4 rounded-full transition-all"
-          data-testid="button-next"
-          whileHover={{ scale: currentSlide === totalSlides - 1 ? 1 : 1.1, x: 3 }}
-          whileTap={{ scale: currentSlide === totalSlides - 1 ? 1 : 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        >
-          <ArrowRight size={24} />
-        </motion.button>
-      </div>
+      {/* Fullscreen Button - Always visible at bottom right */}
+      {!isFullscreen && (
+        <div className="absolute bottom-8 right-8 z-50">
+          <Button
+            size="lg"
+            onClick={toggleFullscreen}
+            data-testid="button-fullscreen"
+            className="bg-white/70 backdrop-blur-sm hover:bg-white/90 text-gray-800 px-4 py-2 font-semibold shadow-xl"
+            title="Toàn màn hình (F)"
+          >
+            <Expand className="w-5 h-5 mr-2" />
+            <span>Toàn màn hình</span>
+          </Button>
+        </div>
+      )}
+
+      {/* Fullscreen mode - Show minimal exit button on hover */}
+      {isFullscreen && (
+        <div className="absolute bottom-4 right-4 z-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
+          <Button
+            size="lg"
+            onClick={toggleFullscreen}
+            data-testid="button-fullscreen-exit"
+            className="shadow-xl bg-primary/90 text-primary-foreground hover:bg-primary px-4 py-2 font-semibold"
+            title="Thoát toàn màn hình (Esc)"
+          >
+            <Minimize className="w-5 h-5 mr-2" />
+            <span>Thoát</span>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
