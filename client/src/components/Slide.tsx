@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { Star, Heart, BookOpen, Lightbulb, Target, Sparkles } from "lucide-react";
 
 export interface SlideData {
@@ -15,28 +15,50 @@ interface SlideProps {
   slide: SlideData;
   isActive: boolean;
   direction: 'prev' | 'next' | 'none';
+  transitionType?: 'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade';
 }
 
-// Hiệu ứng Morph hiện đại với staggered entrance
-const slideTransition = {
-  enter: {
-    opacity: 0,
-    scale: 0.95,
-    y: 20,
+// Diverse transition effects
+const transitionVariants = {
+  morph: {
+    enter: { opacity: 0, scale: 0.95, y: 20 },
+    center: { zIndex: 1, opacity: 1, scale: 1, y: 0 },
+    exit: { zIndex: 0, opacity: 0, scale: 1.02, y: -10 },
   },
-  center: {
-    zIndex: 1,
-    opacity: 1,
-    scale: 1,
-    y: 0,
+  slide: (direction: 'prev' | 'next' | 'none') => ({
+    enter: { opacity: 0, x: direction === 'next' ? 100 : -100, scale: 0.98 },
+    center: { zIndex: 1, opacity: 1, x: 0, scale: 1 },
+    exit: { zIndex: 0, opacity: 0, x: direction === 'next' ? -100 : 100, scale: 0.98 },
+  }),
+  zoom: {
+    enter: { opacity: 0, scale: 0.5, rotateZ: -5 },
+    center: { zIndex: 1, opacity: 1, scale: 1, rotateZ: 0 },
+    exit: { zIndex: 0, opacity: 0, scale: 1.5, rotateZ: 5 },
   },
-  exit: {
-    zIndex: 0,
-    opacity: 0,
-    scale: 1.02,
-    y: -10,
+  flip: (direction: 'prev' | 'next' | 'none') => ({
+    enter: { opacity: 0, rotateY: direction === 'next' ? 90 : -90, scale: 0.8 },
+    center: { zIndex: 1, opacity: 1, rotateY: 0, scale: 1 },
+    exit: { zIndex: 0, opacity: 0, rotateY: direction === 'next' ? -90 : 90, scale: 0.8 },
+  }),
+  rotate: (direction: 'prev' | 'next' | 'none') => ({
+    enter: { opacity: 0, rotateZ: direction === 'next' ? 45 : -45, scale: 0.7 },
+    center: { zIndex: 1, opacity: 1, rotateZ: 0, scale: 1 },
+    exit: { zIndex: 0, opacity: 0, rotateZ: direction === 'next' ? -45 : 45, scale: 0.7 },
+  }),
+  cube: (direction: 'prev' | 'next' | 'none') => ({
+    enter: { opacity: 0, x: direction === 'next' ? 200 : -200, rotateY: direction === 'next' ? 45 : -45, scale: 0.9 },
+    center: { zIndex: 1, opacity: 1, x: 0, rotateY: 0, scale: 1 },
+    exit: { zIndex: 0, opacity: 0, x: direction === 'next' ? -200 : 200, rotateY: direction === 'next' ? -45 : 45, scale: 0.9 },
+  }),
+  fade: {
+    enter: { opacity: 0 },
+    center: { zIndex: 1, opacity: 1 },
+    exit: { zIndex: 0, opacity: 0 },
   },
 };
+
+// Legacy support
+const slideTransition = transitionVariants.morph;
 
 // Hiệu ứng icons trang trí với spring bounce
 const decorativeIconVariants = {
@@ -96,7 +118,7 @@ const floatingVariants = {
   }
 };
 
-export default function Slide({ slide, isActive, direction }: SlideProps) {
+export default function Slide({ slide, isActive, direction, transitionType = 'morph' }: SlideProps) {
   if (!isActive) return null;
 
   let shouldReduceMotion = false;
@@ -136,26 +158,39 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
     exit: { opacity: 0 }
   };
   
-  const getSlideVariants = () => shouldReduceMotion ? reducedSlideVariants : slideTransition;
+  // Get the appropriate transition variant
+  const getSlideVariants = useMemo(() => {
+    if (shouldReduceMotion) return reducedSlideVariants;
+    
+    const variant = transitionVariants[transitionType];
+    if (typeof variant === 'function') {
+      return variant(direction);
+    }
+    return variant;
+  }, [shouldReduceMotion, transitionType, direction]);
 
   return (
     <motion.div
       key={slide.id}
       custom={direction}
-      variants={getSlideVariants()}
+      variants={getSlideVariants}
       initial="enter"
       animate="center"
       exit="exit"
       transition={shouldReduceMotion ? 
         { duration: 0.1 } : 
         {
-          duration: 0.6,
+          duration: transitionType === 'flip' || transitionType === 'cube' ? 0.8 : 0.6,
           ease: [0.4, 0, 0.2, 1],
           opacity: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
           scale: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
           y: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+          x: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+          rotateY: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+          rotateZ: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
         }
       }
+      style={{ perspective: '1000px' }}
       className={`absolute inset-0 w-full h-full min-h-screen min-h-dvh flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-16 overflow-hidden`}
       data-testid={`slide-${slide.id}`}
     >
