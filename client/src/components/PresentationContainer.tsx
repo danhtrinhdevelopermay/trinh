@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
-import { Expand, Minimize } from "lucide-react";
+import { Expand, Minimize, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Slide, { type SlideData } from "./Slide";
 import PresentationControls from "./PresentationControls";
@@ -231,6 +231,7 @@ export default function PresentationContainer({
   const [direction, setDirection] = useState<'prev' | 'next' | 'none'>('none');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showFullscreenControls, setShowFullscreenControls] = useState(true);
   const [transitionType, setTransitionType] = useState<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'>('morph');
   const [showFireworks, setShowFireworks] = useState(false);
   const [hasPlayedFirstSlide, setHasPlayedFirstSlide] = useState(false);
@@ -754,18 +755,74 @@ export default function PresentationContainer({
         </div>
       )}
 
-      {/* Fullscreen mode - Show minimal exit button on hover */}
+      {/* Fullscreen mode - Show controls conditionally */}
+      {isFullscreen && showFullscreenControls && (
+        <>
+          <div className="absolute top-0 left-0 right-0 z-10">
+            <ProgressBar
+              currentSlide={currentSlide}
+              totalSlides={slides.length}
+              onSlideClick={goToSlide}
+              className="m-4"
+              isFullscreen={isFullscreen}
+            />
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
+            <div className="flex items-center justify-between max-w-6xl mx-auto gap-4">
+              <AudioControls
+                onSoundToggle={setSoundEnabled}
+                className="opacity-90"
+              />
+
+              <PresentationControls
+                currentSlide={currentSlide}
+                totalSlides={slides.length}
+                isAutoPlaying={isAutoPlaying}
+                isFullscreen={isFullscreen}
+                onPrevious={goToPrevious}
+                onNext={goToNext}
+                onToggleAutoPlay={toggleAutoPlay}
+                onReset={resetPresentation}
+                onToggleFullscreen={toggleFullscreen}
+                className="opacity-90"
+              />
+
+              <Button
+                size="lg"
+                onClick={toggleFullscreen}
+                data-testid="button-fullscreen-exit-bottom"
+                className="shadow-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 font-semibold opacity-90 hover:opacity-100"
+                title="Thoát toàn màn hình (Esc)"
+              >
+                <Minimize className="w-5 h-5 mr-2" />
+                <span>Thoát</span>
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Fullscreen mode - Toggle controls button */}
       {isFullscreen && (
-        <div className="absolute bottom-4 right-4 z-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-4 right-4 z-50 flex gap-2">
           <Button
             size="lg"
-            onClick={toggleFullscreen}
-            data-testid="button-fullscreen-exit"
+            onClick={() => setShowFullscreenControls(!showFullscreenControls)}
+            data-testid="button-toggle-controls"
             className="shadow-xl bg-primary/90 text-primary-foreground hover:bg-primary px-4 py-2 font-semibold"
-            title="Thoát toàn màn hình (Esc)"
+            title={showFullscreenControls ? "Ẩn thanh điều khiển" : "Hiện thanh điều khiển"}
           >
-            <Minimize className="w-5 h-5 mr-2" />
-            <span>Thoát</span>
+            {showFullscreenControls ? (
+              <>
+                <EyeOff className="w-5 h-5 mr-2" />
+                <span>Ẩn</span>
+              </>
+            ) : (
+              <>
+                <Eye className="w-5 h-5 mr-2" />
+                <span>Hiện</span>
+              </>
+            )}
           </Button>
         </div>
       )}
