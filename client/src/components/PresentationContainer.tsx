@@ -6,6 +6,7 @@ import Slide, { type SlideData } from "./Slide";
 import PresentationControls from "./PresentationControls";
 import AudioControls from "./AudioControls";
 import ProgressBar from "./ProgressBar";
+import { FireworksEffect } from "./FireworksEffect";
 import { useAudio } from "@/contexts/AudioContext";
 import { usePresentationSlides } from "@/hooks/usePresentations";
 // Import educational stock images
@@ -231,9 +232,11 @@ export default function PresentationContainer({
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [transitionType, setTransitionType] = useState<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'>('morph');
+  const [showFireworks, setShowFireworks] = useState(false);
+  const [hasPlayedFirstSlide, setHasPlayedFirstSlide] = useState(false);
   
   const audioContext = useAudio();
-  const { playTransitionSound, playSpecialEffect } = audioContext;
+  const { playTransitionSound, playSpecialEffect, playFireworksSound, playSlideSound } = audioContext;
   
   // Fetch slides from API
   const { data: apiSlides, isLoading, error } = usePresentationSlides(presentationId);
@@ -379,8 +382,9 @@ export default function PresentationContainer({
   const goToNext = useCallback(async () => {
     if (currentSlide < slides.length - 1) {
       setDirection('next');
-      setCurrentSlide(prev => prev + 1);
-      console.log('Next slide:', currentSlide + 1);
+      const nextSlideIndex = currentSlide + 1;
+      setCurrentSlide(nextSlideIndex);
+      console.log('Next slide:', nextSlideIndex);
       
       // Random transition type for variety
       const transitions: Array<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'> = ['morph', 'slide', 'zoom', 'flip', 'rotate', 'cube', 'fade'];
@@ -404,19 +408,23 @@ export default function PresentationContainer({
             await playTransitionSound('chime');
         }
         
-        // Play special effect after a short delay
-        setTimeout(() => {
-          playSpecialEffect('sparkle');
-        }, 300);
+        // Play sound for the next slide type
+        const nextSlide = slides[nextSlideIndex];
+        if (nextSlide && (nextSlide.type === 'title' || nextSlide.type === 'content' || nextSlide.type === 'quote')) {
+          setTimeout(() => {
+            playSlideSound(nextSlide.type);
+          }, 200);
+        }
       }
     }
-  }, [currentSlide, slides.length, soundEnabled, playTransitionSound, playSpecialEffect]);
+  }, [currentSlide, slides, soundEnabled, playTransitionSound, playSlideSound]);
 
   const goToPrevious = useCallback(async () => {
     if (currentSlide > 0) {
       setDirection('prev');
-      setCurrentSlide(prev => prev - 1);
-      console.log('Previous slide:', currentSlide - 1);
+      const prevSlideIndex = currentSlide - 1;
+      setCurrentSlide(prevSlideIndex);
+      console.log('Previous slide:', prevSlideIndex);
       
       // Random transition type
       const transitions: Array<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'> = ['morph', 'slide', 'zoom', 'flip', 'rotate', 'cube', 'fade'];
@@ -425,12 +433,17 @@ export default function PresentationContainer({
       
       if (soundEnabled) {
         await playTransitionSound('pop');
-        setTimeout(() => {
-          playSpecialEffect('ding');
-        }, 200);
+        
+        // Play sound for the previous slide type
+        const prevSlide = slides[prevSlideIndex];
+        if (prevSlide && (prevSlide.type === 'title' || prevSlide.type === 'content' || prevSlide.type === 'quote')) {
+          setTimeout(() => {
+            playSlideSound(prevSlide.type);
+          }, 200);
+        }
       }
     }
-  }, [currentSlide, soundEnabled, playTransitionSound, playSpecialEffect]);
+  }, [currentSlide, slides, soundEnabled, playTransitionSound, playSlideSound]);
 
   const resetPresentation = useCallback(() => {
     setDirection('prev');
@@ -498,12 +511,17 @@ export default function PresentationContainer({
       
       if (soundEnabled) {
         await playTransitionSound('chime');
-        setTimeout(() => {
-          playSpecialEffect('sparkle');
-        }, 200);
+        
+        // Play sound for the target slide type
+        const targetSlide = slides[slideIndex];
+        if (targetSlide && (targetSlide.type === 'title' || targetSlide.type === 'content' || targetSlide.type === 'quote')) {
+          setTimeout(() => {
+            playSlideSound(targetSlide.type);
+          }, 200);
+        }
       }
     }
-  }, [currentSlide, slides.length, soundEnabled, playTransitionSound, playSpecialEffect]);
+  }, [currentSlide, slides, soundEnabled, playTransitionSound, playSlideSound]);
 
   // Auto-play functionality
   useEffect(() => {
@@ -540,6 +558,46 @@ export default function PresentationContainer({
     };
   }, []);
 
+  // Fireworks effect for first slide
+  useEffect(() => {
+    if (currentSlide === 0 && !hasPlayedFirstSlide && slides.length > 0) {
+      // Show fireworks
+      setShowFireworks(true);
+      
+      // Play fireworks sound
+      if (soundEnabled) {
+        playFireworksSound();
+        
+        // Play slide sound after fireworks
+        const firstSlide = slides[0];
+        if (firstSlide && (firstSlide.type === 'title' || firstSlide.type === 'content' || firstSlide.type === 'quote')) {
+          setTimeout(() => {
+            playSlideSound(firstSlide.type);
+          }, 1500);
+        }
+      }
+      
+      // Hide fireworks after 3 seconds
+      setTimeout(() => {
+        setShowFireworks(false);
+      }, 3000);
+      
+      setHasPlayedFirstSlide(true);
+    }
+  }, [currentSlide, hasPlayedFirstSlide, slides, soundEnabled, playFireworksSound, playSlideSound]);
+
+  // Reset first slide flag when presentation is reset
+  useEffect(() => {
+    if (currentSlide === 0) {
+      // Don't reset immediately, allow fireworks to play
+    } else {
+      // Reset flag when moving away from first slide
+      if (hasPlayedFirstSlide && currentSlide !== 0) {
+        // Keep the flag so fireworks don't replay when going back to slide 0
+      }
+    }
+  }, [currentSlide, hasPlayedFirstSlide]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -556,6 +614,7 @@ export default function PresentationContainer({
         case 'Home':
           event.preventDefault();
           resetPresentation();
+          setHasPlayedFirstSlide(false); // Reset for fireworks on presentation reset
           break;
         case 'Escape':
           if (isFullscreen) {
@@ -629,6 +688,13 @@ export default function PresentationContainer({
           ))}
         </AnimatePresence>
       </div>
+
+      {/* Fireworks effect for first slide */}
+      {showFireworks && (
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 50 }}>
+          <FireworksEffect />
+        </div>
+      )}
 
       {/* Top progress bar - Hidden in fullscreen */}
       {!isFullscreen && (

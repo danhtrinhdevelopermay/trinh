@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from "react";
 import backgroundMusicFile from "@assets/soft-background-music-401914_1759657535406.mp3";
+import fireworksSound from "@assets/fireworks-50524_1759660738752.mp3";
 
 interface AudioContextValue {
   // States
@@ -20,6 +21,8 @@ interface AudioContextValue {
   playPageNavigationSound: () => void;
   playSpecialMusic: (musicUrl: string) => void;
   stopSpecialMusic: () => void;
+  playFireworksSound: () => void;
+  playSlideSound: (slideType: 'title' | 'content' | 'quote') => void;
 }
 
 const AudioContextObj = createContext<AudioContextValue | null>(null);
@@ -419,6 +422,102 @@ export function AudioProvider({ children }: AudioProviderProps) {
     }
   }, []);
 
+  const playFireworksSound = useCallback(() => {
+    if (isMuted) return;
+    
+    try {
+      const audio = new Audio(fireworksSound);
+      audio.volume = (volume / 100) * 0.6;
+      audio.play().catch(() => {
+        // Silently fail if playback fails
+      });
+    } catch (error) {
+      // Silently fail
+    }
+  }, [volume, isMuted]);
+
+  const playSlideSound = useCallback(async (slideType: 'title' | 'content' | 'quote') => {
+    if (isMuted || !audioContextRef.current || !masterGainRef.current) {
+      return;
+    }
+
+    await resumeAudioContext();
+    
+    if (audioContextRef.current.state !== 'running') {
+      return;
+    }
+    
+    try {
+      const now = audioContextRef.current.currentTime;
+      
+      switch (slideType) {
+        case 'title':
+          // Grand fanfare for title slides
+          const titleFreqs = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          titleFreqs.forEach((freq, index) => {
+            const osc = audioContextRef.current!.createOscillator();
+            const gain = audioContextRef.current!.createGain();
+            osc.connect(gain);
+            gain.connect(masterGainRef.current!);
+            
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            
+            const startTime = now + (index * 0.1);
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.15, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.4);
+            
+            osc.start(startTime);
+            osc.stop(startTime + 0.4);
+          });
+          break;
+          
+        case 'content':
+          // Gentle chime for content slides
+          const contentOsc = audioContextRef.current.createOscillator();
+          const contentGain = audioContextRef.current.createGain();
+          contentOsc.connect(contentGain);
+          contentGain.connect(masterGainRef.current);
+          
+          contentOsc.frequency.value = 880; // A5
+          contentOsc.type = 'sine';
+          
+          contentGain.gain.setValueAtTime(0, now);
+          contentGain.gain.linearRampToValueAtTime(0.12, now + 0.02);
+          contentGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          
+          contentOsc.start(now);
+          contentOsc.stop(now + 0.3);
+          break;
+          
+        case 'quote':
+          // Wisdom bell for quote slides
+          const quoteFreqs = [698.46, 830.61]; // F5, G#5
+          quoteFreqs.forEach((freq, index) => {
+            const osc = audioContextRef.current!.createOscillator();
+            const gain = audioContextRef.current!.createGain();
+            osc.connect(gain);
+            gain.connect(masterGainRef.current!);
+            
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            
+            const startTime = now + (index * 0.15);
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.13, startTime + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5);
+            
+            osc.start(startTime);
+            osc.stop(startTime + 0.5);
+          });
+          break;
+      }
+    } catch (error) {
+      // Silently fail if oscillator creation fails
+    }
+  }, [resumeAudioContext, isMuted]);
+
   const value: AudioContextValue = {
     isPlaying,
     volume,
@@ -435,6 +534,8 @@ export function AudioProvider({ children }: AudioProviderProps) {
     playPageNavigationSound,
     playSpecialMusic,
     stopSpecialMusic,
+    playFireworksSound,
+    playSlideSound,
   };
 
   return (
