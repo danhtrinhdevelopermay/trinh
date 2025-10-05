@@ -2,6 +2,7 @@ import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import type { SlideElement, TextElement, ImageElement, ShapeElement, IconElement } from "@shared/schema";
 import * as Icons from "lucide-react";
 import { Rocket3D, Star3D, Book3D, Trophy3D, Heart3D, Target3D } from "./3DElements";
+import { ThreeJSModel } from "./ThreeJS3DModels";
 
 interface SlideCanvasProps {
   elements: SlideElement[];
@@ -393,6 +394,22 @@ function Model3DRenderer({ element }: { element: any }) {
       return <Heart3D x={element.x} y={element.y} size={element.width} />;
     case 'target':
       return <Target3D x={element.x} y={element.y} size={element.width} />;
+    case 'mountain':
+    case 'brain':
+    case 'lightbulb':
+    case 'stairs':
+    case 'globe':
+    case 'path':
+      return (
+        <ThreeJSModel
+          modelType={modelType}
+          x={element.x}
+          y={element.y}
+          width={element.width}
+          height={element.height}
+          rotation={element.rotation}
+        />
+      );
     default:
       return <Star3D x={element.x} y={element.y} size={element.width} />;
   }
