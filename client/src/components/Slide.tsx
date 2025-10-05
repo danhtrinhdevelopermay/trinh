@@ -99,20 +99,32 @@ const floatingVariants = {
 export default function Slide({ slide, isActive, direction }: SlideProps) {
   if (!isActive) return null;
 
-  const shouldReduceMotion = useReducedMotion();
+  let shouldReduceMotion = false;
+  try {
+    shouldReduceMotion = useReducedMotion() || false;
+  } catch (e) {
+    console.warn('useReducedMotion hook error:', e);
+    shouldReduceMotion = false;
+  }
+  
   const backgroundStyle = slide.background || 'educational-gradient-1';
   const textColorStyle = slide.textColor || 'text-gray-800';
   
   // Map slide type to decorative icon
   const getDecorativeIcon = (type: string, slideId: number | string) => {
-    const icons = {
-      title: [Star, Sparkles],
-      content: [BookOpen, Lightbulb],
-      quote: [Heart, Target]
-    };
-    const iconSet = icons[type as keyof typeof icons] || icons.content;
-    const numericId = typeof slideId === 'string' ? parseInt(slideId, 10) || 0 : slideId;
-    return iconSet[numericId % iconSet.length];
+    try {
+      const icons = {
+        title: [Star, Sparkles],
+        content: [BookOpen, Lightbulb],
+        quote: [Heart, Target]
+      };
+      const iconSet = icons[type as keyof typeof icons] || icons.content;
+      const numericId = typeof slideId === 'string' ? parseInt(slideId, 10) || 0 : slideId;
+      return iconSet[numericId % iconSet.length];
+    } catch (e) {
+      console.error('Error getting decorative icon:', e);
+      return Star;
+    }
   };
   
   const DecorativeIcon = getDecorativeIcon(slide.type || 'content', slide.id);
