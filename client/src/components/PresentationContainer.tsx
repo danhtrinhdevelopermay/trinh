@@ -704,6 +704,7 @@ export default function PresentationContainer({
             totalSlides={slides.length}
             onSlideClick={goToSlide}
             className="m-4"
+            isFullscreen={isFullscreen}
           />
         </div>
       )}
