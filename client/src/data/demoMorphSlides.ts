@@ -1191,7 +1191,7 @@ const rawDemoSlides = [
       {
         id: "vn-example-2-name",
         type: "text" as const,
-        text: "Lê Minh Châu",
+        text: "Thầy Nguyễn Ngọc Ký",
         x: 150,
         y: 330,
         width: 900,
@@ -1208,7 +1208,7 @@ const rawDemoSlides = [
       {
         id: "vn-example-2-desc",
         type: "text" as const,
-        text: "Khuyết tật bẩm sinh, vượt khó trở thành họa sĩ tài năng.",
+        text: "Liệt đôi tay, tự học viết bằng chân, trở thành nhà văn nổi tiếng.",
         x: 150,
         y: 375,
         width: 900,
@@ -1221,6 +1221,20 @@ const rawDemoSlides = [
         rotation: 0,
         opacity: 1,
         zIndex: 1,
+      },
+      {
+        id: "nguyen-ngoc-ky-image",
+        type: "image" as const,
+        src: "/attached_assets/photo-1664414672918-16644146732841701402327_1759638546232.jpg",
+        alt: "Thầy Nguyễn Ngọc Ký",
+        x: 700,
+        y: 150,
+        width: 320,
+        height: 380,
+        objectFit: "cover" as const,
+        borderRadius: 16,
+        opacity: 1,
+        zIndex: 2,
       },
       {
         id: "vn-example-3-name",
