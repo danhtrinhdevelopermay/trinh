@@ -136,6 +136,7 @@ function ImageElementRenderer({ element, index }: { element: ImageElement; index
         style={{
           position: 'absolute',
           objectFit: element.objectFit,
+          objectPosition: (element as any).objectPosition || 'center center',
           borderRadius: `${element.borderRadius}px`,
           zIndex: element.zIndex,
         }}
@@ -179,6 +180,7 @@ function ImageElementRenderer({ element, index }: { element: ImageElement; index
       style={{
         position: 'absolute',
         objectFit: element.objectFit,
+        objectPosition: (element as any).objectPosition || 'center center',
         borderRadius: `${element.borderRadius}px`,
         zIndex: element.zIndex,
       }}
