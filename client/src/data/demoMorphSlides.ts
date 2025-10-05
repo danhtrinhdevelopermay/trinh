@@ -1244,6 +1244,48 @@ const rawDemoSlides = [
     ],
   },
 
+  // Slide 11: Video giới thiệu về Thầy Nguyễn Ngọc Ký
+  {
+    background: "hero-gradient-dark",
+    textColor: "text-white",
+    elements: [
+      {
+        id: "video-title",
+        type: "text" as const,
+        text: "Video: Biểu Tượng Tinh Thần Hiếu Học",
+        x: 100,
+        y: 30,
+        width: 1000,
+        height: 60,
+        fontSize: 44,
+        fontWeight: "bold",
+        color: "hsl(0, 0%, 100%)",
+        textAlign: "center" as const,
+        lineHeight: 1.3,
+        rotation: 0,
+        opacity: 1,
+        zIndex: 2,
+      },
+      {
+        id: "nguyen-ngoc-ky-video",
+        type: "video" as const,
+        src: "/attached_assets/Thầy giáo Nguyễn Ngọc Ký - Biểu tượng tinh thần hiếu học _ VTV24_1759667220308.mp4",
+        x: 100,
+        y: 110,
+        width: 1000,
+        height: 530,
+        opacity: 1,
+        zIndex: 3,
+        rotation: 0,
+        autoplay: false,
+        loop: false,
+        muted: false,
+        controls: true,
+        objectFit: "contain" as const,
+      },
+    ],
+  },
+
   // Slide 12: Liên hệ thực tế cuộc sống
   {
     background: "kawaii-gradient-1",
