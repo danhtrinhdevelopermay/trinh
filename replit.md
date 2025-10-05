@@ -6,6 +6,27 @@ This is a modern web application for creating and displaying educational present
 
 ## Recent Changes
 
+### October 5, 2025 - Vietnamese Village 3D World Background
+- **Immersive 3D background world**: Created a complete Vietnamese countryside village scene as presentation background
+  - Traditional Vietnamese houses (nhà mái ngói) with tiled roofs, walls, doors, and windows
+  - Bamboo trees and palm trees with realistic swaying animations
+  - Animated villagers walking in circular paths around the village
+  - Water buffalo with subtle breathing animation
+  - Rice fields (ruộng lúa) with individual rice plants scattered throughout
+  - Peaceful countryside atmosphere with sun, clouds, and natural lighting
+- **Dynamic camera journey**: Camera smoothly travels through the village as slides change
+  - 8 unique camera positions corresponding to different slides
+  - Smooth interpolation between positions using lerp for cinematic transitions
+  - Camera looks at different focal points to showcase various parts of the village
+- **Realistic lighting and atmosphere**: 
+  - Warm golden sunlight with emissive sun model
+  - Floating clouds with transparency and animation
+  - Atmospheric fog for depth perception
+  - Cast shadows from buildings and objects
+  - Sky gradient from blue to green (heaven to earth)
+- **Performance optimized**: Uses Three.js with React Three Fiber for efficient 3D rendering
+- **Error handling**: Graceful fallback to gradient background if WebGL is not available
+
 ### October 5, 2025 - Expanded 3D Models Library
 - **New 3D models created**: Added 6 new thematically appropriate Three.js models to enhance presentation impact
   - Compass model: Represents direction and guidance (rotating compass with animated needle)
