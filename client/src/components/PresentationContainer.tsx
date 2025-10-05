@@ -22,13 +22,13 @@ const mockSlides: SlideData[] = [
     type: 'title',
     title: "Vượt Lên Số Phận",
     content: (
-      <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
         <div className="max-w-xl">
-          <p className="text-2xl md:text-3xl font-medium leading-relaxed opacity-90">
+          <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed opacity-90">
             Làm thế nào để con người vượt lên số phận của chính mình trong cuộc sống
           </p>
         </div>
-        <div className="w-96 h-72 rounded-2xl overflow-hidden shadow-2xl opacity-90 flex-shrink-0">
+        <div className="w-64 h-48 md:w-80 md:h-64 lg:w-96 lg:h-72 rounded-2xl overflow-hidden shadow-2xl opacity-90 flex-shrink-0">
           <img 
             src={inspiringImage} 
             alt="Inspiring journey to overcome destiny" 
@@ -44,26 +44,26 @@ const mockSlides: SlideData[] = [
     type: 'content',
     title: "Số Phận Là Gì?",
     content: (
-      <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
-        <div className="space-y-8 text-left max-w-2xl">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
+        <div className="space-y-6 md:space-y-8 text-left max-w-2xl">
           <div className="flex items-start space-x-4 group">
             <div className="w-3 h-3 bg-white/60 rounded-full mt-3 group-hover:scale-125 transition-transform flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Những điều kiện ban đầu ta được sinh ra</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Những điều kiện ban đầu ta được sinh ra</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="w-3 h-3 bg-white/60 rounded-full mt-3 group-hover:scale-125 transition-transform flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Hoàn cảnh gia đình và xã hội</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Hoàn cảnh gia đình và xã hội</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="w-3 h-3 bg-white/60 rounded-full mt-3 group-hover:scale-125 transition-transform flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Khả năng và hạn chế tự nhiên</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Khả năng và hạn chế tự nhiên</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="w-3 h-3 bg-white/60 rounded-full mt-3 group-hover:scale-125 transition-transform flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Những sự kiện ngoài tầm kiểm soát</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Những sự kiện ngoài tầm kiểm soát</p>
           </div>
         </div>
-        <div className="w-80 h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
+        <div className="w-64 h-48 md:w-72 md:h-56 lg:w-80 lg:h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
           <img 
             src={successImage1} 
             alt="Life circumstances and destiny" 
@@ -79,8 +79,8 @@ const mockSlides: SlideData[] = [
     type: 'quote',
     title: "Nelson Mandela",
     content: (
-      <div className="flex items-center justify-center gap-8 max-w-4xl mx-auto">
-        <div className="w-32 h-32 rounded-full overflow-hidden shadow-xl opacity-80 bg-white/10 flex-shrink-0">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto px-4">
+        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl opacity-80 bg-white/10 flex-shrink-0">
           <img 
             src={successImage2} 
             alt="Nelson Mandela inspiration" 
@@ -88,7 +88,7 @@ const mockSlides: SlideData[] = [
           />
         </div>
         <div className="max-w-2xl text-center">
-          <p className="text-3xl font-medium leading-relaxed italic">
+          <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed italic">
             "Tôi là chủ nhân của số phận mình, tôi là thuyền trưởng của linh hồn mình"
           </p>
         </div>
@@ -101,26 +101,26 @@ const mockSlides: SlideData[] = [
     type: 'content',
     title: "Tư Duy Quyết Định Mọi Thứ",
     content: (
-      <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
-        <div className="space-y-8 text-left max-w-2xl">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
+        <div className="space-y-6 md:space-y-8 text-left max-w-2xl">
           <div className="flex items-start space-x-4 group">
             <div className="w-4 h-4 bg-gradient-to-r from-yellow-300 to-orange-300 rounded-full mt-2 group-hover:scale-125 transition-transform shadow-lg flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Thay đổi cách nhìn nhận về hoàn cảnh</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Thay đổi cách nhìn nhận về hoàn cảnh</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="w-4 h-4 bg-gradient-to-r from-blue-300 to-purple-300 rounded-full mt-2 group-hover:scale-125 transition-transform shadow-lg flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Tập trung vào những gì có thể kiểm soát</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Tập trung vào những gì có thể kiểm soát</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="w-4 h-4 bg-gradient-to-r from-green-300 to-teal-300 rounded-full mt-2 group-hover:scale-125 transition-transform shadow-lg flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Biến thử thách thành cơ hội</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Biến thử thách thành cơ hội</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="w-4 h-4 bg-gradient-to-r from-pink-300 to-rose-300 rounded-full mt-2 group-hover:scale-125 transition-transform shadow-lg flex-shrink-0"></div>
-            <p className="text-2xl font-medium leading-relaxed">Học hỏi từ thất bại và khó khăn</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Học hỏi từ thất bại và khó khăn</p>
           </div>
         </div>
-        <div className="w-80 h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
+        <div className="w-64 h-48 md:w-72 md:h-56 lg:w-80 lg:h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
           <img 
             src={successImage2} 
             alt="Mindset and thinking" 
@@ -136,26 +136,26 @@ const mockSlides: SlideData[] = [
     type: 'content',
     title: "Hành Động Tạo Nên Thay Đổi",
     content: (
-      <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
-        <div className="space-y-8 text-left max-w-2xl">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
+        <div className="space-y-6 md:space-y-8 text-left max-w-2xl">
           <div className="flex items-start space-x-4 group">
             <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full text-white font-bold text-sm group-hover:scale-110 transition-transform shadow-lg flex-shrink-0">1</div>
-            <p className="text-2xl font-medium leading-relaxed">Đặt mục tiêu cụ thể và rõ ràng</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Đặt mục tiêu cụ thể và rõ ràng</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full text-white font-bold text-sm group-hover:scale-110 transition-transform shadow-lg flex-shrink-0">2</div>
-            <p className="text-2xl font-medium leading-relaxed">Lập kế hoạch và thực hiện kiên trì</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Lập kế hoạch và thực hiện kiên trì</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full text-white font-bold text-sm group-hover:scale-110 transition-transform shadow-lg flex-shrink-0">3</div>
-            <p className="text-2xl font-medium leading-relaxed">Không ngừng học hỏi và phát triển</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Không ngừng học hỏi và phát triển</p>
           </div>
           <div className="flex items-start space-x-4 group">
             <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-orange-400 to-red-400 rounded-full text-white font-bold text-sm group-hover:scale-110 transition-transform shadow-lg flex-shrink-0">4</div>
-            <p className="text-2xl font-medium leading-relaxed">Xây dựng mối quan hệ tích cực</p>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">Xây dựng mối quan hệ tích cực</p>
           </div>
         </div>
-        <div className="w-80 h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
+        <div className="w-64 h-48 md:w-72 md:h-56 lg:w-80 lg:h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
           <img 
             src={inspiringImage} 
             alt="Taking action for change" 
@@ -171,8 +171,8 @@ const mockSlides: SlideData[] = [
     type: 'quote',
     title: "Viktor Frankl",
     content: (
-      <div className="flex items-center justify-center gap-8 max-w-4xl mx-auto">
-        <div className="w-32 h-32 rounded-full overflow-hidden shadow-xl opacity-80 bg-white/10 flex-shrink-0">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto px-4">
+        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl opacity-80 bg-white/10 flex-shrink-0">
           <img 
             src={successImage1} 
             alt="Viktor Frankl inspiration" 
@@ -180,7 +180,7 @@ const mockSlides: SlideData[] = [
           />
         </div>
         <div className="max-w-2xl text-center">
-          <p className="text-3xl font-medium leading-relaxed italic">
+          <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed italic">
             "Giữa kích thích và phản ứng có một khoảng trống. Trong khoảng trống đó là quyền tự do lựa chọn của chúng ta"
           </p>
         </div>
@@ -193,14 +193,14 @@ const mockSlides: SlideData[] = [
     type: 'content',
     title: "Kết Luận",
     content: (
-      <div className="space-y-8 text-center max-w-5xl mx-auto">
-        <div className="flex items-center justify-center gap-8">
+      <div className="space-y-8 text-center max-w-5xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           <div className="max-w-lg">
-            <p className="text-3xl font-bold mb-4">Số phận không phải là điểm đến</p>
-            <p className="text-2xl mb-4">mà là điểm khởi đầu</p>
-            <p className="text-xl opacity-90">Chúng ta có thể thay đổi và tạo ra cuộc sống mà mình mong muốn</p>
+            <p className="text-2xl md:text-3xl font-bold mb-4">Số phận không phải là điểm đến</p>
+            <p className="text-xl md:text-2xl mb-4">mà là điểm khởi đầu</p>
+            <p className="text-lg md:text-xl opacity-90">Chúng ta có thể thay đổi và tạo ra cuộc sống mà mình mong muốn</p>
           </div>
-          <div className="w-80 h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
+          <div className="w-64 h-48 md:w-72 md:h-56 lg:w-80 lg:h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
             <img 
               src={successImage3} 
               alt="Success and achievement" 
@@ -266,13 +266,13 @@ export default function PresentationContainer({
             // Handle content with images
             else if (parsedContent.type === 'title_with_image') {
               content = (
-                <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
                   <div className="max-w-xl">
-                    <p className="text-2xl md:text-3xl font-medium leading-relaxed opacity-90">
+                    <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed opacity-90">
                       {parsedContent.text}
                     </p>
                   </div>
-                  <div className="w-96 h-72 rounded-2xl overflow-hidden shadow-2xl opacity-90 flex-shrink-0">
+                  <div className="w-64 h-48 md:w-80 md:h-64 lg:w-96 lg:h-72 rounded-2xl overflow-hidden shadow-2xl opacity-90 flex-shrink-0">
                     <img 
                       src={parsedContent.image} 
                       alt="Inspiring journey to overcome destiny" 
@@ -284,16 +284,16 @@ export default function PresentationContainer({
             }
             else if (parsedContent.type === 'content_with_image') {
               content = (
-                <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
-                  <div className="space-y-8 text-left max-w-2xl">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
+                  <div className="space-y-6 md:space-y-8 text-left max-w-2xl">
                     {parsedContent.items.map((item: string, itemIndex: number) => (
                       <div key={itemIndex} className="flex items-start space-x-4 group">
                         <div className="w-3 h-3 bg-white/60 rounded-full mt-3 group-hover:scale-125 transition-transform flex-shrink-0"></div>
-                        <p className="text-2xl font-medium leading-relaxed">{item}</p>
+                        <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed">{item}</p>
                       </div>
                     ))}
                   </div>
-                  <div className="w-80 h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
+                  <div className="w-64 h-48 md:w-72 md:h-56 lg:w-80 lg:h-60 rounded-2xl overflow-hidden shadow-2xl opacity-80 flex-shrink-0">
                     <img 
                       src={parsedContent.image} 
                       alt="Content illustration" 
@@ -305,8 +305,8 @@ export default function PresentationContainer({
             }
             else if (parsedContent.type === 'quote_with_image') {
               content = (
-                <div className="flex items-center justify-center gap-8 max-w-4xl mx-auto">
-                  <div className="w-32 h-32 rounded-full overflow-hidden shadow-xl opacity-80 bg-white/10 flex-shrink-0">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto px-4">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl opacity-80 bg-white/10 flex-shrink-0">
                     <img 
                       src={parsedContent.image} 
                       alt="Quote inspiration" 
@@ -314,7 +314,7 @@ export default function PresentationContainer({
                     />
                   </div>
                   <div className="max-w-2xl text-center">
-                    <p className="text-3xl font-medium leading-relaxed italic">
+                    <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed italic">
                       "{parsedContent.text}"
                     </p>
                   </div>
@@ -323,16 +323,16 @@ export default function PresentationContainer({
             }
             else if (parsedContent.type === 'story_with_image') {
               content = (
-                <div className="flex items-center justify-center gap-12 max-w-6xl mx-auto">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto px-4">
                   <div className="space-y-6 text-left max-w-2xl">
                     {parsedContent.story.map((item: string, itemIndex: number) => (
                       <div key={itemIndex} className="flex items-start space-x-4 group">
                         <div className="w-4 h-4 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full mt-2 group-hover:scale-125 transition-transform shadow-lg flex-shrink-0"></div>
-                        <p className="text-xl font-medium leading-relaxed">{item}</p>
+                        <p className="text-lg md:text-xl font-medium leading-relaxed">{item}</p>
                       </div>
                     ))}
                   </div>
-                  <div className="w-80 h-64 rounded-2xl overflow-hidden shadow-2xl opacity-80 border-4 border-white/20 flex-shrink-0">
+                  <div className="w-64 h-48 md:w-72 md:h-60 lg:w-80 lg:h-64 rounded-2xl overflow-hidden shadow-2xl opacity-80 border-4 border-white/20 flex-shrink-0">
                     <img 
                       src={parsedContent.image} 
                       alt="Story illustration" 
@@ -344,8 +344,8 @@ export default function PresentationContainer({
             }
             else if (parsedContent.type === 'conclusion_with_image') {
               content = (
-                <div className="space-y-8 text-center max-w-5xl mx-auto">
-                  <div className="flex items-center justify-center gap-8">
+                <div className="space-y-8 text-center max-w-5xl mx-auto px-4">
+                  <div className="flex flex-col md:flex-row items-center justify-center gap-8">
                     <div className="max-w-lg">
                       <p className="text-3xl font-bold mb-4">Số phận không phải là điểm đến</p>
                       <p className="text-2xl mb-4">mà là điểm khởi đầu</p>
