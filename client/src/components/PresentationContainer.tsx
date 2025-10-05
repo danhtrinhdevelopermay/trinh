@@ -483,6 +483,26 @@ export default function PresentationContainer({
     }
   }, []);
 
+  const goToSlide = useCallback(async (slideIndex: number) => {
+    if (slideIndex >= 0 && slideIndex < slides.length && slideIndex !== currentSlide) {
+      setDirection(slideIndex > currentSlide ? 'next' : 'prev');
+      setCurrentSlide(slideIndex);
+      console.log('Go to slide:', slideIndex);
+      
+      // Random transition type
+      const transitions: Array<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'> = ['morph', 'slide', 'zoom', 'flip', 'rotate', 'cube', 'fade'];
+      const randomTransition = transitions[Math.floor(Math.random() * transitions.length)];
+      setTransitionType(randomTransition);
+      
+      if (soundEnabled) {
+        await playTransitionSound('chime');
+        setTimeout(() => {
+          playSpecialEffect('sparkle');
+        }, 200);
+      }
+    }
+  }, [currentSlide, slides.length, soundEnabled, playTransitionSound, playSpecialEffect]);
+
   // Auto-play functionality
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -521,6 +541,13 @@ export default function PresentationContainer({
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
+      // Ctrl+0 to toggle fullscreen
+      if (event.key === '0' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        toggleFullscreen();
+        return;
+      }
+
       switch (event.key) {
         case 'ArrowRight':
         case ' ':
@@ -613,6 +640,7 @@ export default function PresentationContainer({
         <ProgressBar
           currentSlide={currentSlide}
           totalSlides={slides.length}
+          onSlideClick={goToSlide}
           className="m-4"
         />
       </div>
@@ -647,8 +675,9 @@ export default function PresentationContainer({
           <p>• Phím mũi tên: Chuyển slide</p>
           <p>• Phím cách: Slide tiếp theo</p>
           <p>• Home: Về đầu</p>
-          <p>• F: Toàn màn hình</p>
+          <p>• Ctrl+0 hoặc F: Toàn màn hình</p>
           <p>• Esc: Dừng tự động chuyển</p>
+          <p>• Click vào chấm slide để nhảy đến slide đó</p>
         </div>
       )}
     </div>

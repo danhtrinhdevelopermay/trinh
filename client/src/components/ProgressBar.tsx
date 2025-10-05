@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 interface ProgressBarProps {
   currentSlide: number;
   totalSlides: number;
+  onSlideClick?: (index: number) => void;
   className?: string;
 }
 
-export default function ProgressBar({ currentSlide, totalSlides, className = "" }: ProgressBarProps) {
+export default function ProgressBar({ currentSlide, totalSlides, onSlideClick, className = "" }: ProgressBarProps) {
   const progress = ((currentSlide + 1) / totalSlides) * 100;
 
   return (
@@ -30,13 +31,14 @@ export default function ProgressBar({ currentSlide, totalSlides, className = "" 
               index <= currentSlide 
                 ? 'bg-primary-foreground shadow-sm' 
                 : 'bg-background/50'
-            }`}
+            } ${onSlideClick ? 'cursor-pointer hover:scale-150' : ''}`}
             initial={{ scale: 0.5, opacity: 0.5 }}
             animate={{ 
               scale: index === currentSlide ? 1.2 : 1,
               opacity: index <= currentSlide ? 1 : 0.5
             }}
             transition={{ duration: 0.3 }}
+            onClick={() => onSlideClick?.(index)}
             data-testid={`progress-dot-${index}`}
           />
         ))}
