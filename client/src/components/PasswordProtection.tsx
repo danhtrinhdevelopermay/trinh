@@ -52,11 +52,11 @@ export default function PasswordProtection({ onUnlock }: PasswordProtectionProps
           </motion.div>
 
           <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Trang Web Được Bảo Vệ
+            Nhập mật khẩu đi
           </h1>
           
           <p className="text-center text-gray-600 dark:text-gray-400 mb-8">
-            Vui lòng nhập mật khẩu để tiếp tục
+            Chỉ tổ 2 mới bt mk
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -108,7 +108,7 @@ export default function PasswordProtection({ onUnlock }: PasswordProtectionProps
           >
             <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <Lock className="w-4 h-4" />
-              <span>Bảo mật bởi hệ thống</span>
+              <span>Bảo mật bởi Danh Trình</span>
             </div>
           </motion.div>
         </div>
