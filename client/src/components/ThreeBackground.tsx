@@ -50,11 +50,11 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
     camera.position.set(0, 0, 15);
 
     const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+      antialias: false, 
       alpha: true 
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     containerRef.current.appendChild(renderer.domElement);
 
     // Lighting
@@ -143,7 +143,7 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
 
     // Create particle system
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 3000;
+    const particlesCount = 1000;
     const positions = new Float32Array(particlesCount * 3);
 
     for (let i = 0; i < particlesCount * 3; i++) {
