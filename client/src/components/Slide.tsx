@@ -9,6 +9,7 @@ export interface SlideData {
   background?: string;
   textColor?: string;
   type?: 'title' | 'content' | 'quote' | 'image';
+  layout?: 'centered' | 'split-left' | 'split-right' | 'full-width' | 'corner-accent';
 }
 
 interface SlideProps {
@@ -56,9 +57,6 @@ const transitionVariants = {
     exit: { zIndex: 0, opacity: 0 },
   },
 };
-
-// Legacy support
-const slideTransition = transitionVariants.morph;
 
 // Hiệu ứng icons trang trí với spring bounce
 const decorativeIconVariants = {
@@ -131,6 +129,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
   
   const backgroundStyle = slide.background || 'educational-gradient-1';
   const textColorStyle = slide.textColor || 'text-gray-800';
+  const layoutType = slide.layout || 'centered';
   
   // Map slide type to decorative icon
   const getDecorativeIcon = (type: string, slideId: number | string) => {
@@ -169,6 +168,215 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
     return variant;
   }, [shouldReduceMotion, transitionType, direction]);
 
+  // Layout renderers
+  const renderCenteredLayout = () => (
+    <>
+      {slide.type === 'title' ? (
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 shadow-2xl">
+          <motion.div
+            variants={shouldReduceMotion ? undefined : decorativeIconVariants}
+            initial={shouldReduceMotion ? { opacity: 0.4 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 0.4 } : "animate"}
+            className="absolute -top-16 left-1/2 transform -translate-x-1/2"
+          >
+            <DecorativeIcon className="w-16 h-16 text-white/40" />
+          </motion.div>
+          <motion.h1 
+            variants={shouldReduceMotion ? undefined : titleVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-serif leading-tight bounce-in text-white"
+          >
+            {slide.title}
+          </motion.h1>
+          <motion.div
+            variants={shouldReduceMotion ? undefined : contentVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-90 pulse-glow text-white/90"
+          >
+            {slide.content}
+          </motion.div>
+        </div>
+      ) : slide.type === 'quote' ? (
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 shadow-2xl">
+          <motion.div
+            variants={shouldReduceMotion ? undefined : floatingVariants}
+            animate={shouldReduceMotion ? undefined : "animate"}
+            className="absolute -top-10 -left-10"
+          >
+            <DecorativeIcon className="w-16 h-16 text-white/20" />
+          </motion.div>
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.85, opacity: 0, y: 30 }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { 
+              scale: 1, 
+              opacity: 1, 
+              y: 0,
+              transition: {
+                delay: 0.2,
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }
+            }}
+            className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative text-white"
+          >
+            <span className="text-6xl text-white/30 absolute -top-4 -left-4">"</span>
+            {slide.content}
+            <span className="text-6xl text-white/30 absolute -bottom-8 -right-4">"</span>
+          </motion.div>
+          <motion.h2
+            initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { 
+              y: 0, 
+              opacity: 1,
+              transition: {
+                delay: 0.4,
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }
+            }}
+            className="text-base sm:text-xl md:text-2xl lg:text-3xl font-medium opacity-80 bounce-in text-white/80"
+          >
+            — {slide.title}
+          </motion.h2>
+          <motion.div
+            variants={shouldReduceMotion ? undefined : floatingVariants}
+            animate={shouldReduceMotion ? undefined : "animate"}
+            className="absolute -bottom-20 -right-20"
+          >
+            <Heart className="w-16 h-16 text-white/20" />
+          </motion.div>
+        </div>
+      ) : (
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl lg:max-w-6xl relative w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 shadow-2xl">
+          <motion.div
+            variants={shouldReduceMotion ? undefined : decorativeIconVariants}
+            initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 0.3 } : "animate"}
+            className="absolute -top-8 right-4"
+          >
+            <DecorativeIcon className="w-16 h-16 text-white/30" />
+          </motion.div>
+          <motion.h2
+            variants={shouldReduceMotion ? undefined : titleVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold font-serif mb-4 sm:mb-6 md:mb-8 bounce-in text-white"
+          >
+            {slide.title}
+          </motion.h2>
+          <motion.div
+            variants={shouldReduceMotion ? undefined : contentVariants}
+            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
+            className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4 text-white/90"
+          >
+            {slide.content}
+          </motion.div>
+          <motion.div
+            variants={shouldReduceMotion ? undefined : floatingVariants}
+            animate={shouldReduceMotion ? undefined : "animate"}
+            className="absolute -bottom-16 -left-16"
+          >
+            <Sparkles className="w-12 h-12 text-white/25" />
+          </motion.div>
+        </div>
+      )}
+    </>
+  );
+
+  const renderSplitLayout = (position: 'left' | 'right') => (
+    <div className={`flex ${position === 'left' ? 'flex-row' : 'flex-row-reverse'} items-center justify-between w-full h-full gap-8 lg:gap-16 px-8 lg:px-20`}>
+      <motion.div
+        variants={shouldReduceMotion ? undefined : titleVariants}
+        initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+        animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
+        className="flex-1 space-y-6 md:space-y-8"
+      >
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-serif text-white leading-tight">
+          {slide.title}
+        </h2>
+        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 leading-relaxed">
+          {slide.content}
+        </div>
+      </motion.div>
+      <motion.div
+        variants={shouldReduceMotion ? undefined : decorativeIconVariants}
+        initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
+        animate={shouldReduceMotion ? { opacity: 0.5 } : "animate"}
+        className="hidden md:flex items-center justify-center"
+      >
+        <DecorativeIcon className="w-32 h-32 lg:w-48 lg:h-48 text-white/30" />
+      </motion.div>
+    </div>
+  );
+
+  const renderFullWidthLayout = () => (
+    <div className="w-full h-full flex flex-col items-start justify-center px-8 md:px-16 lg:px-24 xl:px-32 space-y-6 md:space-y-10">
+      <motion.h2
+        variants={shouldReduceMotion ? undefined : titleVariants}
+        initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+        animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-serif text-white leading-tight max-w-6xl"
+      >
+        {slide.title}
+      </motion.h2>
+      <motion.div
+        variants={shouldReduceMotion ? undefined : contentVariants}
+        initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+        animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
+        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/90 leading-relaxed max-w-5xl"
+      >
+        {slide.content}
+      </motion.div>
+      <motion.div
+        variants={shouldReduceMotion ? undefined : decorativeIconVariants}
+        initial={shouldReduceMotion ? { opacity: 0.2 } : "initial"}
+        animate={shouldReduceMotion ? { opacity: 0.3 } : "animate"}
+        className="absolute bottom-8 right-8 lg:bottom-16 lg:right-16"
+      >
+        <DecorativeIcon className="w-24 h-24 lg:w-32 lg:h-32 text-white/20" />
+      </motion.div>
+    </div>
+  );
+
+  const renderCornerAccentLayout = () => (
+    <div className="w-full h-full relative">
+      <motion.div
+        variants={shouldReduceMotion ? undefined : decorativeIconVariants}
+        initial={shouldReduceMotion ? { opacity: 0.2 } : "initial"}
+        animate={shouldReduceMotion ? { opacity: 0.4 } : "animate"}
+        className="absolute top-8 left-8 lg:top-16 lg:left-16"
+      >
+        <DecorativeIcon className="w-20 h-20 lg:w-32 lg:h-32 text-white/30" />
+      </motion.div>
+      
+      <div className="absolute bottom-8 right-8 md:bottom-16 md:right-16 lg:bottom-24 lg:right-24 max-w-xl lg:max-w-3xl xl:max-w-4xl text-right">
+        <motion.h2
+          variants={shouldReduceMotion ? undefined : titleVariants}
+          initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+          animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-serif text-white leading-tight mb-4 md:mb-6 lg:mb-8"
+        >
+          {slide.title}
+        </motion.h2>
+        <motion.div
+          variants={shouldReduceMotion ? undefined : contentVariants}
+          initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
+          animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 leading-relaxed"
+        >
+          {slide.content}
+        </motion.div>
+      </div>
+      
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10">
+        <Sparkles className="w-64 h-64 lg:w-96 lg:h-96 text-white" />
+      </div>
+    </div>
+  );
+
   return (
     <motion.div
       key={slide.id}
@@ -191,132 +399,25 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
         }
       }
       style={{ perspective: '1000px' }}
-      className={`absolute inset-0 w-full h-full min-h-screen min-h-dvh flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-16 overflow-hidden`}
+      className={`absolute inset-0 w-full h-full min-h-screen min-h-dvh flex items-center justify-center overflow-hidden ${backgroundStyle}`}
       data-testid={`slide-${slide.id}`}
     >
-      {slide.type === 'title' ? (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full bg-black/40 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl">
-          <motion.div
-            variants={shouldReduceMotion ? undefined : decorativeIconVariants}
-            initial={shouldReduceMotion ? { opacity: 0.4 } : "initial"}
-            animate={shouldReduceMotion ? { opacity: 0.4 } : "animate"}
-            className="absolute -top-16 left-1/2 transform -translate-x-1/2"
-          >
-            <DecorativeIcon className="w-16 h-16 text-white/40" />
-          </motion.div>
-          <motion.h1 
-            variants={shouldReduceMotion ? undefined : titleVariants}
-            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
-            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
-            className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-serif leading-tight bounce-in text-white"
-          >
-            {slide.title}
-          </motion.h1>
-          <motion.div
-            variants={shouldReduceMotion ? undefined : contentVariants}
-            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
-            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 pulse-glow text-white/90"
-          >
-            {slide.content}
-          </motion.div>
-        </div>
-      ) : slide.type === 'quote' ? (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full bg-black/40 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl">
-          <motion.div
-            variants={shouldReduceMotion ? undefined : floatingVariants}
-            animate={shouldReduceMotion ? undefined : "animate"}
-            className="absolute -top-10 -left-10"
-          >
-            <DecorativeIcon className="w-16 h-16 text-white/20" />
-          </motion.div>
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.85, opacity: 0, y: 30 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { 
-              scale: 1, 
-              opacity: 1, 
-              y: 0,
-              transition: {
-                delay: 0.2,
-                duration: 0.7,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }
-            }}
-            className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative text-white"
-          >
-            <span className="text-6xl text-white/30 absolute -top-4 -left-4">"</span>
-            {slide.content}
-            <span className="text-6xl text-white/30 absolute -bottom-8 -right-4">"</span>
-          </motion.div>
-          <motion.h2
-            initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
-            animate={shouldReduceMotion ? { opacity: 1 } : { 
-              y: 0, 
-              opacity: 1,
-              transition: {
-                delay: 0.4,
-                duration: 0.7,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }
-            }}
-            className="text-base sm:text-xl md:text-2xl font-medium opacity-80 bounce-in text-white/80"
-          >
-            — {slide.title}
-          </motion.h2>
-          <motion.div
-            variants={shouldReduceMotion ? undefined : floatingVariants}
-            animate={shouldReduceMotion ? undefined : "animate"}
-            className="absolute -bottom-20 -right-20"
-          >
-            <Heart className="w-16 h-16 text-white/20" />
-          </motion.div>
-        </div>
-      ) : (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative w-full bg-black/40 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl">
-          <motion.div
-            variants={shouldReduceMotion ? undefined : decorativeIconVariants}
-            initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
-            animate={shouldReduceMotion ? { opacity: 0.3 } : "animate"}
-            className="absolute -top-8 right-4"
-          >
-            <DecorativeIcon className="w-16 h-16 text-white/30" />
-          </motion.div>
-          <motion.h2
-            variants={shouldReduceMotion ? undefined : titleVariants}
-            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
-            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2 } } : "animate"}
-            className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold font-serif mb-4 sm:mb-6 md:mb-8 bounce-in text-white"
-          >
-            {slide.title}
-          </motion.h2>
-          <motion.div
-            variants={shouldReduceMotion ? undefined : contentVariants}
-            initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
-            animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-            className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4 text-white/90"
-          >
-            {slide.content}
-          </motion.div>
-          <motion.div
-            variants={shouldReduceMotion ? undefined : floatingVariants}
-            animate={shouldReduceMotion ? undefined : "animate"}
-            className="absolute -bottom-16 -left-16"
-          >
-            <Sparkles className="w-12 h-12 text-white/25" />
-          </motion.div>
-        </div>
-      )}
+      {layoutType === 'centered' && renderCenteredLayout()}
+      {layoutType === 'split-left' && renderSplitLayout('left')}
+      {layoutType === 'split-right' && renderSplitLayout('right')}
+      {layoutType === 'full-width' && renderFullWidthLayout()}
+      {layoutType === 'corner-accent' && renderCornerAccentLayout()}
       
       {/* Enhanced decorative elements */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.15 }}
         transition={{ delay: 0.6, duration: 1 }}
-        className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20 pointer-events-none"
       />
       
       {/* Floating sparkles - only show without reduced motion */}
-      {!shouldReduceMotion && (
+      {!shouldReduceMotion && layoutType === 'centered' && (
         <>
           <motion.div
             initial={{ opacity: 0, scale: 0, rotate: -180 }}

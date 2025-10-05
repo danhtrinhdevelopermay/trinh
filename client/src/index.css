@@ -425,6 +425,57 @@
     position: relative;
   }
 
+  /* Modern Gradient Backgrounds for Landscape Screens */
+  .modern-gradient-1 {
+    background: linear-gradient(135deg, 
+      hsl(210 85% 60%) 0%, 
+      hsl(260 75% 65%) 100%);
+  }
+
+  .modern-gradient-2 {
+    background: linear-gradient(135deg, 
+      hsl(340 75% 65%) 0%, 
+      hsl(35 85% 60%) 100%);
+  }
+
+  .modern-gradient-3 {
+    background: linear-gradient(135deg, 
+      hsl(145 75% 55%) 0%, 
+      hsl(200 80% 60%) 100%);
+  }
+
+  .modern-gradient-4 {
+    background: linear-gradient(135deg, 
+      hsl(280 70% 65%) 0%, 
+      hsl(340 80% 70%) 100%);
+  }
+
+  .modern-gradient-5 {
+    background: linear-gradient(135deg, 
+      hsl(190 85% 55%) 0%, 
+      hsl(260 75% 65%) 100%);
+  }
+
+  /* Geometric Pattern Backgrounds */
+  .geometric-pattern-1 {
+    background-color: hsl(210 85% 60%);
+    background-image: 
+      linear-gradient(30deg, rgba(255,255,255,0.1) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.1) 87.5%),
+      linear-gradient(150deg, rgba(255,255,255,0.1) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.1) 87.5%),
+      linear-gradient(30deg, rgba(255,255,255,0.1) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.1) 87.5%),
+      linear-gradient(150deg, rgba(255,255,255,0.1) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.1) 87.5%);
+    background-size: 80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+  }
+
+  .geometric-pattern-2 {
+    background: 
+      radial-gradient(circle at 0% 50%, rgba(96, 16, 48, 0) 9px, hsl(340 75% 65%) 10px, rgba(96, 16, 48, 0) 11px) 0px 10px,
+      radial-gradient(at 100% 100%, rgba(96, 16, 48, 0) 9px, hsl(340 75% 65%) 10px, rgba(96, 16, 48, 0) 11px),
+      hsl(35 85% 60%);
+    background-size: 20px 20px;
+  }
+
   /* Hero Gradient - Bright and Impressive with Animation */
   .hero-gradient-bright {
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
@@ -574,6 +625,43 @@
     /* Prevent zoom on input focus on iOS */
     input, select, textarea {
       font-size: 16px !important;
+    }
+  }
+
+  /* Landscape and wide screen optimizations for presentations */
+  @media (min-width: 1024px) and (orientation: landscape) {
+    [data-testid^="slide-"] {
+      padding: 2rem 4rem !important;
+    }
+  }
+
+  /* Optimize for 16:9 aspect ratio screens (common for presentations) */
+  @media (min-aspect-ratio: 16/9) {
+    [data-testid^="slide-"] {
+      padding: 3rem 6rem !important;
+    }
+  }
+
+  /* Ultra-wide screen optimizations */
+  @media (min-width: 1920px) {
+    [data-testid^="slide-"] {
+      padding: 4rem 8rem !important;
+    }
+  }
+
+  /* 4K and higher resolution displays */
+  @media (min-width: 2560px) {
+    [data-testid^="slide-"] {
+      padding: 6rem 12rem !important;
+    }
+    
+    /* Scale up text for better readability on large screens */
+    [data-testid^="slide-"] h1 {
+      font-size: clamp(4rem, 8vw, 10rem) !important;
+    }
+    
+    [data-testid^="slide-"] h2 {
+      font-size: clamp(3rem, 6vw, 8rem) !important;
     }
   }
 }
