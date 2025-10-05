@@ -1924,6 +1924,32 @@ const rawDemoSlides = [
       },
     ],
   },
+
+  // Slide 18: Tết Trung Thu - Finale với pháo hoa
+  {
+    background: "transparent",
+    textColor: "text-white",
+    specialMusic: "/attached_assets/fireworks-50524_1759660738752.mp3",
+    hasFireworks: true,
+    elements: [
+      {
+        id: "mid-autumn-background",
+        type: "image" as const,
+        src: "/attached_assets/Mau-phong-nen-Tet-trung-thu-2025_1759660738684.jpg",
+        alt: "Vui Tết Trung Thu",
+        x: 0,
+        y: 0,
+        width: 1200,
+        height: 675,
+        opacity: 1,
+        zIndex: 0,
+        objectFit: "cover" as const,
+        objectPosition: "center",
+        borderRadius: 0,
+        rotation: 0,
+      },
+    ],
+  },
 ];
 
 // Export without validation since we have custom 3D elements

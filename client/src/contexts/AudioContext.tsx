@@ -19,6 +19,8 @@ interface AudioContextValue {
   playElementSound: () => void;
   playSpecialEffect: (effect: 'magic' | 'sparkle' | 'ding') => void;
   playPageNavigationSound: () => void;
+  playSpecialMusic: (musicUrl: string) => void;
+  stopSpecialMusic: () => void;
 }
 
 const AudioContextObj = createContext<AudioContextValue | null>(null);
@@ -43,7 +45,9 @@ export function AudioProvider({ children }: AudioProviderProps) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
+  const specialMusicRef = useRef<HTMLAudioElement | null>(null);
   const hasAudioStartedRef = useRef<boolean>(false);
+  const wasPlayingBeforeSpecialRef = useRef<boolean>(false);
 
   // Initialize AudioContext
   useEffect(() => {
@@ -352,6 +356,46 @@ export function AudioProvider({ children }: AudioProviderProps) {
     }
   }, [resumeAudioContext, volume, isMuted]);
 
+  const playSpecialMusic = useCallback((musicUrl: string) => {
+    try {
+      if (backgroundAudioRef.current && !backgroundAudioRef.current.paused) {
+        wasPlayingBeforeSpecialRef.current = true;
+        backgroundAudioRef.current.pause();
+      } else {
+        wasPlayingBeforeSpecialRef.current = false;
+      }
+
+      if (specialMusicRef.current) {
+        specialMusicRef.current.pause();
+        specialMusicRef.current = null;
+      }
+
+      const audio = new Audio(musicUrl);
+      audio.loop = true;
+      audio.volume = isMuted ? 0 : (volume / 100) * 0.5;
+      specialMusicRef.current = audio;
+      
+      audio.play().catch(() => {
+        // Silently fail if playback fails
+      });
+    } catch (error) {
+      // Silently fail
+    }
+  }, [volume, isMuted]);
+
+  const stopSpecialMusic = useCallback(() => {
+    if (specialMusicRef.current) {
+      specialMusicRef.current.pause();
+      specialMusicRef.current = null;
+    }
+
+    if (wasPlayingBeforeSpecialRef.current && backgroundAudioRef.current) {
+      backgroundAudioRef.current.play().catch(() => {
+        // Silently fail
+      });
+    }
+  }, []);
+
   const value: AudioContextValue = {
     isPlaying,
     volume,
@@ -366,6 +410,8 @@ export function AudioProvider({ children }: AudioProviderProps) {
     playElementSound,
     playSpecialEffect,
     playPageNavigationSound,
+    playSpecialMusic,
+    stopSpecialMusic,
   };
 
   return (

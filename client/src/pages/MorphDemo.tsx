@@ -5,6 +5,8 @@ import { demoMorphSlides } from "@/data/demoMorphSlides";
 import { ArrowLeft, ArrowRight, Expand, Minimize } from "lucide-react";
 import AudioControls from "@/components/AudioControls";
 import { Button } from "@/components/ui/button";
+import { FireworksEffect } from "@/components/FireworksEffect";
+import { useAudio } from "@/contexts/AudioContext";
 
 // Định nghĩa các kiểu transition effects
 const transitionVariants = {
@@ -185,6 +187,7 @@ export default function MorphDemo() {
   const [viewportScale, setViewportScale] = useState(0.5);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const totalSlides = demoMorphSlides.length;
+  const { playSpecialMusic, stopSpecialMusic } = useAudio();
 
   // Calculate scale to fit viewport
   useEffect(() => {
@@ -257,6 +260,24 @@ export default function MorphDemo() {
       document.removeEventListener('msfullscreenchange', handleFullscreenChange);
     };
   }, []);
+
+  // Handle special music for special slides
+  useEffect(() => {
+    const slide = demoMorphSlides[currentSlide] as any;
+    
+    if (slide?.specialMusic) {
+      playSpecialMusic(slide.specialMusic);
+    } else {
+      stopSpecialMusic();
+    }
+
+    return () => {
+      // Cleanup when component unmounts
+      if (slide?.specialMusic) {
+        stopSpecialMusic();
+      }
+    };
+  }, [currentSlide, playSpecialMusic, stopSpecialMusic]);
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'ArrowRight') nextSlide();
@@ -391,6 +412,7 @@ export default function MorphDemo() {
             }}
           >
             <SlideCanvas elements={slide.elements} />
+            {slide.hasFireworks && <FireworksEffect />}
           </motion.div>
         </motion.div>
       </AnimatePresence>
