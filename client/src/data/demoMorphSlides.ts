@@ -1246,8 +1246,8 @@ const rawDemoSlides = [
 
   // Slide 11: Video giới thiệu về Thầy Nguyễn Ngọc Ký
   {
-    background: "educational-gradient-5",
-    textColor: "text-white",
+    background: "educational-gradient-2",
+    textColor: "text-gray-800",
     elements: [
       {
         id: "video-title",
@@ -1259,7 +1259,7 @@ const rawDemoSlides = [
         height: 60,
         fontSize: 44,
         fontWeight: "bold",
-        color: "hsl(0, 0%, 100%)",
+        color: "hsl(222, 65%, 24%)",
         textAlign: "center" as const,
         lineHeight: 1.3,
         rotation: 0,

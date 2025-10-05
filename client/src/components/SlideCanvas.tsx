@@ -404,6 +404,33 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
 function VideoElementRenderer({ element, index }: { element: VideoElement; index: number }) {
   const shouldReduceMotion = useReducedMotion();
 
+  const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+    const video = e.currentTarget;
+    console.error('Video error:', {
+      error: video.error,
+      networkState: video.networkState,
+      readyState: video.readyState,
+      src: element.src
+    });
+  };
+
+  const handleVideoStalled = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+    const video = e.currentTarget;
+    console.warn('Video stalled:', {
+      currentTime: video.currentTime,
+      buffered: video.buffered.length > 0 ? video.buffered.end(0) : 0,
+      duration: video.duration
+    });
+  };
+
+  const handleVideoWaiting = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+    const video = e.currentTarget;
+    console.warn('Video waiting:', {
+      currentTime: video.currentTime,
+      buffered: video.buffered.length > 0 ? video.buffered.end(0) : 0
+    });
+  };
+
   if (shouldReduceMotion) {
     return (
       <motion.div
@@ -434,6 +461,9 @@ function VideoElementRenderer({ element, index }: { element: VideoElement; index
           controls={element.controls}
           preload="auto"
           playsInline
+          onError={handleVideoError}
+          onStalled={handleVideoStalled}
+          onWaiting={handleVideoWaiting}
           style={{
             width: '100%',
             height: '100%',
@@ -493,6 +523,9 @@ function VideoElementRenderer({ element, index }: { element: VideoElement; index
         controls={element.controls}
         preload="auto"
         playsInline
+        onError={handleVideoError}
+        onStalled={handleVideoStalled}
+        onWaiting={handleVideoWaiting}
         style={{
           width: '100%',
           height: '100%',
