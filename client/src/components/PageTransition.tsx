@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, Variants, useReducedMotion } from "framer-motion";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useAudio } from "@/contexts/AudioContext";
 
 interface PageTransitionProps {
@@ -66,8 +66,16 @@ interface AnimatedRouteProps {
 
 export function AnimatedRoute({ children, routeKey }: AnimatedRouteProps) {
   const { playPageNavigationSound } = useAudio();
+  const isFirstMount = useRef(true);
 
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      console.log('First page load, skipping sound');
+      return;
+    }
+    
+    console.log('Page navigation to:', routeKey, '- playing sound');
     playPageNavigationSound();
   }, [routeKey, playPageNavigationSound]);
 

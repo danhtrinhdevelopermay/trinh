@@ -335,14 +335,20 @@ export function AudioProvider({ children }: AudioProviderProps) {
   }, [resumeAudioContext]);
 
   const playPageNavigationSound = useCallback(async () => {
-    await resumeAudioContext();
+    if (isMuted) return;
     
     try {
+      await resumeAudioContext();
+      
       const audio = new Audio(pageTransitionSound);
-      audio.volume = isMuted ? 0 : (volume / 100) * 0.5;
-      await audio.play();
+      audio.volume = (volume / 100) * 0.6;
+      
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+      }
     } catch (error) {
-      // Silently fail if playback fails
+      console.log('Page navigation sound failed:', error);
     }
   }, [resumeAudioContext, volume, isMuted]);
 

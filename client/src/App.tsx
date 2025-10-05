@@ -69,7 +69,9 @@ function App() {
         <TooltipProvider>
           <AudioProvider>
             <Toaster />
-            {location === '/' ? <MorphDemo /> : <Home />}
+            <AnimatedRoute routeKey={location}>
+              {location === '/' ? <MorphDemo /> : <Home />}
+            </AnimatedRoute>
           </AudioProvider>
         </TooltipProvider>
       </QueryClientProvider>
