@@ -179,7 +179,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             animate={shouldReduceMotion ? { opacity: 0.4 } : "animate"}
             className="absolute -top-16 left-1/2 transform -translate-x-1/2"
           >
-            <DecorativeIcon className="w-16 h-16 text-white/40" />
+            <DecorativeIcon className="w-16 h-16 text-gray-700/40" />
           </motion.div>
           <motion.h1 
             variants={shouldReduceMotion ? undefined : titleVariants}
@@ -193,7 +193,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             variants={shouldReduceMotion ? undefined : contentVariants}
             initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
             animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-90 pulse-glow text-white/90"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-90 pulse-glow text-gray-800/90"
           >
             {slide.content}
           </motion.div>
@@ -205,7 +205,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             animate={shouldReduceMotion ? undefined : "animate"}
             className="absolute -top-10 -left-10"
           >
-            <DecorativeIcon className="w-16 h-16 text-white/20" />
+            <DecorativeIcon className="w-16 h-16 text-gray-600/20" />
           </motion.div>
           <motion.div
             initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.85, opacity: 0, y: 30 }}
@@ -221,9 +221,9 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             }}
             className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative text-white"
           >
-            <span className="text-6xl text-white/30 absolute -top-4 -left-4">"</span>
+            <span className="text-6xl text-gray-600/30 absolute -top-4 -left-4">"</span>
             {slide.content}
-            <span className="text-6xl text-white/30 absolute -bottom-8 -right-4">"</span>
+            <span className="text-6xl text-gray-600/30 absolute -bottom-8 -right-4">"</span>
           </motion.div>
           <motion.h2
             initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
@@ -236,7 +236,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
                 ease: [0.25, 0.46, 0.45, 0.94]
               }
             }}
-            className="text-base sm:text-xl md:text-2xl lg:text-3xl font-medium opacity-80 bounce-in text-white/80"
+            className="text-base sm:text-xl md:text-2xl lg:text-3xl font-medium opacity-80 bounce-in text-gray-700/80"
           >
             — {slide.title}
           </motion.h2>
@@ -245,7 +245,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             animate={shouldReduceMotion ? undefined : "animate"}
             className="absolute -bottom-20 -right-20"
           >
-            <Heart className="w-16 h-16 text-white/20" />
+            <Heart className="w-16 h-16 text-gray-600/20" />
           </motion.div>
         </div>
       ) : (
@@ -256,7 +256,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             animate={shouldReduceMotion ? { opacity: 0.3 } : "animate"}
             className="absolute -top-8 right-4"
           >
-            <DecorativeIcon className="w-16 h-16 text-white/30" />
+            <DecorativeIcon className="w-16 h-16 text-gray-600/30" />
           </motion.div>
           <motion.h2
             variants={shouldReduceMotion ? undefined : titleVariants}
@@ -270,7 +270,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             variants={shouldReduceMotion ? undefined : contentVariants}
             initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
             animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4 text-white/90"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4 text-gray-800/90"
           >
             {slide.content}
           </motion.div>
@@ -279,7 +279,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             animate={shouldReduceMotion ? undefined : "animate"}
             className="absolute -bottom-16 -left-16"
           >
-            <Sparkles className="w-12 h-12 text-white/25" />
+            <Sparkles className="w-12 h-12 text-gray-600/25" />
           </motion.div>
         </div>
       )}
@@ -297,7 +297,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-serif text-white leading-tight">
           {slide.title}
         </h2>
-        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 leading-relaxed">
+        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-800/90 leading-relaxed">
           {slide.content}
         </div>
       </motion.div>
@@ -307,7 +307,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
         animate={shouldReduceMotion ? { opacity: 0.5 } : "animate"}
         className="hidden md:flex items-center justify-center"
       >
-        <DecorativeIcon className="w-32 h-32 lg:w-48 lg:h-48 text-white/30" />
+        <DecorativeIcon className="w-32 h-32 lg:w-48 lg:h-48 text-gray-600/30" />
       </motion.div>
     </div>
   );
@@ -326,7 +326,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
         variants={shouldReduceMotion ? undefined : contentVariants}
         initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
         animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/90 leading-relaxed max-w-5xl"
+        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-800/90 leading-relaxed max-w-5xl"
       >
         {slide.content}
       </motion.div>
@@ -336,7 +336,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
         animate={shouldReduceMotion ? { opacity: 0.3 } : "animate"}
         className="absolute bottom-8 right-8 lg:bottom-16 lg:right-16"
       >
-        <DecorativeIcon className="w-24 h-24 lg:w-32 lg:h-32 text-white/20" />
+        <DecorativeIcon className="w-24 h-24 lg:w-32 lg:h-32 text-gray-600/20" />
       </motion.div>
     </div>
   );
@@ -349,7 +349,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
         animate={shouldReduceMotion ? { opacity: 0.4 } : "animate"}
         className="absolute top-8 left-8 lg:top-16 lg:left-16"
       >
-        <DecorativeIcon className="w-20 h-20 lg:w-32 lg:h-32 text-white/30" />
+        <DecorativeIcon className="w-20 h-20 lg:w-32 lg:h-32 text-gray-600/30" />
       </motion.div>
       
       <div className="absolute bottom-8 right-8 md:bottom-16 md:right-16 lg:bottom-24 lg:right-24 max-w-xl lg:max-w-3xl xl:max-w-4xl text-right">
@@ -365,7 +365,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
           variants={shouldReduceMotion ? undefined : contentVariants}
           initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
           animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-          className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 leading-relaxed"
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-800/90 leading-relaxed"
         >
           {slide.content}
         </motion.div>
@@ -411,9 +411,9 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
       {/* Enhanced decorative elements */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
+        animate={{ opacity: 0.08 }}
         transition={{ delay: 0.6, duration: 1 }}
-        className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20 pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/10 pointer-events-none"
       />
       
       {/* Floating sparkles - only show without reduced motion */}
@@ -433,7 +433,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             }}
             className="absolute top-20 left-20 pointer-events-none"
           >
-            <Sparkles className="w-6 h-6 text-white/20" />
+            <Sparkles className="w-6 h-6 text-gray-400/40" />
           </motion.div>
           
           <motion.div
@@ -450,7 +450,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             }}
             className="absolute top-32 right-32 pointer-events-none"
           >
-            <Star className="w-4 h-4 text-white/15" />
+            <Star className="w-4 h-4 text-gray-400/30" />
           </motion.div>
           
           <motion.div
@@ -467,7 +467,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             }}
             className="absolute bottom-40 left-40 pointer-events-none"
           >
-            <Heart className="w-5 h-5 text-white/10" />
+            <Heart className="w-5 h-5 text-gray-600/10" />
           </motion.div>
         </>
       )}

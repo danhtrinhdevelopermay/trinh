@@ -142,71 +142,71 @@
 }
 
 .dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
+  --button-outline: rgba(0,0,0, .10);
+  --badge-outline: rgba(0,0,0, .05);
 
-  --opaque-button-border-intensity: 9;  /* In terms of percentages */
+  --opaque-button-border-intensity: -8;  /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
+  --elevate-1: rgba(0,0,0, .03);
+  --elevate-2: rgba(0,0,0, .08);
 
-  --background: 220 15% 8%;
+  --background: 220 25% 96%;
 
-  --foreground: 0 0% 95%;
+  --foreground: 220 85% 15%;
 
-  --border: 220 15% 18%;
+  --border: 220 15% 88%;
 
-  --card: 220 15% 12%;
+  --card: 220 25% 98%;
 
-  --card-foreground: 0 0% 95%;
+  --card-foreground: 220 85% 15%;
 
-  --card-border: 220 15% 22%;
+  --card-border: 220 15% 92%;
 
-  --sidebar: 220 15% 10%;
+  --sidebar: 0 0% 96%;
 
-  --sidebar-foreground: 0 0% 95%;
+  --sidebar-foreground: 220 85% 15%;
 
-  --sidebar-border: 220 15% 20%;
+  --sidebar-border: 0 0% 90%;
 
   --sidebar-primary: 220 85% 15%;
 
   --sidebar-primary-foreground: 0 0% 98%;
 
-  --sidebar-accent: 220 15% 16%;
+  --sidebar-accent: 210 20% 88%;
 
-  --sidebar-accent-foreground: 0 0% 90%;
+  --sidebar-accent-foreground: 220 85% 15%;
 
   --sidebar-ring: 220 85% 15%;
 
-  --popover: 220 15% 14%;
+  --popover: 0 0% 94%;
 
-  --popover-foreground: 0 0% 95%;
+  --popover-foreground: 220 85% 15%;
 
-  --popover-border: 220 15% 24%;
+  --popover-border: 0 0% 86%;
 
   --primary: 220 85% 15%;
 
   --primary-foreground: 0 0% 98%;
 
-  --secondary: 220 15% 18%;
+  --secondary: 0 0% 90%;
 
-  --secondary-foreground: 0 0% 90%;
+  --secondary-foreground: 220 85% 15%;
 
-  --muted: 220 15% 16%;
+  --muted: 0 0% 92%;
 
-  --muted-foreground: 0 0% 65%;
+  --muted-foreground: 220 15% 40%;
 
-  --accent: 220 15% 14%;
+  --accent: 210 15% 88%;
 
-  --accent-foreground: 0 0% 90%;
+  --accent-foreground: 220 85% 15%;
 
   --destructive: 0 75% 45%;
 
   --destructive-foreground: 0 0% 98%;
 
   /* Used as the border around inputs. Dark mode: Should be a border that is light enough to have high contrast when rendered on a --card background. More contrast than standard --border */
-  --input: 220 15% 28%;
+  --input: 0 0% 82%;
   --ring: 220 85% 15%;
   /* Educational color palette - warm and friendly (dark mode) */
   --chart-1: 200 75% 75%;  /* Bright blue - knowledge, trust */
@@ -223,14 +223,14 @@
   --education-care: 340 65% 80%;        /* Caring pink */
   --education-neutral: 45 15% 25%;      /* Dark beige background */
 
-  --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 5% / 0.20);
-  --shadow-xs: 0px 1px 3px 0px hsl(220 15% 5% / 0.25);
-  --shadow-sm: 0px 1px 2px 0px hsl(220 15% 5% / 0.20), 0px 1px 3px 0px hsl(220 15% 5% / 0.25);
-  --shadow: 0px 1px 3px 0px hsl(220 15% 5% / 0.25), 0px 1px 2px 0px hsl(220 15% 5% / 0.20);
-  --shadow-md: 0px 4px 6px -1px hsl(220 15% 5% / 0.25), 0px 2px 4px -1px hsl(220 15% 5% / 0.20);
-  --shadow-lg: 0px 10px 15px -3px hsl(220 15% 5% / 0.25), 0px 4px 6px -2px hsl(220 15% 5% / 0.15);
-  --shadow-xl: 0px 20px 25px -5px hsl(220 15% 5% / 0.25), 0px 10px 10px -5px hsl(220 15% 5% / 0.12);
-  --shadow-2xl: 0px 25px 50px -12px hsl(220 15% 5% / 0.35);
+  --shadow-2xs: 0px 1px 2px 0px hsl(220 25% 25% / 0.05);
+  --shadow-xs: 0px 1px 3px 0px hsl(220 25% 25% / 0.10);
+  --shadow-sm: 0px 1px 2px 0px hsl(220 25% 25% / 0.06), 0px 1px 3px 0px hsl(220 25% 25% / 0.10);
+  --shadow: 0px 1px 3px 0px hsl(220 25% 25% / 0.10), 0px 1px 2px 0px hsl(220 25% 25% / 0.06);
+  --shadow-md: 0px 4px 6px -1px hsl(220 25% 25% / 0.10), 0px 2px 4px -1px hsl(220 25% 25% / 0.06);
+  --shadow-lg: 0px 10px 15px -3px hsl(220 25% 25% / 0.10), 0px 4px 6px -2px hsl(220 25% 25% / 0.05);
+  --shadow-xl: 0px 20px 25px -5px hsl(220 25% 25% / 0.10), 0px 10px 10px -5px hsl(220 25% 25% / 0.04);
+  --shadow-2xl: 0px 25px 50px -12px hsl(220 25% 25% / 0.25);
 
 }
 

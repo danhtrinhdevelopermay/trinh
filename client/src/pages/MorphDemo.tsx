@@ -236,7 +236,7 @@ export default function MorphDemo() {
     >
       {/* Animated Background */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"
+        className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"
         animate={{
           backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
         }}
@@ -252,7 +252,7 @@ export default function MorphDemo() {
       
       {/* Floating gradient orbs */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl"
         animate={{
           x: [0, 100, 0],
           y: [0, -80, 0],
@@ -266,7 +266,7 @@ export default function MorphDemo() {
         }}
       />
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-200/30 rounded-full blur-3xl"
         animate={{
           x: [0, -120, 0],
           y: [0, 60, 0],
@@ -281,7 +281,7 @@ export default function MorphDemo() {
         }}
       />
       <motion.div
-        className="absolute top-1/2 right-1/3 w-72 h-72 bg-indigo-500/15 rounded-full blur-3xl"
+        className="absolute top-1/2 right-1/3 w-72 h-72 bg-pink-200/25 rounded-full blur-3xl"
         animate={{
           x: [0, 80, 0],
           y: [0, -100, 0],
@@ -297,10 +297,10 @@ export default function MorphDemo() {
       />
       
       {/* Header - Demo info - moved to bottom left */}
-      <div className="absolute bottom-4 left-4 z-50 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white">
+      <div className="absolute bottom-4 left-4 z-50 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-lg text-gray-800">
         <p className="text-xs opacity-90">
           Slide {currentSlide + 1} / {totalSlides}
-          <span className="ml-2 text-purple-300">• {currentTransition}</span>
+          <span className="ml-2 text-purple-600">• {currentTransition}</span>
         </p>
       </div>
 
@@ -340,7 +340,7 @@ export default function MorphDemo() {
         <motion.button
           onClick={prevSlide}
           disabled={currentSlide === 0}
-          className="bg-black/50 backdrop-blur-sm hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed text-white p-4 rounded-full transition-all"
+          className="bg-white/70 backdrop-blur-sm hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed text-gray-800 p-4 rounded-full transition-all"
           data-testid="button-prev"
           whileHover={{ scale: currentSlide === 0 ? 1 : 1.1, x: -3 }}
           whileTap={{ scale: currentSlide === 0 ? 1 : 0.95 }}
@@ -360,8 +360,8 @@ export default function MorphDemo() {
               }}
               className={`h-3 rounded-full transition-all ${
                 index === currentSlide 
-                  ? 'bg-white' 
-                  : 'bg-white/50 hover:bg-white/75'
+                  ? 'bg-gray-800' 
+                  : 'bg-gray-400/50 hover:bg-gray-500/75'
               }`}
               style={{ width: index === currentSlide ? '32px' : '12px' }}
               data-testid={`indicator-${index}`}
@@ -370,7 +370,7 @@ export default function MorphDemo() {
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               animate={{
                 width: index === currentSlide ? '32px' : '12px',
-                backgroundColor: index === currentSlide ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.5)'
+                backgroundColor: index === currentSlide ? 'rgba(31,41,55,1)' : 'rgba(156,163,175,0.5)'
               }}
             />
           ))}
@@ -379,7 +379,7 @@ export default function MorphDemo() {
         <motion.button
           onClick={nextSlide}
           disabled={currentSlide === totalSlides - 1}
-          className="bg-black/50 backdrop-blur-sm hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed text-white p-4 rounded-full transition-all"
+          className="bg-white/70 backdrop-blur-sm hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed text-gray-800 p-4 rounded-full transition-all"
           data-testid="button-next"
           whileHover={{ scale: currentSlide === totalSlides - 1 ? 1 : 1.1, x: 3 }}
           whileTap={{ scale: currentSlide === totalSlides - 1 ? 1 : 0.95 }}
