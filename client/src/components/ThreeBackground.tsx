@@ -6,6 +6,20 @@ interface ThreeBackgroundProps {
   totalSlides: number;
 }
 
+// Camera positions for each slide
+const cameraPositions = [
+  { x: 0, y: 0, z: 15, lookAt: { x: 0, y: 0, z: 0 } },
+  { x: -10, y: 3, z: 10, lookAt: { x: -8, y: 2, z: -5 } },
+  { x: 10, y: -3, z: 12, lookAt: { x: 8, y: -2, z: -8 } },
+  { x: 0, y: 8, z: 8, lookAt: { x: 0, y: 5, z: -10 } },
+  { x: -8, y: -5, z: 10, lookAt: { x: -5, y: -4, z: -12 } },
+  { x: 8, y: 5, z: 12, lookAt: { x: 6, y: 3, z: -15 } },
+  { x: 0, y: 0, z: 20, lookAt: { x: 0, y: 0, z: 0 } },
+  { x: 12, y: 0, z: 8, lookAt: { x: 0, y: 0, z: -5 } },
+  { x: -12, y: 0, z: 8, lookAt: { x: 0, y: 0, z: -5 } },
+  { x: 0, y: 12, z: 5, lookAt: { x: 0, y: 0, z: -5 } }
+];
+
 export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
@@ -15,6 +29,9 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
     particles: THREE.Points;
     geometries: THREE.Mesh[];
     animationId: number;
+    targetPosition: { x: number; y: number; z: number };
+    targetLookAt: THREE.Vector3;
+    currentLookAt: THREE.Vector3;
   } | null>(null);
 
   useEffect(() => {
@@ -146,30 +163,19 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Define camera positions for each slide
-    const cameraPositions = [
-      { x: 0, y: 0, z: 15, lookAt: { x: 0, y: 0, z: 0 } },
-      { x: -10, y: 3, z: 10, lookAt: { x: -8, y: 2, z: -5 } },
-      { x: 10, y: -3, z: 12, lookAt: { x: 8, y: -2, z: -8 } },
-      { x: 0, y: 8, z: 8, lookAt: { x: 0, y: 5, z: -10 } },
-      { x: -8, y: -5, z: 10, lookAt: { x: -5, y: -4, z: -12 } },
-      { x: 8, y: 5, z: 12, lookAt: { x: 6, y: 3, z: -15 } },
-      { x: 0, y: 0, z: 20, lookAt: { x: 0, y: 0, z: 0 } },
-      { x: 12, y: 0, z: 8, lookAt: { x: 0, y: 0, z: -5 } },
-      { x: -12, y: 0, z: 8, lookAt: { x: 0, y: 0, z: -5 } },
-      { x: 0, y: 12, z: 5, lookAt: { x: 0, y: 0, z: -5 } }
-    ];
-
-    let targetPosition = { ...camera.position };
-    let targetLookAt = new THREE.Vector3(0, 0, 0);
-    let currentLookAt = new THREE.Vector3(0, 0, 0);
+    // Initialize target positions
+    const targetPosition = { x: 0, y: 0, z: 15 };
+    const targetLookAt = new THREE.Vector3(0, 0, 0);
+    const currentLookAt = new THREE.Vector3(0, 0, 0);
 
     // Animation loop
     const clock = new THREE.Clock();
     
     const animate = () => {
       const animationId = requestAnimationFrame(animate);
-      sceneRef.current!.animationId = animationId;
+      if (sceneRef.current) {
+        sceneRef.current.animationId = animationId;
+      }
 
       const elapsedTime = clock.getElapsedTime();
 
@@ -184,15 +190,17 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
       particles.rotation.y = elapsedTime * 0.05;
 
       // Smooth camera movement
-      camera.position.x += (targetPosition.x - camera.position.x) * 0.05;
-      camera.position.y += (targetPosition.y - camera.position.y) * 0.05;
-      camera.position.z += (targetPosition.z - camera.position.z) * 0.05;
+      if (sceneRef.current) {
+        camera.position.x += (sceneRef.current.targetPosition.x - camera.position.x) * 0.05;
+        camera.position.y += (sceneRef.current.targetPosition.y - camera.position.y) * 0.05;
+        camera.position.z += (sceneRef.current.targetPosition.z - camera.position.z) * 0.05;
 
-      // Smooth camera look-at
-      currentLookAt.x += (targetLookAt.x - currentLookAt.x) * 0.05;
-      currentLookAt.y += (targetLookAt.y - currentLookAt.y) * 0.05;
-      currentLookAt.z += (targetLookAt.z - currentLookAt.z) * 0.05;
-      camera.lookAt(currentLookAt);
+        // Smooth camera look-at
+        sceneRef.current.currentLookAt.x += (sceneRef.current.targetLookAt.x - sceneRef.current.currentLookAt.x) * 0.05;
+        sceneRef.current.currentLookAt.y += (sceneRef.current.targetLookAt.y - sceneRef.current.currentLookAt.y) * 0.05;
+        sceneRef.current.currentLookAt.z += (sceneRef.current.targetLookAt.z - sceneRef.current.currentLookAt.z) * 0.05;
+        camera.lookAt(sceneRef.current.currentLookAt);
+      }
 
       // Animate lights
       pointLight1.position.x = Math.sin(elapsedTime) * 10;
@@ -224,7 +232,10 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
       renderer,
       particles,
       geometries,
-      animationId: 0
+      animationId: 0,
+      targetPosition,
+      targetLookAt,
+      currentLookAt
     };
 
     return () => {
@@ -243,24 +254,19 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
   useEffect(() => {
     if (!sceneRef.current) return;
 
-    const cameraPositions = [
-      { x: 0, y: 0, z: 15, lookAt: { x: 0, y: 0, z: 0 } },
-      { x: -10, y: 3, z: 10, lookAt: { x: -8, y: 2, z: -5 } },
-      { x: 10, y: -3, z: 12, lookAt: { x: 8, y: -2, z: -8 } },
-      { x: 0, y: 8, z: 8, lookAt: { x: 0, y: 5, z: -10 } },
-      { x: -8, y: -5, z: 10, lookAt: { x: -5, y: -4, z: -12 } },
-      { x: 8, y: 5, z: 12, lookAt: { x: 6, y: 3, z: -15 } },
-      { x: 0, y: 0, z: 20, lookAt: { x: 0, y: 0, z: 0 } },
-      { x: 12, y: 0, z: 8, lookAt: { x: 0, y: 0, z: -5 } },
-      { x: -12, y: 0, z: 8, lookAt: { x: 0, y: 0, z: -5 } },
-      { x: 0, y: 12, z: 5, lookAt: { x: 0, y: 0, z: -5 } }
-    ];
-
     const positionIndex = currentSlide % cameraPositions.length;
     const newPosition = cameraPositions[positionIndex];
 
-    // Animate to new position (handled by the animation loop)
-    sceneRef.current.camera.userData.targetPosition = newPosition;
+    // Update target positions for smooth animation
+    sceneRef.current.targetPosition.x = newPosition.x;
+    sceneRef.current.targetPosition.y = newPosition.y;
+    sceneRef.current.targetPosition.z = newPosition.z;
+    
+    sceneRef.current.targetLookAt.set(
+      newPosition.lookAt.x,
+      newPosition.lookAt.y,
+      newPosition.lookAt.z
+    );
   }, [currentSlide]);
 
   return (
