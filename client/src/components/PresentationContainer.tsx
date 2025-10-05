@@ -612,7 +612,7 @@ export default function PresentationContainer({
   }
 
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden" data-testid="presentation-container">
+    <div className="relative w-full h-screen overflow-hidden" data-testid="presentation-container">
       {/* Main slide area */}
       <div className="relative w-full h-full" style={{ zIndex: 1 }}>
         <AnimatePresence mode="wait" custom={direction}>
