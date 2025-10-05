@@ -172,7 +172,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
   const renderCenteredLayout = () => (
     <>
       {slide.type === 'title' ? (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative w-full p-8 md:p-12 lg:p-16">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-2xl md:max-w-4xl relative mx-auto px-8 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16">
           <motion.div
             variants={shouldReduceMotion ? undefined : decorativeIconVariants}
             initial={shouldReduceMotion ? { opacity: 0.4 } : "initial"}
@@ -193,13 +193,13 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             variants={shouldReduceMotion ? undefined : contentVariants}
             initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
             animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-90 pulse-glow text-gray-800/90"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-90 pulse-glow text-gray-800/90 mx-auto"
           >
             {slide.content}
           </motion.div>
         </div>
       ) : slide.type === 'quote' ? (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative w-full p-8 md:p-12 lg:p-16">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl relative mx-auto px-8 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16">
           <motion.div
             variants={shouldReduceMotion ? undefined : floatingVariants}
             animate={shouldReduceMotion ? undefined : "animate"}
@@ -219,7 +219,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
                 ease: [0.25, 0.46, 0.45, 0.94]
               }
             }}
-            className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative text-white"
+            className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif italic leading-relaxed relative text-white mx-auto"
           >
             <span className="text-6xl text-gray-600/30 absolute -top-4 -left-4">"</span>
             {slide.content}
@@ -249,7 +249,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
           </motion.div>
         </div>
       ) : (
-        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl lg:max-w-6xl relative w-full p-8 md:p-12 lg:p-16">
+        <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-sm sm:max-w-3xl md:max-w-5xl lg:max-w-6xl relative mx-auto px-8 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16">
           <motion.div
             variants={shouldReduceMotion ? undefined : decorativeIconVariants}
             initial={shouldReduceMotion ? { opacity: 0.3 } : "initial"}
@@ -270,7 +270,7 @@ export default function Slide({ slide, isActive, direction, transitionType = 'mo
             variants={shouldReduceMotion ? undefined : contentVariants}
             initial={shouldReduceMotion ? { opacity: 0 } : "initial"}
             animate={shouldReduceMotion ? { opacity: 1, transition: { duration: 0.2, delay: 0.1 } } : "animate"}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4 text-gray-800/90"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed space-y-2 sm:space-y-3 md:space-y-4 text-gray-800/90 mx-auto"
           >
             {slide.content}
           </motion.div>
