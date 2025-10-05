@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from "react";
 import backgroundMusicFile from "@assets/soft-background-music-401914_1759657535406.mp3";
-import pageTransitionSound from "@assets/magic-ascend-3-259526_1759659782376.mp3";
 
 interface AudioContextValue {
   // States
@@ -339,22 +338,46 @@ export function AudioProvider({ children }: AudioProviderProps) {
   }, [resumeAudioContext]);
 
   const playPageNavigationSound = useCallback(async () => {
-    if (isMuted) return;
+    if (isMuted || !audioContextRef.current || !masterGainRef.current) {
+      return;
+    }
     
     try {
       await resumeAudioContext();
       
-      const audio = new Audio(pageTransitionSound);
-      audio.volume = (volume / 100) * 0.6;
-      
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        await playPromise;
+      if (audioContextRef.current.state !== 'running') {
+        return;
       }
+      
+      const now = audioContextRef.current.currentTime;
+      
+      // Create a pleasant ascending chime sound for page navigation
+      const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5 (major triad)
+      
+      frequencies.forEach((freq, index) => {
+        const oscillator = audioContextRef.current!.createOscillator();
+        const gainNode = audioContextRef.current!.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(masterGainRef.current!);
+        
+        oscillator.frequency.value = freq;
+        oscillator.type = 'sine';
+        
+        const startTime = now + (index * 0.08);
+        const duration = 0.3;
+        
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.15, startTime + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      });
     } catch (error) {
-      // Silently fail if playback fails
+      // Silently fail if oscillator creation fails
     }
-  }, [resumeAudioContext, volume, isMuted]);
+  }, [resumeAudioContext, isMuted]);
 
   const playSpecialMusic = useCallback((musicUrl: string) => {
     try {
