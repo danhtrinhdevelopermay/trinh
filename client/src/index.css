@@ -619,49 +619,11 @@
     [data-testid^="slide-"] {
       min-height: 100vh !important;
       min-height: 100dvh !important;
-      padding: 1rem !important;
     }
     
     /* Prevent zoom on input focus on iOS */
     input, select, textarea {
       font-size: 16px !important;
-    }
-  }
-
-  /* Landscape and wide screen optimizations for presentations */
-  @media (min-width: 1024px) and (orientation: landscape) {
-    [data-testid^="slide-"] {
-      padding: 2rem 4rem !important;
-    }
-  }
-
-  /* Optimize for 16:9 aspect ratio screens (common for presentations) */
-  @media (min-aspect-ratio: 16/9) {
-    [data-testid^="slide-"] {
-      padding: 3rem 6rem !important;
-    }
-  }
-
-  /* Ultra-wide screen optimizations */
-  @media (min-width: 1920px) {
-    [data-testid^="slide-"] {
-      padding: 4rem 8rem !important;
-    }
-  }
-
-  /* 4K and higher resolution displays */
-  @media (min-width: 2560px) {
-    [data-testid^="slide-"] {
-      padding: 6rem 12rem !important;
-    }
-    
-    /* Scale up text for better readability on large screens */
-    [data-testid^="slide-"] h1 {
-      font-size: clamp(4rem, 8vw, 10rem) !important;
-    }
-    
-    [data-testid^="slide-"] h2 {
-      font-size: clamp(3rem, 6vw, 8rem) !important;
     }
   }
 }
