@@ -239,6 +239,13 @@ export default function PresentationContainer({
   const audioContext = useAudio();
   const { playTransitionSound, playSpecialEffect, playFireworksSound, playSlideSound } = audioContext;
   
+  // Reset fullscreen controls visibility when exiting fullscreen
+  useEffect(() => {
+    if (!isFullscreen) {
+      setShowFullscreenControls(true);
+    }
+  }, [isFullscreen]);
+  
   // Fetch slides from API
   const { data: apiSlides, isLoading, error } = usePresentationSlides(presentationId);
   
