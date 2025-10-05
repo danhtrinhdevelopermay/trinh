@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
-import VillageWorldWrapper from "@/components/VillageWorldWrapper";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -47,14 +45,11 @@ export default function MorphDemo() {
 
   return (
     <div 
-      className="relative w-full h-screen overflow-hidden focus:outline-none"
+      className="relative w-full h-screen overflow-hidden focus:outline-none bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"
       tabIndex={0}
       onKeyDown={handleKeyPress}
       data-testid="morph-demo-container"
     >
-      {/* 3D World Background */}
-      <VillageWorldWrapper slideIndex={currentSlide} totalSlides={totalSlides} />
-
       {/* Header - Demo info - moved to bottom left */}
       <div className="absolute bottom-4 left-4 z-50 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white">
         <p className="text-xs opacity-90">Slide {currentSlide + 1} / {totalSlides}</p>
