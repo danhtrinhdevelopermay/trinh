@@ -192,15 +192,19 @@ export default function MorphDemo() {
       const slideWidth = 1200;
       const slideHeight = 675;
       const scaleX = window.innerWidth / slideWidth;
-      const scaleY = (window.innerHeight - 200) / slideHeight; // Reserve 200px for controls
-      const scale = Math.min(scaleX, scaleY) * 0.75; // 75% to ensure it fits
+      // Reserve space for controls only when not in fullscreen
+      const reservedSpace = isFullscreen ? 0 : 200;
+      const scaleY = (window.innerHeight - reservedSpace) / slideHeight;
+      // Use higher scale factor in fullscreen to utilize more space
+      const scaleFactor = isFullscreen ? 0.95 : 0.75;
+      const scale = Math.min(scaleX, scaleY) * scaleFactor;
       setViewportScale(scale);
     };
 
     calculateScale();
     window.addEventListener('resize', calculateScale);
     return () => window.removeEventListener('resize', calculateScale);
-  }, []);
+  }, [isFullscreen]);
 
   const nextSlide = () => {
     if (currentSlide < totalSlides - 1) {
@@ -381,7 +385,7 @@ export default function MorphDemo() {
             style={{
               width: '1200px',
               height: '675px',
-              transform: `scale(${viewportScale}) translateY(20px)`,
+              transform: `scale(${viewportScale})`,
               transformOrigin: 'center center',
               backfaceVisibility: 'hidden',
             }}
