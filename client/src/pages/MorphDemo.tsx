@@ -7,6 +7,8 @@ import AudioControls from "@/components/AudioControls";
 import { Button } from "@/components/ui/button";
 import { FireworksEffect } from "@/components/FireworksEffect";
 import { useAudio } from "@/contexts/AudioContext";
+import MediaPreloader from "@/components/MediaPreloader";
+import backgroundMusicFile from "@assets/soft-background-music-401914_1759657535406.mp3";
 
 // Định nghĩa các kiểu transition effects
 const transitionVariants = {
@@ -186,6 +188,7 @@ export default function MorphDemo() {
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [viewportScale, setViewportScale] = useState(0.5);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isPreloadComplete, setIsPreloadComplete] = useState(false);
   const totalSlides = demoMorphSlides.length;
   const { playSpecialMusic, stopSpecialMusic } = useAudio();
 
@@ -298,6 +301,17 @@ export default function MorphDemo() {
   
   // Tính toán animation values
   const animationValues = typeof variant === 'function' ? variant(direction) : variant;
+
+  // Show preloader nếu chưa load xong
+  if (!isPreloadComplete) {
+    return (
+      <MediaPreloader
+        slides={demoMorphSlides}
+        audioAssets={[backgroundMusicFile]}
+        onComplete={() => setIsPreloadComplete(true)}
+      />
+    );
+  }
 
   return (
     <div 
