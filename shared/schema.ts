@@ -63,7 +63,7 @@ export type Slide = typeof slides.$inferSelect;
 // Base element with common properties
 export const baseElementSchema = z.object({
   id: z.string(), // Unique ID for matching across slides
-  type: z.enum(['text', 'image', 'shape', 'icon']),
+  type: z.enum(['text', 'image', 'shape', 'icon', 'video']),
   x: z.number(), // Position from left (percentage or pixels)
   y: z.number(), // Position from top (percentage or pixels)
   width: z.number(), // Width in pixels or percentage
@@ -113,12 +113,25 @@ export const iconElementSchema = baseElementSchema.extend({
   strokeWidth: z.number().optional().default(2),
 });
 
+// Video element
+export const videoElementSchema = baseElementSchema.extend({
+  type: z.literal('video'),
+  src: z.string(), // Video URL or path
+  poster: z.string().optional(), // Poster image URL
+  autoplay: z.boolean().optional().default(false),
+  loop: z.boolean().optional().default(false),
+  muted: z.boolean().optional().default(true),
+  controls: z.boolean().optional().default(true),
+  objectFit: z.enum(['contain', 'cover', 'fill', 'none']).optional().default('contain'),
+});
+
 // Union of all element types
 export const slideElementSchema = z.discriminatedUnion('type', [
   textElementSchema,
   imageElementSchema,
   shapeElementSchema,
   iconElementSchema,
+  videoElementSchema,
 ]);
 
 // Slide content structure with elements
@@ -134,6 +147,7 @@ export type TextElement = z.infer<typeof textElementSchema>;
 export type ImageElement = z.infer<typeof imageElementSchema>;
 export type ShapeElement = z.infer<typeof shapeElementSchema>;
 export type IconElement = z.infer<typeof iconElementSchema>;
+export type VideoElement = z.infer<typeof videoElementSchema>;
 export type SlideElement = z.infer<typeof slideElementSchema>;
 export type SlideContent = z.infer<typeof slideContentSchema>;
 
