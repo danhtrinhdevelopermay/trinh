@@ -1246,7 +1246,7 @@ const rawDemoSlides = [
 
   // Slide 11: Video giới thiệu về Thầy Nguyễn Ngọc Ký
   {
-    background: "hero-gradient-dark",
+    background: "educational-gradient-5",
     textColor: "text-white",
     elements: [
       {

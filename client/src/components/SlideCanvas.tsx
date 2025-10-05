@@ -432,6 +432,8 @@ function VideoElementRenderer({ element, index }: { element: VideoElement; index
           loop={element.loop}
           muted={element.muted}
           controls={element.controls}
+          preload="auto"
+          playsInline
           style={{
             width: '100%',
             height: '100%',
@@ -489,6 +491,8 @@ function VideoElementRenderer({ element, index }: { element: VideoElement; index
         loop={element.loop}
         muted={element.muted}
         controls={element.controls}
+        preload="auto"
+        playsInline
         style={{
           width: '100%',
           height: '100%',
