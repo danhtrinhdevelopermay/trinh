@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertPresentationSchema, insertSlideSchema, slideDataSchema } from "@shared/schema";
 import { z } from "zod";
+import { askGemini } from "./gemini";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication is now handled globally in index.ts
@@ -227,6 +228,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Invalid data", details: error.errors });
       }
       res.status(500).json({ error: "Failed to reorder slides" });
+    }
+  });
+
+  // Gemini AI Chat route
+  app.post("/api/gemini/ask", async (req, res) => {
+    try {
+      const { question } = req.body;
+      
+      if (!question || typeof question !== 'string') {
+        return res.status(400).json({ error: "Question is required" });
+      }
+      
+      const answer = await askGemini(question);
+      res.json({ answer });
+    } catch (error) {
+      console.error("Gemini API error:", error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : "Failed to get AI response" 
+      });
     }
   });
 
