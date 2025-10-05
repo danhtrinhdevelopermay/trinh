@@ -13,6 +13,7 @@ import MorphDemo from "@/pages/MorphDemo";
 import NotFound from "@/pages/not-found";
 import LoginForm from "@/components/LoginForm";
 import GeminiChat from "@/components/GeminiChat";
+import PasswordProtection from "@/components/PasswordProtection";
 
 function Router() {
   const [location] = useLocation();
@@ -35,6 +36,13 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGeminiChatOpen, setIsGeminiChatOpen] = useState(false);
+  const [isPasswordUnlocked, setIsPasswordUnlocked] = useState(false);
+
+  // Check if password is unlocked on mount
+  useEffect(() => {
+    const unlocked = localStorage.getItem("website_unlocked") === "true";
+    setIsPasswordUnlocked(unlocked);
+  }, []);
 
   // Keyboard listener for Ctrl+C+B to open Gemini Chat
   useEffect(() => {
@@ -88,6 +96,15 @@ function App() {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
+
+  const handlePasswordUnlock = () => {
+    setIsPasswordUnlocked(true);
+  };
+
+  // Show password protection if not unlocked
+  if (!isPasswordUnlocked) {
+    return <PasswordProtection onUnlock={handlePasswordUnlock} />;
+  }
 
   // Allow root path without authentication
   if (location === '/' || location === '/demo') {
