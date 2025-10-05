@@ -35,10 +35,15 @@ Preferred communication style: Simple, everyday language.
 - **Features**: Basic user registration and login functionality.
 
 ### Design System
-- **Color Palette**: Educational theme with a deep navy primary, soft blue secondary, and appropriate accent colors.
+- **Color Palette**: Educational theme with a deep navy primary, soft blue secondary, and appropriate accent colors. Includes modern gradients (modern-gradient-1 to 5) and geometric patterns for diverse slide backgrounds.
 - **Typography**: Inter (UI), Source Serif Pro (content).
-- **Responsiveness**: Mobile-first design with a consistent spacing system.
+- **Responsiveness**: Mobile-first design with a consistent spacing system. Optimized for landscape and 16:9 aspect ratio screens with specific media queries for presentations. Supports ultra-wide (1920px+) and 4K+ displays with adaptive padding and typography scaling.
 - **Accessibility**: Emphasis on keyboard navigation and screen reader compatibility; animations simplify for reduced motion preferences.
+- **Slide Layouts**: Five diverse layout options for varied visual presentations:
+  - **Centered**: Traditional center-aligned content with backdrop blur and decorative elements
+  - **Split-Left/Right**: Content on one side with large decorative icon on the other, optimized for landscape screens
+  - **Full-Width**: Wide-screen layout with content aligned to the left, maximizing horizontal space
+  - **Corner-Accent**: Content positioned in corners with decorative accents for dynamic compositions
 
 ### Audio System
 - **Implementation**: Web Audio API for programmatic background music and sound effects.
