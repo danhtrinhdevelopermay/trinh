@@ -140,10 +140,11 @@ export type SlideContent = z.infer<typeof slideContentSchema>;
 // Frontend slide data type (matches existing mock data structure)
 export const slideDataSchema = z.object({
   id: z.union([z.string(), z.number()]),
-  type: z.enum(['title', 'content', 'quote']),
+  type: z.enum(['title', 'content', 'quote', 'image']).optional(),
   title: z.string(),
   content: z.any(), // Can be string or React component
-  background: z.string(),
+  background: z.string().optional(),
+  textColor: z.string().optional(),
 });
 
 export type SlideData = z.infer<typeof slideDataSchema>;

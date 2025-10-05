@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Star, Heart, BookOpen, Lightbulb, Target, Sparkles } from "lucide-react";
 
 export interface SlideData {
-  id: number;
+  id: number | string;
   title: string;
   content: ReactNode;
   background?: string;
@@ -104,14 +104,15 @@ export default function Slide({ slide, isActive, direction }: SlideProps) {
   const textColorStyle = slide.textColor || 'text-gray-800';
   
   // Map slide type to decorative icon
-  const getDecorativeIcon = (type: string, slideId: number) => {
+  const getDecorativeIcon = (type: string, slideId: number | string) => {
     const icons = {
       title: [Star, Sparkles],
       content: [BookOpen, Lightbulb],
       quote: [Heart, Target]
     };
     const iconSet = icons[type as keyof typeof icons] || icons.content;
-    return iconSet[slideId % iconSet.length];
+    const numericId = typeof slideId === 'string' ? parseInt(slideId, 10) || 0 : slideId;
+    return iconSet[numericId % iconSet.length];
   };
   
   const DecorativeIcon = getDecorativeIcon(slide.type || 'content', slide.id);

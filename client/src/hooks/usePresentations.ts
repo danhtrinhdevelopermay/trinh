@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { type SlideData } from "@shared/schema";
+import { type SlideData } from "@/components/Slide";
 
 // Hook for fetching presentation slides
 export function usePresentationSlides(presentationId: string) {
