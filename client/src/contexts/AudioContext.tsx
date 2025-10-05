@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from "react";
 import backgroundMusicFile from "@assets/soft-background-music-401914_1759657535406.mp3";
+import pageTransitionSound from "@assets/magic-ascend-3-259526_1759659782376.mp3";
 
 interface AudioContextValue {
   // States
@@ -17,6 +18,7 @@ interface AudioContextValue {
   playTransitionSound: (type?: 'whoosh' | 'swoosh' | 'pop' | 'chime') => void;
   playElementSound: () => void;
   playSpecialEffect: (effect: 'magic' | 'sparkle' | 'ding') => void;
+  playPageNavigationSound: () => void;
 }
 
 const AudioContextObj = createContext<AudioContextValue | null>(null);
@@ -332,6 +334,18 @@ export function AudioProvider({ children }: AudioProviderProps) {
     }
   }, [resumeAudioContext]);
 
+  const playPageNavigationSound = useCallback(async () => {
+    await resumeAudioContext();
+    
+    try {
+      const audio = new Audio(pageTransitionSound);
+      audio.volume = isMuted ? 0 : (volume / 100) * 0.5;
+      await audio.play();
+    } catch (error) {
+      // Silently fail if playback fails
+    }
+  }, [resumeAudioContext, volume, isMuted]);
+
   const value: AudioContextValue = {
     isPlaying,
     volume,
@@ -345,6 +359,7 @@ export function AudioProvider({ children }: AudioProviderProps) {
     playTransitionSound,
     playElementSound,
     playSpecialEffect,
+    playPageNavigationSound,
   };
 
   return (

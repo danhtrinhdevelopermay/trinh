@@ -1,5 +1,6 @@
 import { motion, AnimatePresence, Variants, useReducedMotion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import { useAudio } from "@/contexts/AudioContext";
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -64,6 +65,12 @@ interface AnimatedRouteProps {
 }
 
 export function AnimatedRoute({ children, routeKey }: AnimatedRouteProps) {
+  const { playPageNavigationSound } = useAudio();
+
+  useEffect(() => {
+    playPageNavigationSound();
+  }, [routeKey, playPageNavigationSound]);
+
   return (
     <AnimatePresence mode="wait">
       <PageTransition key={routeKey}>
