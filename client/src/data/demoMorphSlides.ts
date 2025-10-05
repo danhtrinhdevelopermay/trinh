@@ -1,6 +1,31 @@
 import { slideContentSchema, type SlideContent } from "@shared/schema";
 
 const rawDemoSlides = [
+  // Slide 0: Video giới thiệu toàn màn hình
+  {
+    background: "transparent",
+    textColor: "text-white",
+    elements: [
+      {
+        id: "intro-video",
+        type: "video" as const,
+        src: "/attached_assets/gioi-thieu.mp4",
+        x: 0,
+        y: 0,
+        width: 1200,
+        height: 675,
+        opacity: 1,
+        zIndex: 0,
+        rotation: 0,
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false,
+        objectFit: "cover" as const,
+      },
+    ],
+  },
+
   // Slide 1: Tiêu đề
   {
     background: "transparent",

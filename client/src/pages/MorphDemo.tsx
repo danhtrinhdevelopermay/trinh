@@ -163,6 +163,7 @@ const transitionVariants = {
 
 // Gán transition cho từng slide (có thể customize theo nhu cầu)
 const slideTransitions = [
+  'fade',           // Slide 0: Video giới thiệu - fade nhẹ nhàng
   'fade',           // Slide 1: Tiêu đề - fade nhẹ nhàng
   'zoom',           // Slide 2: Dẫn nhập - zoom ấn tượng
   'slide',          // Slide 3: Số phận là gì - slide cơ bản
