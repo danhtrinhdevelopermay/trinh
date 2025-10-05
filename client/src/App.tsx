@@ -69,7 +69,7 @@ function App() {
         <TooltipProvider>
           <AudioProvider>
             <Toaster />
-            {location === '/' ? <Home /> : <MorphDemo />}
+            {location === '/' ? <MorphDemo /> : <Home />}
           </AudioProvider>
         </TooltipProvider>
       </QueryClientProvider>

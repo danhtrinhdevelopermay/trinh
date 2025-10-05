@@ -37,14 +37,6 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Check for WebGL support
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!gl) {
-      console.warn('WebGL not supported, ThreeBackground will not render');
-      return;
-    }
-
     // Scene setup
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000000, 0.05);
@@ -57,19 +49,13 @@ export default function ThreeBackground({ currentSlide, totalSlides }: ThreeBack
     );
     camera.position.set(0, 0, 15);
 
-    let renderer: THREE.WebGLRenderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ 
-        antialias: true, 
-        alpha: true 
-      });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      containerRef.current.appendChild(renderer.domElement);
-    } catch (error) {
-      console.error('Failed to create WebGL renderer:', error);
-      return;
-    }
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true, 
+      alpha: true 
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    containerRef.current.appendChild(renderer.domElement);
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
