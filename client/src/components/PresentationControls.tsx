@@ -80,15 +80,18 @@ export default function PresentationControls({
         {isAutoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
       </Button>
 
+      <div className="h-6 w-px bg-border mx-1"></div>
+
       <Button
         size="sm"
-        variant="ghost"
+        variant={isFullscreen ? "default" : "secondary"}
         onClick={onToggleFullscreen}
         data-testid="button-fullscreen"
         className="hover-elevate"
         title={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
       >
-        {isFullscreen ? <Minimize className="w-4 h-4" /> : <Expand className="w-4 h-4" />}
+        {isFullscreen ? <Minimize className="w-4 h-4 mr-1" /> : <Expand className="w-4 h-4 mr-1" />}
+        <span className="text-xs font-medium">{isFullscreen ? "Thu nhỏ" : "Toàn màn hình"}</span>
       </Button>
     </div>
   );

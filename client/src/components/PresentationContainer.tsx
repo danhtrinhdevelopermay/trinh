@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
+import { Expand, Minimize } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Slide, { type SlideData } from "./Slide";
 import PresentationControls from "./PresentationControls";
 import AudioControls from "./AudioControls";
@@ -541,13 +543,6 @@ export default function PresentationContainer({
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      // Ctrl+0 to toggle fullscreen
-      if (event.key === '0' && (event.ctrlKey || event.metaKey)) {
-        event.preventDefault();
-        toggleFullscreen();
-        return;
-      }
-
       switch (event.key) {
         case 'ArrowRight':
         case ' ':
@@ -647,7 +642,7 @@ export default function PresentationContainer({
 
       {/* Bottom controls */}
       <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
+        <div className="flex items-center justify-between max-w-6xl mx-auto gap-4">
           <AudioControls
             onSoundToggle={setSoundEnabled}
             className="opacity-90"
@@ -665,6 +660,26 @@ export default function PresentationContainer({
             onToggleFullscreen={toggleFullscreen}
             className="opacity-90"
           />
+
+          <Button
+            size="lg"
+            onClick={toggleFullscreen}
+            data-testid="button-fullscreen-standalone"
+            className="shadow-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 font-semibold opacity-90 hover:opacity-100"
+            title={isFullscreen ? "Thoát toàn màn hình (Esc)" : "Toàn màn hình (F)"}
+          >
+            {isFullscreen ? (
+              <>
+                <Minimize className="w-5 h-5 mr-2" />
+                <span>Thu nhỏ</span>
+              </>
+            ) : (
+              <>
+                <Expand className="w-5 h-5 mr-2" />
+                <span>Toàn màn hình</span>
+              </>
+            )}
+          </Button>
         </div>
       </div>
 
@@ -672,11 +687,11 @@ export default function PresentationContainer({
       {currentSlide === 0 && (
         <div className="absolute top-1/2 right-8 transform -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm p-4 rounded-lg border text-sm text-muted-foreground max-w-xs">
           <p className="mb-2 font-medium">Điều khiển:</p>
-          <p>• Phím mũi tên: Chuyển slide</p>
+          <p>• Phím mũi tên ← →: Chuyển slide</p>
           <p>• Phím cách: Slide tiếp theo</p>
           <p>• Home: Về đầu</p>
-          <p>• Ctrl+0 hoặc F: Toàn màn hình</p>
-          <p>• Esc: Dừng tự động chuyển</p>
+          <p>• F: Toàn màn hình</p>
+          <p>• Esc: Thoát toàn màn hình</p>
           <p>• Click vào chấm slide để nhảy đến slide đó</p>
         </div>
       )}
