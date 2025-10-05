@@ -71,11 +71,9 @@ export function AnimatedRoute({ children, routeKey }: AnimatedRouteProps) {
   useEffect(() => {
     if (isFirstMount.current) {
       isFirstMount.current = false;
-      console.log('First page load, skipping sound');
       return;
     }
     
-    console.log('Page navigation to:', routeKey, '- playing sound');
     playPageNavigationSound();
   }, [routeKey, playPageNavigationSound]);
 

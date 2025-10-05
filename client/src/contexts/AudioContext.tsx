@@ -348,7 +348,7 @@ export function AudioProvider({ children }: AudioProviderProps) {
         await playPromise;
       }
     } catch (error) {
-      console.log('Page navigation sound failed:', error);
+      // Silently fail if playback fails
     }
   }, [resumeAudioContext, volume, isMuted]);
 
