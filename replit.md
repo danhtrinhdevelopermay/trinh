@@ -104,13 +104,28 @@ This is a modern web application for creating and displaying educational present
   - Keyboard navigation support with arrow keys
 - **Architecture verified by architect**: Implementation confirmed to achieve PowerPoint-style Morph behavior with persistent parent containers, correct AnimatePresence placement, and smooth property/layout animations
 
+### October 5, 2025 - Content Update: Focus on Vietnamese Examples
+- **Removed international examples**: Removed slides about Nelson Mandela, Nick Vujicic, Stephen Hawking, Oprah Winfrey, Michael Jordan, and Viktor Frankl
+- **Vietnamese-focused content**: Presentation now focuses exclusively on Vietnamese role models and examples
+- **Streamlined slide count**: Reduced from 12 to 9 slides for better focus and flow
+- **Featured role model**: Nguyễn Ngọc Ký - the inspiring Vietnamese teacher who writes with his feet
+  - Slide 4: "Tấm Gương Nguyễn Ngọc Ký" with detailed biographical information
+  - Slide 5: Quote slide featuring his famous words "Tôi viết bằng chân nhưng từ trái tim"
+- **Content structure**: Maintained emojis, improved phrasing, and organized presentation flow
+- **Current slide structure (9 slides total)**:
+  1. Title: Vượt Lên Số Phận
+  2. Số Phận Là Gì?
+  3. Những Yếu Tố Để Vượt Lên Số Phận
+  4. Tấm Gương Nguyễn Ngọc Ký
+  5. Quote: Nguyễn Ngọc Ký
+  6. Tư Duy Tích Cực - Chìa Khóa Thành Công
+  7. Hành Động Cụ Thể Để Thay Đổi
+  8. Bài Học Rút Ra
+  9. Thông điệp cuối cùng
+
 ### September 29, 2025 - Enhanced Presentation Content
-- **Expanded slide count**: Increased from 8 to 12 slides for more comprehensive coverage
+- **Initial content expansion**: Increased from 8 to 12 slides with international examples
 - **Added Nguyen Ngoc Ky slides**: Featured the inspiring Vietnamese teacher who writes with his feet
-  - Slide 5: "Tấm Gương Nguyễn Ngọc Ký" with detailed biographical information
-  - Slide 6: Quote slide featuring his famous words "Tôi viết bằng chân nhưng từ trái tim"
-- **Enhanced content structure**: Added emojis, improved phrasing, and better organization
-- **Additional role models**: Included Nick Vujicic, Stephen Hawking, Oprah Winfrey, and Michael Jordan
 - **New content types**: Implemented `story_with_image` component for biographical presentations
 - **Updated both storage systems**: Synchronized MemStorage and DBStorage with new content
 
