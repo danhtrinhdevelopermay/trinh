@@ -34,10 +34,9 @@ export default function MorphDemo() {
       onKeyDown={handleKeyPress}
       data-testid="morph-demo-container"
     >
-      {/* Header - Demo info */}
-      <div className="absolute top-4 left-4 z-50 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-lg text-white">
-        <h2 className="text-sm font-semibold">PowerPoint Morph Effect Demo</h2>
-        <p className="text-xs opacity-75">Slide {currentSlide + 1} / {totalSlides}</p>
+      {/* Header - Demo info - moved to bottom left */}
+      <div className="absolute bottom-4 left-4 z-50 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white">
+        <p className="text-xs opacity-90">Slide {currentSlide + 1} / {totalSlides}</p>
       </div>
 
       {/* Slide Container - persistent to enable element morphing */}
