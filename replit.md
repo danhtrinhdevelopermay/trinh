@@ -6,6 +6,25 @@ This is a modern web application for creating and displaying educational present
 
 ## Recent Changes
 
+### October 5, 2025 - Production Deployment Fixes (Render Support)
+- **Fixed 503 error on Render deployment**: Resolved database connection issues causing service unavailability
+  - **Dual database driver support**: Application now auto-detects and uses appropriate database driver
+    - Neon databases (URLs containing `.neon.tech`): Uses `neon-http` driver optimized for serverless
+    - Standard PostgreSQL (Render, AWS RDS, etc.): Uses `node-postgres` driver with pg package
+  - **Smart database detection**: Automatic driver selection based on DATABASE_URL format
+- **Production-ready session management**: 
+  - Development: In-memory session store for quick testing
+  - Production: PostgreSQL session store (`connect-pg-simple`) for persistent sessions across server restarts
+  - Multi-instance compatible: Sessions work correctly with Render's autoscaling
+- **Build-time improvements**:
+  - Drizzle config no longer throws errors when DATABASE_URL is missing during build
+  - Graceful fallback to placeholder connection string for build process
+- **Comprehensive deployment documentation**: 
+  - Created `RENDER_DEPLOY.md` with step-by-step Vietnamese instructions
+  - Created `render.yaml` for automated Render deployment
+  - Support for both Render PostgreSQL and Neon databases
+- **Storage flexibility**: Application seamlessly switches between MemStorage (development) and DBStorage (production) based on environment
+
 ### October 5, 2025 - Vietnamese Village 3D World Background (v2 - Dual Rendering)
 - **Immersive 3D background world**: Created a complete Vietnamese countryside village scene as presentation background
   - Traditional Vietnamese houses (nhà mái ngói) with tiled roofs, walls, doors, and windows
@@ -152,9 +171,12 @@ Preferred communication style: Simple, everyday language.
 
 ### Data Storage
 - **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
-- **Cloud Provider**: Neon serverless PostgreSQL for production deployment
+- **Dual Driver Support**: 
+  - **Neon serverless PostgreSQL**: Uses `neon-http` driver for serverless-optimized connections
+  - **Standard PostgreSQL**: Uses `node-postgres` driver for Render, AWS RDS, and other PostgreSQL providers
+  - **Auto-detection**: Automatically selects appropriate driver based on DATABASE_URL format
 - **Schema**: Three main entities - users, presentations, and slides with proper foreign key relationships
-- **Development**: In-memory storage fallback for development environments
+- **Development**: In-memory storage fallback when DATABASE_URL is not configured
 
 ### Authentication & Authorization
 - **Password Security**: bcrypt for password hashing

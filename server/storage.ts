@@ -9,8 +9,11 @@ import {
   presentations, 
   slides
 } from "@shared/schema";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
+import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
 import { neon } from "@neondatabase/serverless";
+import pkg from "pg";
+const { Pool } = pkg;
 import { eq, and } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
@@ -372,14 +375,30 @@ export class MemStorage implements IStorage {
 
 // Database storage implementation using Drizzle and PostgreSQL
 export class DBStorage implements IStorage {
-  private db: ReturnType<typeof drizzle>;
+  private db: any;
 
   constructor() {
     if (!process.env.DATABASE_URL) {
       throw new Error("DATABASE_URL is required");
     }
-    const sql = neon(process.env.DATABASE_URL);
-    this.db = drizzle(sql);
+    
+    // Use Neon HTTP driver for Neon databases, otherwise use node-postgres
+    // Neon URLs typically contain 'neon.tech' or use the HTTP/WebSocket protocol
+    const isNeonDatabase = process.env.DATABASE_URL.includes('neon.tech') || 
+                          process.env.DATABASE_URL.startsWith('postgresql://') && 
+                          process.env.DATABASE_URL.includes('.neon.tech');
+    
+    if (isNeonDatabase) {
+      // Use Neon HTTP driver for Neon databases (serverless-friendly)
+      const sql = neon(process.env.DATABASE_URL);
+      this.db = drizzleNeon(sql);
+    } else {
+      // Use standard PostgreSQL driver for other databases (Render, etc.)
+      const pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+      });
+      this.db = drizzlePg(pool);
+    }
   }
 
   // User operations
@@ -677,5 +696,7 @@ export class DBStorage implements IStorage {
   }
 }
 
-// Use MemStorage for in-memory storage (no database required)
-export const storage = new MemStorage();
+// Use DBStorage in production, MemStorage in development
+export const storage = process.env.DATABASE_URL 
+  ? new DBStorage() 
+  : new MemStorage();

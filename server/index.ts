@@ -4,6 +4,7 @@ import { setupVite, serveStatic, log } from "./vite";
 import { storage } from "./storage";
 import session from "express-session";
 import { z } from "zod";
+import connectPgSimple from "connect-pg-simple";
 
 const app = express();
 app.use(express.json());
@@ -12,18 +13,29 @@ app.use(express.urlencoded({ extended: false }));
 // Generate a secure session secret
 const sessionSecret = process.env.SESSION_SECRET || 'your-secure-session-secret-' + Math.random().toString(36);
 
-// Session configuration for password protection
-app.use(session({
+// Configure session store based on environment
+const sessionConfig: session.SessionOptions = {
   secret: sessionSecret,
   resave: false,
   saveUninitialized: false,
   cookie: { 
-    secure: process.env.NODE_ENV === 'production', // HTTPS in production
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    maxAge: 24 * 60 * 60 * 1000,
     sameSite: 'strict'
   }
-}));
+};
+
+// Use PostgreSQL session store in production if DATABASE_URL is available
+if (process.env.DATABASE_URL) {
+  const PgSession = connectPgSimple(session);
+  sessionConfig.store = new PgSession({
+    conString: process.env.DATABASE_URL,
+    createTableIfMissing: true,
+  });
+}
+
+app.use(session(sessionConfig));
 
 // Authentication middleware - applied globally to all API routes except auth
 const requireAuth = (req: Request, res: Response, next: NextFunction) => {
