@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import type { SlideElement, TextElement, ImageElement, ShapeElement, IconElement } from "@shared/schema";
 import * as Icons from "lucide-react";
+import { Rocket3D, Star3D, Book3D, Trophy3D, Heart3D, Target3D } from "./3DElements";
 
 interface SlideCanvasProps {
   elements: SlideElement[];
@@ -375,6 +376,28 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
   );
 }
 
+// 3D Model element renderer
+function Model3DRenderer({ element }: { element: any }) {
+  const modelType = element.modelType || 'star';
+  
+  switch (modelType) {
+    case 'rocket':
+      return <Rocket3D x={element.x} y={element.y} size={element.width} />;
+    case 'star':
+      return <Star3D x={element.x} y={element.y} size={element.width} />;
+    case 'book':
+      return <Book3D x={element.x} y={element.y} size={element.width} />;
+    case 'trophy':
+      return <Trophy3D x={element.x} y={element.y} size={element.width} />;
+    case 'heart':
+      return <Heart3D x={element.x} y={element.y} size={element.width} />;
+    case 'target':
+      return <Target3D x={element.x} y={element.y} size={element.width} />;
+    default:
+      return <Star3D x={element.x} y={element.y} size={element.width} />;
+  }
+}
+
 export default function SlideCanvas({ elements }: SlideCanvasProps) {
   return (
     <>
@@ -388,6 +411,8 @@ export default function SlideCanvas({ elements }: SlideCanvasProps) {
             return <ShapeElementRenderer key={element.id} element={element} index={index} />;
           case 'icon':
             return <IconElementRenderer key={element.id} element={element} index={index} />;
+          case 'model3d' as any:
+            return <Model3DRenderer key={element.id} element={element} />;
           default:
             return null;
         }
