@@ -56,35 +56,35 @@ function TextElementRenderer({ element, index }: { element: TextElement; index: 
       layoutId={element.id}
       layout
       initial={{ 
-        opacity: 0, 
-        y: 30,
+        opacity: 0,
         scale: 0.95,
       }}
       animate={{ 
         opacity: element.opacity,
-        y: 0,
         scale: 1,
-      }}
-      exit={{ 
-        opacity: 0,
-        y: -20,
-        scale: 0.98,
-      }}
-      transition={{
-        layout: { duration: 0.6, ease: MORPH_EASE },
-        opacity: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-        y: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-        scale: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-        color: { duration: 0.6, ease: MORPH_EASE },
-        fontSize: { duration: 0.6, ease: MORPH_EASE },
-      }}
-      style={{
-        position: 'absolute',
         x: element.x,
         y: element.y,
         width: element.width,
         height: element.height,
         rotate: element.rotation,
+      }}
+      exit={{ 
+        opacity: 0,
+        scale: 0.98,
+      }}
+      transition={{
+        layout: { duration: 0.6, ease: MORPH_EASE },
+        opacity: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+        scale: { delay: index * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+        x: { duration: 0.6, ease: MORPH_EASE },
+        y: { duration: 0.6, ease: MORPH_EASE },
+        width: { duration: 0.6, ease: MORPH_EASE },
+        height: { duration: 0.6, ease: MORPH_EASE },
+        color: { duration: 0.6, ease: MORPH_EASE },
+        fontSize: { duration: 0.6, ease: MORPH_EASE },
+      }}
+      style={{
+        position: 'absolute',
         color: element.color,
         fontSize: element.fontSize,
         fontWeight: element.fontWeight,
@@ -157,6 +157,11 @@ function ImageElementRenderer({ element, index }: { element: ImageElement; index
         opacity: element.opacity,
         scale: 1,
         filter: "blur(0px)",
+        x: element.x,
+        y: element.y,
+        width: element.width,
+        height: element.height,
+        rotate: element.rotation,
       }}
       exit={{ 
         opacity: 0,
@@ -171,11 +176,6 @@ function ImageElementRenderer({ element, index }: { element: ImageElement; index
       }}
       style={{
         position: 'absolute',
-        x: element.x,
-        y: element.y,
-        width: element.width,
-        height: element.height,
-        rotate: element.rotation,
         objectFit: element.objectFit,
         borderRadius: `${element.borderRadius}px`,
         zIndex: element.zIndex,
@@ -233,6 +233,11 @@ function ShapeElementRenderer({ element, index }: { element: ShapeElement; index
       animate={{ 
         opacity: element.opacity,
         scale: 1,
+        x: element.x,
+        y: element.y,
+        width: element.width,
+        height: element.height,
+        rotate: element.rotation,
       }}
       exit={{ 
         opacity: 0,
@@ -245,11 +250,6 @@ function ShapeElementRenderer({ element, index }: { element: ShapeElement; index
       }}
       style={{
         position: 'absolute',
-        x: element.x,
-        y: element.y,
-        width: element.width,
-        height: element.height,
-        rotate: element.rotation,
         zIndex: element.zIndex,
       }}
       data-testid={`shape-element-${element.id}`}
@@ -334,7 +334,9 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
       animate={{ 
         opacity: element.opacity,
         scale: 1,
-        rotate: 0,
+        rotate: element.rotation,
+        x: element.x,
+        y: element.y,
       }}
       exit={{ 
         opacity: 0,
@@ -349,9 +351,6 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
       }}
       style={{
         position: 'absolute',
-        x: element.x,
-        y: element.y,
-        rotate: element.rotation,
         zIndex: element.zIndex,
       }}
       data-testid={`icon-element-${element.id}`}
