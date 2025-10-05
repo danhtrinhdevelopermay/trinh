@@ -231,7 +231,8 @@ export default function PresentationContainer({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [transitionType, setTransitionType] = useState<'morph' | 'slide' | 'zoom' | 'flip' | 'rotate' | 'cube' | 'fade'>('morph');
   
-  const { playTransitionSound, playSpecialEffect } = useAudio();
+  const audioContext = useAudio();
+  const { playTransitionSound, playSpecialEffect } = audioContext;
   
   // Fetch slides from API
   const { data: apiSlides, isLoading, error } = usePresentationSlides(presentationId);
@@ -374,7 +375,7 @@ export default function PresentationContainer({
     return fallbackSlides;
   }, [apiSlides, fallbackSlides]);
 
-  const goToNext = useCallback(() => {
+  const goToNext = useCallback(async () => {
     if (currentSlide < slides.length - 1) {
       setDirection('next');
       setCurrentSlide(prev => prev + 1);
@@ -389,17 +390,17 @@ export default function PresentationContainer({
       if (soundEnabled) {
         switch (randomTransition) {
           case 'zoom':
-            playTransitionSound('whoosh');
+            await playTransitionSound('whoosh');
             break;
           case 'flip':
           case 'cube':
-            playTransitionSound('swoosh');
+            await playTransitionSound('swoosh');
             break;
           case 'slide':
-            playTransitionSound('pop');
+            await playTransitionSound('pop');
             break;
           default:
-            playTransitionSound('chime');
+            await playTransitionSound('chime');
         }
         
         // Play special effect after a short delay
@@ -410,7 +411,7 @@ export default function PresentationContainer({
     }
   }, [currentSlide, slides.length, soundEnabled, playTransitionSound, playSpecialEffect]);
 
-  const goToPrevious = useCallback(() => {
+  const goToPrevious = useCallback(async () => {
     if (currentSlide > 0) {
       setDirection('prev');
       setCurrentSlide(prev => prev - 1);
@@ -422,7 +423,7 @@ export default function PresentationContainer({
       setTransitionType(randomTransition);
       
       if (soundEnabled) {
-        playTransitionSound('pop');
+        await playTransitionSound('pop');
         setTimeout(() => {
           playSpecialEffect('ding');
         }, 200);

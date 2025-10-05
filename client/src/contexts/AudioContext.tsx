@@ -89,6 +89,7 @@ export function AudioProvider({ children }: AudioProviderProps) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
+  const hasAudioStartedRef = useRef<boolean>(false);
 
   // Initialize AudioContext
   useEffect(() => {
@@ -119,11 +120,13 @@ export function AudioProvider({ children }: AudioProviderProps) {
       try {
         await audioContextRef.current.resume();
         setAudioContextReady(true);
+        hasAudioStartedRef.current = true;
       } catch (error) {
-        console.log('Failed to resume AudioContext');
+        // Silently fail if resume not allowed (e.g., no user gesture yet)
       }
     } else if (audioContextRef.current?.state === 'running') {
       setAudioContextReady(true);
+      hasAudioStartedRef.current = true;
     }
   }, []);
 
@@ -202,12 +205,16 @@ export function AudioProvider({ children }: AudioProviderProps) {
   }, [currentTrack, volume, isMuted]);
 
   const playTransitionSound = useCallback(async (type: 'whoosh' | 'swoosh' | 'pop' | 'chime' = 'whoosh') => {
-    if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
+    if (!audioContextRef.current || !masterGainRef.current) {
       return;
     }
 
     await resumeAudioContext();
-
+    
+    if (audioContextRef.current.state !== 'running') {
+      return;
+    }
+    
     try {
       const oscillator = audioContextRef.current.createOscillator();
       const gainNode = audioContextRef.current.createGain();
@@ -260,17 +267,21 @@ export function AudioProvider({ children }: AudioProviderProps) {
       
       oscillator.start(now);
     } catch (error) {
-      console.log('Transition sound failed');
+      // Silently fail if oscillator creation fails
     }
-  }, [audioContextReady, resumeAudioContext]);
+  }, [resumeAudioContext]);
 
   const playElementSound = useCallback(async () => {
-    if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
+    if (!audioContextRef.current || !masterGainRef.current) {
       return;
     }
 
     await resumeAudioContext();
-
+    
+    if (audioContextRef.current.state !== 'running') {
+      return;
+    }
+    
     try {
       const oscillator = audioContextRef.current.createOscillator();
       const gainNode = audioContextRef.current.createGain();
@@ -289,17 +300,21 @@ export function AudioProvider({ children }: AudioProviderProps) {
       oscillator.start(now);
       oscillator.stop(now + 0.08);
     } catch (error) {
-      console.log('Element sound failed');
+      // Silently fail if oscillator creation fails
     }
-  }, [audioContextReady, resumeAudioContext]);
+  }, [resumeAudioContext]);
 
   const playSpecialEffect = useCallback(async (effect: 'magic' | 'sparkle' | 'ding') => {
-    if (!audioContextRef.current || !masterGainRef.current || !audioContextReady) {
+    if (!audioContextRef.current || !masterGainRef.current) {
       return;
     }
 
     await resumeAudioContext();
-
+    
+    if (audioContextRef.current.state !== 'running') {
+      return;
+    }
+    
     try {
       const now = audioContextRef.current.currentTime;
       
@@ -361,9 +376,9 @@ export function AudioProvider({ children }: AudioProviderProps) {
           break;
       }
     } catch (error) {
-      console.log('Special effect sound failed');
+      // Silently fail if oscillator creation fails
     }
-  }, [audioContextReady, resumeAudioContext]);
+  }, [resumeAudioContext]);
 
   const value: AudioContextValue = {
     isPlaying,
