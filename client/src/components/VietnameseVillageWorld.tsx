@@ -450,13 +450,7 @@ export default function VietnameseVillageWorld({ slideIndex, totalSlides }: Viet
         zIndex: -1,
       }}
     >
-      <ErrorBoundary fallback={
-        <div style={{ 
-          width: '100%', 
-          height: '100%', 
-          background: 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 50%, #C8E6C9 100%)' 
-        }} />
-      }>
+      <ErrorBoundary fallback={null}>
         <Suspense fallback={
           <div style={{ 
             width: '100%', 

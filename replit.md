@@ -6,7 +6,7 @@ This is a modern web application for creating and displaying educational present
 
 ## Recent Changes
 
-### October 5, 2025 - Vietnamese Village 3D World Background
+### October 5, 2025 - Vietnamese Village 3D World Background (v2 - Dual Rendering)
 - **Immersive 3D background world**: Created a complete Vietnamese countryside village scene as presentation background
   - Traditional Vietnamese houses (nhà mái ngói) with tiled roofs, walls, doors, and windows
   - Bamboo trees and palm trees with realistic swaying animations
@@ -18,14 +18,18 @@ This is a modern web application for creating and displaying educational present
   - 8 unique camera positions corresponding to different slides
   - Smooth interpolation between positions using lerp for cinematic transitions
   - Camera looks at different focal points to showcase various parts of the village
-- **Realistic lighting and atmosphere**: 
+- **Dual rendering system**: Automatic technology selection based on browser capabilities
+  - **WebGL Three.js version** (VietnameseVillageWorld.tsx): Full 3D rendering with realistic lighting, shadows, and complex geometries
+  - **CSS 3D Transform version** (CSS3DVietnamVillage.tsx): Fallback using CSS 3D transforms, works everywhere without WebGL
+  - **Smart wrapper** (VillageWorldWrapper.tsx): Detects WebGL support and automatically selects appropriate renderer
+- **Realistic lighting and atmosphere** (WebGL version):
   - Warm golden sunlight with emissive sun model
   - Floating clouds with transparency and animation
   - Atmospheric fog for depth perception
   - Cast shadows from buildings and objects
   - Sky gradient from blue to green (heaven to earth)
-- **Performance optimized**: Uses Three.js with React Three Fiber for efficient 3D rendering
-- **Error handling**: Graceful fallback to gradient background if WebGL is not available
+- **Performance optimized**: Efficient rendering with both WebGL and CSS 3D approaches
+- **Universal compatibility**: Works in all modern browsers with graceful degradation
 
 ### October 5, 2025 - Expanded 3D Models Library
 - **New 3D models created**: Added 6 new thematically appropriate Three.js models to enhance presentation impact
