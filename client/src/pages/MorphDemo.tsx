@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SlideCanvas from "@/components/SlideCanvas";
 import { demoMorphSlides } from "@/data/demoMorphSlides";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import AudioControls from "@/components/AudioControls";
 
 // Định nghĩa các kiểu transition effects
 const transitionVariants = {
@@ -295,6 +296,11 @@ export default function MorphDemo() {
           delay: 5
         }}
       />
+      
+      {/* Audio Controls - top right */}
+      <div className="absolute top-4 right-4 z-50">
+        <AudioControls />
+      </div>
       
       {/* Header - Demo info - moved to bottom left */}
       <div className="absolute bottom-4 left-4 z-50 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-lg text-gray-800">
