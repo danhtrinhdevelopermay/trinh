@@ -377,7 +377,7 @@ function IconElementRenderer({ element, index }: { element: IconElement; index: 
 
 export default function SlideCanvas({ elements }: SlideCanvasProps) {
   return (
-    <AnimatePresence mode="sync">
+    <>
       {elements.map((element, index) => {
         switch (element.type) {
           case 'text':
@@ -392,6 +392,6 @@ export default function SlideCanvas({ elements }: SlideCanvasProps) {
             return null;
         }
       })}
-    </AnimatePresence>
+    </>
   );
 }
