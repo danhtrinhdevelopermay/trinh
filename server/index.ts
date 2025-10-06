@@ -10,6 +10,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// 503 Service Unavailable middleware - blocks all requests
+app.use((_req, res) => {
+  res.status(503).json({
+    error: 'Service Unavailable',
+    message: 'The server is temporarily unable to handle the request',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Generate a secure session secret
 const sessionSecret = process.env.SESSION_SECRET || 'your-secure-session-secret-' + Math.random().toString(36);
 
